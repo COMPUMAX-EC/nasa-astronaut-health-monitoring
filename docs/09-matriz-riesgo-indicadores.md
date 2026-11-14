@@ -49,7 +49,7 @@ Columnas nuevas:
 | MU-01 | Muscular | Fuerza máxima (prensa, agarre) (kg / N) | Pérdida de fuerza y masa muscular | 4 | 3 | **12** | 🟠 Alto | Semanal | • Dinamómetro de mano<br>• Datos del equipo de ejercicio resistivo<br>• Test de 1RM estimado | ✅ Disponible<br>Dinamómetro y datos del equipo de ejercicio resistivo | ◐ Parcial<br>RGB o profundidad, cuerpo completo | [ver](https://www.nasa.gov/hrp/human-health-countermeasures/) |
 | MU-04 | Muscular | Capacidad aeróbica (VO2 máx. estimado) (ml/kg/min) | Desacondicionamiento físico | 4 | 3 | **12** | 🟠 Alto | Mensual | • Prueba submáxima en bicicleta con FC<br>• Estimación por wearable | ⚠️ Limitada<br>Requiere analizador de gases; disponible solo en campañas de investigación | ✖ No | [ver](https://www.nasa.gov/hrp/human-health-countermeasures/) |
 | NU-01 | Nutrición | Ingesta calórica y de proteína (kcal/día, g/día) | Desnutrición | 4 | 3 | **12** | 🟠 Alto | Diaria | • Escaneo de código de barras de los paquetes de comida<br>• Foto de la comida (visión artificial)<br>• Registro manual | ✅ Disponible<br>Paquetes de comida con código de barras | 📷 Sí<br>RGB (tableta) | [ver](https://www.nasa.gov/wp-content/uploads/2023/12/ochmo-tb-013-food-and-nutrition.pdf) |
-| PS-01 | Salud mental | Estado de ánimo y estrés (escala) | Condiciones conductuales adversas | 3 | 4 | **12** | 🟠 Alto | Diaria | • Cuestionario breve en la app<br>• Diario personal<br>• Análisis de voz en el dispositivo (opcional) | ✅ Disponible<br>Cuestionario | ○ Baja<br>RGB facial | [ver](https://www.nasa.gov/wp-content/uploads/2023/12/ochmo-tb-016-behavioral-health.pdf) |
+| PS-01 | Salud mental | Estado de ánimo y estrés (escala) | Condiciones conductuales adversas | 3 | 4 | **12** | 🟠 Alto | Diaria | • Cuestionario breve en la app<br>• Expresión facial en sesión breve, procesada en el dispositivo<br>• Diario personal<br>• Análisis de voz en el dispositivo (opcional) | ✅ Disponible<br>Cuestionario | ◐ Parcial<br>RGB frontal (tableta), sesión breve con consentimiento | [ver](https://www.nasa.gov/wp-content/uploads/2023/12/ochmo-tb-016-behavioral-health.pdf) |
 | PS-02 | Salud mental | Soledad y aislamiento percibido (escala) | Problemas psicosociales por aislamiento | 4 | 3 | **12** | 🟠 Alto | Semanal | • Cuestionario en la app<br>• Registro de contacto con familia | ✅ Disponible<br>Cuestionario | ○ Baja<br>Cámaras del hábitat | [ver](https://www.nasa.gov/wp-content/uploads/2023/12/ochmo-tb-016-behavioral-health.pdf) |
 | PS-03 | Salud mental | Cohesión y conflicto del equipo (escala) | Fallas de cooperación y comunicación del equipo | 3 | 4 | **12** | 🟠 Alto | Semanal | • Encuesta anónima del equipo<br>• Registro de incidentes | ✅ Disponible<br>Encuesta | ○ Baja<br>Cámaras del hábitat | [ver](https://www.nasa.gov/wp-content/uploads/2023/12/ochmo-tb-016-behavioral-health.pdf) |
 | RN-01 | Renal | Riesgo de cálculo renal (calcio urinario, volumen de orina) (mg/día, L/día) | Cálculo renal | 3 | 4 | **12** | 🟠 Alto | Semanal | • Registro de volumen de orina<br>• Tira reactiva / analizador de orina<br>• Ultrasonido renal guiado ante síntomas | ⚠️ Limitada<br>Volumen de orina y ultrasonido sí; química urinaria completa no | ✖ No | [ver](https://www.nasa.gov/hrp/risks/) |
@@ -143,11 +143,11 @@ Columnas nuevas:
 | Viabilidad | Nº | Indicadores |
 |---|---|---|
 | 📷 Sí | 4 | MU-03, IN-03, SM-02, NU-01 |
-| ◐ Parcial | 14 | CV-01, CV-06, MU-01, MU-02, MU-05, VI-02, IN-01, IN-02, SU-01, SU-02, CO-01, EN-05, EN-06, EN-08 |
-| ○ Baja | 9 | CV-02, CV-05, CV-07, RA-03, SM-01, PS-01, PS-02, PS-03, NU-02 |
+| ◐ Parcial | 15 | CV-01, CV-06, MU-01, MU-02, MU-05, VI-02, IN-01, IN-02, SU-01, SU-02, CO-01, PS-01, EN-05, EN-06, EN-08 |
+| ○ Baja | 8 | CV-02, CV-05, CV-07, RA-03, SM-01, PS-02, PS-03, NU-02 |
 | ✖ No | 19 | CV-03, CV-04, OS-01, OS-02, RN-01, MU-04, VI-01, VI-03, IN-04, RA-01, RA-02, SU-03, CO-02, CO-03, EN-01, EN-02, EN-03, EN-04, EN-07 |
 
-**Conclusión rápida:** 18 de 46 indicadores se pueden obtener o complementar con cámara (4 como método principal). La cámara **no sustituye** a los wearables, dosímetros, muestras biológicas ni sensores ambientales, pero sí cubre bien el sistema musculoesquelético, la piel, la nutrición y la somnolencia.
+**Conclusión rápida:** 19 de 46 indicadores se pueden obtener o complementar con cámara (4 como método principal). La cámara **no sustituye** a los wearables, dosímetros, muestras biológicas ni sensores ambientales, pero sí cubre bien el sistema musculoesquelético, la piel, la nutrición, la somnolencia y, con privacidad desde el diseño, el estado de ánimo.
 
 ### 9.7.1 Detalle de los indicadores viables (📷 Sí y ◐ Parcial)
 
@@ -164,6 +164,7 @@ Columnas nuevas:
 | VI-02 | Edema de disco óptico / grosor retiniano | 12 | ◐ Parcial | Cámara especializada de fondo de ojo | Clasificación de edema de disco en imágenes de fondo de ojo; no sirve una cámara normal | Complemento sin contacto del instrumento existente |
 | SU-02 | Alineación circadiana (horarios, exposición a luz) | 12 | ◐ Parcial | Sensor de la cámara | Luminancia ambiental aproximada | Complemento sin contacto del instrumento existente |
 | CO-01 | Vigilancia psicomotora (PVT) | 12 | ◐ Parcial | RGB/IR frontal | PERCLOS (cierre de párpados) y parpadeo para somnolencia; complementa al PVT | Complemento sin contacto del instrumento existente |
+| PS-01 | Estado de ánimo y estrés | 12 | ◐ Parcial | RGB frontal (tableta), sesión breve con consentimiento | Unidades de acción facial (AU), valencia y activación comparadas con la línea base personal; solo se guardan puntajes agregados, nunca imágenes (ver 9.7.5) | Complemento sin contacto del instrumento existente |
 | MU-05 | Dolor lumbar / articular y lesiones (hombro) | 10 | ◐ Parcial | RGB cuerpo completo | Postura, rango de movimiento del hombro y asimetrías con estimación de pose | Complemento sin contacto del instrumento existente |
 | IN-01 | Temperatura corporal | 9 | ◐ Parcial | Térmica (IR) | Temperatura de la piel/frente; una cámara RGB no sirve | Complemento sin contacto del instrumento existente |
 | EN-06 | Carga microbiana de aire y superficies | 9 | ◐ Parcial | RGB o microscopio | Conteo automático de colonias en placas de cultivo | **Aporta valor**: cubre un hueco de la instrumentación limitada |
@@ -204,8 +205,40 @@ Columnas nuevas:
 3. **FC por rPPG (CV-01)** validada contra un wearable o un oxímetro en la demo, mostrando el margen de error.
 4. **Fotos de piel y comida (IN-03, NU-01):** clasificador ligero en la tableta.
 5. **Somnolencia por PERCLOS (CO-01)** como complemento del test PVT.
+6. **Estado de ánimo por expresión facial (PS-01)**, con privacidad desde el diseño (ver 9.7.5): una sesión breve y voluntaria, junto al check-in diario, que mide cambios respecto a la línea base de la persona y se contrasta con el cuestionario.
 
-Los indicadores de salud mental por expresión facial (PS-01 a PS-03) **no se recomiendan**: tienen baja validez y un costo alto en privacidad y confianza.
+PS-02 y PS-03 (soledad y cohesión del equipo) siguen sin recomendarse por cámara: exigirían cámaras permanentes en las áreas comunes, y eso sí es incompatible con extraer solo lo necesario.
+
+### 9.7.5 Expresión facial para salud mental: privacidad desde el diseño
+
+El objetivo es que el sistema **solo extraiga lo necesario para monitorear la salud** y que el astronauta mantenga el control de sus datos.
+
+**Qué se extrae y qué no**
+
+| Se procesa (en memoria, durante segundos) | Se guarda | Nunca se guarda ni se transmite |
+|---|---|---|
+| Fotogramas de la cámara frontal durante la sesión (≈30–60 s) | Puntaje diario de valencia (positivo/negativo) y activación (calma/tensión) | Imágenes o video |
+| Puntos faciales y unidades de acción (AU), por ejemplo AU4 (ceño) o AU12 (sonrisa) | Desviación respecto a la línea base personal (z-score) | Vectores faciales que permitan reconstruir o identificar el rostro |
+| — | Confianza de la medición (luz, encuadre) | Emociones "etiquetadas" de un solo fotograma |
+
+**Garantías técnicas**
+
+1. **Procesamiento 100 % en el dispositivo** (MediaPipe Face Mesh + clasificador ligero); los fotogramas se descartan de inmediato tras extraer los puntajes.
+2. **Minimización de datos:** solo se persisten 2–3 números por sesión; al dashboard llegan agregados diarios o semanales.
+3. **Consentimiento y control:** la sesión la inicia el astronauta; puede omitirla, pausar el módulo o borrar su historial en cualquier momento.
+4. **Transparencia:** indicador visible de cámara activa y pantalla que muestra exactamente qué valores se guardaron.
+5. **Acceso limitado:** los puntajes faciales los ve el propio astronauta; se comparten con el médico de vuelo solo si él lo autoriza o si hay una alerta acordada previamente.
+6. **Propósito único:** los datos se usan solo para el bienestar del astronauta, nunca para evaluar su desempeño ni para decisiones de selección o asignación.
+7. **Cifrado en reposo** de los puntajes y borrado automático según la política de la misión.
+
+**Cómo mejorar la validez**
+
+- Medir **cambios dentro de la misma persona** (tendencia frente a su línea base), no clasificar emociones absolutas.
+- Construir la línea base **en vuelo** (las primeras semanas), porque la cara cambia por el desplazamiento de fluidos.
+- **Triangular** con el cuestionario de ánimo, el sueño, la VFC y el PVT: una alerta solo se activa si coinciden varias señales.
+- Controlar condiciones: misma hora, misma luz, misma posición; descartar sesiones de baja confianza.
+- Revisar sesgos del modelo (tono de piel, género, edad) y reportar la incertidumbre en la interfaz.
+- Validar en análogos (HERA, CHAPEA) o con voluntarios antes de usarlo como indicador fiable.
 
 ## 9.8 Cómo usar la matriz en el software
 

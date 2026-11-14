@@ -86,7 +86,7 @@ INDICADORES = [
     ("CO-02", "Cognitivo", "Batería cognitiva (memoria, atención, razonamiento)", "puntaje", "Deterioro cognitivo", 3, 3, "Semanal", ["Batería de tests en la app"], COG),
     ("CO-03", "Cognitivo", "Carga de trabajo percibida (NASA-TLX)", "0-100", "Sobrecarga de trabajo", 4, 2, "Al final de cada jornada", ["Cuestionario NASA-TLX en la app"], COG),
     # Salud mental
-    ("PS-01", "Salud mental", "Estado de ánimo y estrés", "escala", "Condiciones conductuales adversas", 3, 4, "Diaria", ["Cuestionario breve en la app", "Diario personal", "Análisis de voz en el dispositivo (opcional)"], BH),
+    ("PS-01", "Salud mental", "Estado de ánimo y estrés", "escala", "Condiciones conductuales adversas", 3, 4, "Diaria", ["Cuestionario breve en la app", "Expresión facial en sesión breve, procesada en el dispositivo", "Diario personal", "Análisis de voz en el dispositivo (opcional)"], BH),
     ("PS-02", "Salud mental", "Soledad y aislamiento percibido", "escala", "Problemas psicosociales por aislamiento", 4, 3, "Semanal", ["Cuestionario en la app", "Registro de contacto con familia"], BH),
     ("PS-03", "Salud mental", "Cohesión y conflicto del equipo", "escala", "Fallas de cooperación y comunicación del equipo", 3, 4, "Semanal", ["Encuesta anónima del equipo", "Registro de incidentes"], BH),
     # Nutrición
@@ -201,7 +201,7 @@ CAM = {
     "CO-01": ("P", "RGB/IR frontal", "PERCLOS (cierre de párpados) y parpadeo para somnolencia; complementa al PVT"),
     "CO-02": ("N", "—", "Test en pantalla"),
     "CO-03": ("N", "—", "Cuestionario"),
-    "PS-01": ("B", "RGB facial", "Reconocimiento de expresiones: baja validez clínica, sesgos; la cara cambia por el desplazamiento de fluidos"),
+    "PS-01": ("P", "RGB frontal (tableta), sesión breve con consentimiento", "Unidades de acción facial (AU), valencia y activación comparadas con la línea base personal; solo se guardan puntajes agregados, nunca imágenes (ver 9.7.5)"),
     "PS-02": ("B", "Cámaras del hábitat", "Tiempo en áreas comunes como indicador indirecto; muy invasivo"),
     "PS-03": ("B", "Cámaras del hábitat", "Patrones de interacción; muy invasivo"),
     "NU-01": ("S", "RGB (tableta)", "Foto del paquete o la bandeja: reconocimiento de alimento y porción"),
@@ -339,8 +339,8 @@ def escribir_md(filas) -> None:
     util = len(cuenta_c["S"]) + len(cuenta_c["P"])
     a(f"\n**Conclusión rápida:** {util} de {len(filas)} indicadores se pueden obtener o complementar con cámara "
       f"({len(cuenta_c['S'])} como método principal). La cámara **no sustituye** a los wearables, dosímetros, "
-      "muestras biológicas ni sensores ambientales, pero sí cubre bien el sistema musculoesquelético, la piel, la nutrición "
-      "y la somnolencia.\n")
+      "muestras biológicas ni sensores ambientales, pero sí cubre bien el sistema musculoesquelético, la piel, la nutrición, "
+      "la somnolencia y, con privacidad desde el diseño, el estado de ánimo.\n")
 
     a("### 9.7.1 Detalle de los indicadores viables (📷 Sí y ◐ Parcial)\n")
     a("| ID | Indicador | P×G | Viabilidad | Cámara necesaria | Técnica | Rol frente a la instrumentación |")
@@ -384,7 +384,34 @@ def escribir_md(filas) -> None:
     a("3. **FC por rPPG (CV-01)** validada contra un wearable o un oxímetro en la demo, mostrando el margen de error.")
     a("4. **Fotos de piel y comida (IN-03, NU-01):** clasificador ligero en la tableta.")
     a("5. **Somnolencia por PERCLOS (CO-01)** como complemento del test PVT.")
-    a("\nLos indicadores de salud mental por expresión facial (PS-01 a PS-03) **no se recomiendan**: tienen baja validez y un costo alto en privacidad y confianza.\n")
+    a("6. **Estado de ánimo por expresión facial (PS-01)**, con privacidad desde el diseño (ver 9.7.5): una sesión breve y voluntaria, "
+      "junto al check-in diario, que mide cambios respecto a la línea base de la persona y se contrasta con el cuestionario.")
+    a("\nPS-02 y PS-03 (soledad y cohesión del equipo) siguen sin recomendarse por cámara: exigirían cámaras permanentes en las áreas comunes, "
+      "y eso sí es incompatible con extraer solo lo necesario.\n")
+
+    a("### 9.7.5 Expresión facial para salud mental: privacidad desde el diseño\n")
+    a("El objetivo es que el sistema **solo extraiga lo necesario para monitorear la salud** y que el astronauta mantenga el control de sus datos.\n")
+    a("**Qué se extrae y qué no**\n")
+    a("| Se procesa (en memoria, durante segundos) | Se guarda | Nunca se guarda ni se transmite |")
+    a("|---|---|---|")
+    a("| Fotogramas de la cámara frontal durante la sesión (≈30–60 s) | Puntaje diario de valencia (positivo/negativo) y activación (calma/tensión) | Imágenes o video |")
+    a("| Puntos faciales y unidades de acción (AU), por ejemplo AU4 (ceño) o AU12 (sonrisa) | Desviación respecto a la línea base personal (z-score) | Vectores faciales que permitan reconstruir o identificar el rostro |")
+    a("| — | Confianza de la medición (luz, encuadre) | Emociones \"etiquetadas\" de un solo fotograma |")
+    a("\n**Garantías técnicas**\n")
+    a("1. **Procesamiento 100 % en el dispositivo** (MediaPipe Face Mesh + clasificador ligero); los fotogramas se descartan de inmediato tras extraer los puntajes.")
+    a("2. **Minimización de datos:** solo se persisten 2–3 números por sesión; al dashboard llegan agregados diarios o semanales.")
+    a("3. **Consentimiento y control:** la sesión la inicia el astronauta; puede omitirla, pausar el módulo o borrar su historial en cualquier momento.")
+    a("4. **Transparencia:** indicador visible de cámara activa y pantalla que muestra exactamente qué valores se guardaron.")
+    a("5. **Acceso limitado:** los puntajes faciales los ve el propio astronauta; se comparten con el médico de vuelo solo si él lo autoriza o si hay una alerta acordada previamente.")
+    a("6. **Propósito único:** los datos se usan solo para el bienestar del astronauta, nunca para evaluar su desempeño ni para decisiones de selección o asignación.")
+    a("7. **Cifrado en reposo** de los puntajes y borrado automático según la política de la misión.")
+    a("\n**Cómo mejorar la validez**\n")
+    a("- Medir **cambios dentro de la misma persona** (tendencia frente a su línea base), no clasificar emociones absolutas.")
+    a("- Construir la línea base **en vuelo** (las primeras semanas), porque la cara cambia por el desplazamiento de fluidos.")
+    a("- **Triangular** con el cuestionario de ánimo, el sueño, la VFC y el PVT: una alerta solo se activa si coinciden varias señales.")
+    a("- Controlar condiciones: misma hora, misma luz, misma posición; descartar sesiones de baja confianza.")
+    a("- Revisar sesgos del modelo (tono de piel, género, edad) y reportar la incertidumbre en la interfaz.")
+    a("- Validar en análogos (HERA, CHAPEA) o con voluntarios antes de usarlo como indicador fiable.\n")
 
     a("## 9.8 Cómo usar la matriz en el software\n")
     a("1. **Priorizar el MVP:** implementar primero los indicadores 🔴 y 🟠.")
