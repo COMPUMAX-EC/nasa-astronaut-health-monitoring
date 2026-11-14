@@ -18,6 +18,7 @@ Aquí se reúne la documentación **oficial de NASA** (y de agencias socias) má
 | 6 | [Propuesta de arquitectura del software](docs/06-propuesta-arquitectura.md) | Diseño sugerido, alertas, modelo de datos, MVP |
 | 7 | [Glosario](docs/07-glosario.md) | Siglas NASA (SANS, HRP, OCHMO, BHP…) |
 | 8 | [Cómputo, IA y limitaciones](docs/08-computo-ia-y-limitaciones.md) | Hardware a bordo, radiación, SWaP, visión artificial vs. alternativas |
+| 9 | [Matriz de riesgo de indicadores](docs/09-matriz-riesgo-indicadores.md) | 46 indicadores con probabilidad × gravedad, frecuencia de medición y formas de recolectarlos ([CSV](data/indicadores.csv)) |
 
 ## 🛠️ Scripts
 
@@ -27,6 +28,7 @@ Aquí se reúne la documentación **oficial de NASA** (y de agencias socias) má
 | [`scripts/osdr_datasets.py`](scripts/osdr_datasets.py) | Lista datasets del Open Science Data Repository (OSDR) |
 | [`scripts/donki_radiacion.py`](scripts/donki_radiacion.py) | Descarga eventos de partículas solares (SEP) y fulguraciones de DONKI |
 | [`scripts/verificar_enlaces.py`](scripts/verificar_enlaces.py) | Comprueba que todos los enlaces del repo sigan vivos |
+| [`scripts/generar_matriz.py`](scripts/generar_matriz.py) | Regenera la matriz de riesgo (Markdown y CSV) a partir de la lista de indicadores |
 
 Solo usan la biblioteca estándar de Python 3.9+:
 
