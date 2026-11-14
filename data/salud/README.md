@@ -6,8 +6,23 @@ Documentos oficiales del **Ministerio de Salud Pública del Ecuador (MSP)**, la 
 |---|---|
 | [`documentos.csv`](documentos.csv) | Catálogo de documentos (organización, año, tema, enlace, licencia, uso en el proyecto) |
 | [`instrumentos.csv`](instrumentos.csv) | Escalas de medición con ítems, rango, puntos de corte, frecuencia sugerida y su indicador en la matriz |
+| [`pdf/`](pdf/) | Copias locales de los documentos que permiten descarga directa (ver abajo) |
 
-> Recopilado el 2026‑11‑14. Los sitios de la OMS e IRIS bloquean la descarga automática de PDF; se enlaza la página oficial de cada publicación, desde donde se descarga el PDF.
+> Recopilado el 2026‑11‑14. Los sitios de la OMS e IRIS bloquean la descarga automática de PDF; para esos se enlaza la página oficial de cada publicación, desde donde se descarga el PDF.
+
+### PDF incluidos en el repositorio
+
+| Archivo | Documento | Fuente original | Tamaño |
+|---|---|---|---|
+| [MSP-01_Politica_Nacional_Salud_Mental_2025-2030.pdf](pdf/MSP-01_Politica_Nacional_Salud_Mental_2025-2030.pdf) | Política Nacional de Salud Mental 2025–2030 (Registro Oficial, 2.º Supl. N.º 188) | salud.gob.ec | 4,4 MB |
+| [MSP-02_Modelo_de_Salud_Mental.pdf](pdf/MSP-02_Modelo_de_Salud_Mental.pdf) | Modelo de Salud Mental | salud.gob.ec | 1,8 MB |
+| [MSP-03_GPC_Depresion.pdf](pdf/MSP-03_GPC_Depresion.pdf) | GPC: episodio depresivo y trastorno depresivo recurrente en adultos | salud.gob.ec | 1,8 MB |
+| [MSP-04_Protocolo_SMAPS.pdf](pdf/MSP-04_Protocolo_SMAPS.pdf) | Protocolo de salud mental y apoyo psicosocial | intranet.msp.gob.ec | 10,0 MB |
+| [OMS-02_Resumen_Soledad_a_Conexion_Social.pdf](pdf/OMS-02_Resumen_Soledad_a_Conexion_Social.pdf) | Resumen del informe de la Comisión de la OMS sobre Conexión Social (inglés) | paho.org | 6,8 MB |
+| [OPS-04_Hoja_informativa_salud_mental.pdf](pdf/OPS-04_Hoja_informativa_salud_mental.pdf) | Hoja informativa de salud mental | paho.org | 1,6 MB |
+| [WHO-5_Indice_de_bienestar_es.pdf](pdf/WHO-5_Indice_de_bienestar_es.pdf) | Índice de bienestar OMS‑5 (traducción al español no oficial) | infocop.es | 0,1 MB |
+
+Las copias se guardan solo para consulta del equipo; citen siempre la fuente original. Los documentos de la OMS y la OPS están bajo CC BY‑NC‑SA 3.0 IGO (uso no comercial con atribución).
 
 ## 1. Por qué importa para astronautas
 
