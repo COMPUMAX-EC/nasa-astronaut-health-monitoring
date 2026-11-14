@@ -484,7 +484,42 @@ svg.laica.e-radiacion { --led: #B266FF; --halo: #B266FF; }
 @keyframes led  { 0% { opacity: 1; } 100% { opacity: .25; } }
 
 /* Accesibilidad: sin movimiento si el usuario lo pide */
+/* ---------- Andar y postura en cuatro patas (atributos andar y patas="cuatro") ---------- */
+/* En dos patas: pisadas alternas (de frente, una rodilla sube y la otra apoya), balanceo y brazos. */
+svg.laica.andando .cuerpo-entero { animation: balanceo .9s ease-in-out infinite; }
+svg.laica.andando .pierna-i { animation: pisada .9s ease-in-out infinite; }
+svg.laica.andando .pierna-d { animation: pisada .9s ease-in-out infinite -.45s; }
+svg.laica.andando .brazo-i { animation: braceo-i .9s ease-in-out infinite; }
+svg.laica.andando .brazo-d { animation: braceo-d .9s ease-in-out infinite; }
+svg.laica.andando .cola { animation-duration: .45s; }
+@keyframes balanceo { 0%,100% { transform: translateY(0) rotate(-3deg); } 25%,75% { transform: translateY(-5px) rotate(0); } 50% { transform: translateY(0) rotate(3deg); } }
+@keyframes pisada   { 0%,50%,100% { transform: translateY(0) scaleY(1); } 25% { transform: translateY(-13px) scaleY(.86); } }
+@keyframes braceo-i { 0%,100% { transform: rotate(-70deg); } 50% { transform: rotate(-45deg); } }
+@keyframes braceo-d { 0%,100% { transform: rotate(45deg); } 50% { transform: rotate(70deg); } }
+
+/* En cuatro patas: baja el cuerpo, recoge las piernas (patas traseras) y apoya los brazos
+   en el suelo como patas delanteras. Al andar, trota en diagonal. */
+svg.laica.p-cuatro .cuerpo-entero { animation: cuatro-respira 2.4s ease-in-out infinite; }
+svg.laica.p-cuatro .piernas { transform-origin: 150px 266px; transform: scaleY(.55); }
+svg.laica.p-cuatro .brazo-i { transform: translateY(14px) rotate(-90deg); animation: none; }
+svg.laica.p-cuatro .brazo-d { transform: translateY(14px) rotate(90deg); animation: none; }
+svg.laica.p-cuatro .pierna-i, svg.laica.p-cuatro .pierna-d { animation: none; }
+svg.laica.p-cuatro .cola { animation-duration: .5s; }
+svg.laica.p-cuatro .cabeza { transform: translateY(12px); animation: none; }
+@keyframes cuatro-respira { 0%,100% { transform: translateY(28px); } 50% { transform: translateY(26px); } }
+
+svg.laica.p-cuatro.andando .cuerpo-entero { animation: trote-bote .5s ease-in-out infinite; }
+svg.laica.p-cuatro.andando .brazo-i  { animation: trote-i 1s ease-in-out infinite; }
+svg.laica.p-cuatro.andando .brazo-d  { animation: trote-d 1s ease-in-out infinite -.5s; }
+svg.laica.p-cuatro.andando .pierna-d { animation: pisada 1s ease-in-out infinite; }
+svg.laica.p-cuatro.andando .pierna-i { animation: pisada 1s ease-in-out infinite -.5s; }
+svg.laica.p-cuatro.andando .cola { animation-duration: .3s; }
+@keyframes trote-bote { 0%,100% { transform: translateY(28px) rotate(-1.5deg); } 50% { transform: translateY(23px) rotate(1.5deg); } }
+@keyframes trote-i { 0%,50%,100% { transform: translateY(14px) rotate(-90deg); } 25% { transform: translateY(3px) rotate(-80deg); } }
+@keyframes trote-d { 0%,50%,100% { transform: translateY(14px) rotate(90deg); } 25% { transform: translateY(3px) rotate(80deg); } }
+
 @media (prefers-reduced-motion: reduce) {
+  svg.laica.p-cuatro .cuerpo-entero { transform: translateY(28px); }
   svg.laica *, svg.laica .cuerpo-entero, .envoltura { animation: none !important; }
   .envoltura, .cara-giro, .cabeza-giro, .pupilas, .orejas-giro, .reflejos { transition: none !important; }
   .halo { opacity: .6 !important; }
@@ -492,7 +527,7 @@ svg.laica.e-radiacion { --led: #B266FF; --halo: #B266FF; }
 `;
 
   class LaicaMascota extends HTMLElement {
-    static get observedAttributes() { return ["estado", "tamano", "seguir", "curiosa"]; }
+    static get observedAttributes() { return ["estado", "tamano", "seguir", "curiosa", "andar", "patas"]; }
 
     constructor() {
       super();
@@ -573,6 +608,13 @@ svg.laica.e-radiacion { --led: #B266FF; --halo: #B266FF; }
     }
 
     get estado() { return this.getAttribute("estado") || "reposo"; }
+
+    /** Camina (true) o se detiene (false). Con patas = "cuatro" trota en cuatro patas. */
+    set andar(v) { this.toggleAttribute("andar", Boolean(v)); }
+    get andar() { return this.hasAttribute("andar"); }
+    /** "dos" (de pie, por defecto) o "cuatro". */
+    set patas(v) { if (v === "cuatro") this.setAttribute("patas", "cuatro"); else this.removeAttribute("patas"); }
+    get patas() { return this.getAttribute("patas") === "cuatro" ? "cuatro" : "dos"; }
     set estado(v) { this.setAttribute("estado", v); }
 
     /** Cambia a un estado y vuelve a `reposo` tras `ms` milisegundos. */
@@ -585,14 +627,21 @@ svg.laica.e-radiacion { --led: #B266FF; --halo: #B266FF; }
     _aplicar() {
       if (!this._svg) return;
       const e = ESTADOS.includes(this.estado) ? this.estado : "reposo";
+      const andando = this.hasAttribute("andar");
+      const cuatro = this.getAttribute("patas") === "cuatro";
       for (const svg of this._svgs) {
         ESTADOS.forEach((x) => svg.classList.remove("e-" + x));
         svg.classList.add("e-" + e);
+        svg.classList.toggle("andando", andando);
+        svg.classList.toggle("p-cuatro", cuatro);
       }
       if (this._deFrente) this.mirar(0, 0);
       const t = parseInt(this.getAttribute("tamano"), 10);
       if (t) this._env.style.width = t + "px";
-      this.dispatchEvent(new CustomEvent("laica-estado", { detail: { estado: e } }));
+      if (e !== this._ultimoEstado) {
+        this._ultimoEstado = e;
+        this.dispatchEvent(new CustomEvent("laica-estado", { detail: { estado: e } }));
+      }
     }
   }
 

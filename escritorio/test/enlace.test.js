@@ -4,7 +4,15 @@ const { leerEnlace } = require("../enlace.js");
 
 test("lee el punto de salida, el estado y el mensaje", () => {
   const p = leerEnlace("laica://salir?x=640&y=360&estado=celebrar&msg=Hola");
-  assert.deepEqual(p, { accion: "salir", x: 640, y: 360, estado: "celebrar", mensaje: "Hola" });
+  assert.deepEqual(p, { accion: "salir", x: 640, y: 360, estado: "celebrar", mensaje: "Hola", gravedad: null, patas: null });
+});
+
+test("lee la gravedad y las patas", () => {
+  const p = leerEnlace("laica://salir?gravedad=1&patas=cuatro");
+  assert.equal(p.gravedad, true);
+  assert.equal(p.patas, "cuatro");
+  assert.equal(leerEnlace("laica://salir?gravedad=0").gravedad, false);
+  assert.equal(leerEnlace("laica://salir?patas=seis").patas, null);
 });
 
 test("acepta la barra final que agrega Windows", () => {

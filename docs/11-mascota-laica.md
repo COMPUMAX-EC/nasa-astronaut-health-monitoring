@@ -68,6 +68,8 @@ Laica no mira siempre al frente. El componente dibuja dos caras del mismo person
 | `laica.mirar(x, y)` | Mira hacia una dirección; `x` e `y` van de -1 a 1 |
 | `laica.girar("vuelta")` | Vuelta completa de 360° |
 | `laica.girar("espaldas")` | Se voltea, muestra la espalda un momento y vuelve |
+| atributo `andar` (o `laica.andar = true`) | Camina: pisadas alternas, balanceo y braceo |
+| atributo `patas="cuatro"` (o `laica.patas = "cuatro"`) | Se pone en cuatro patas: baja el cuerpo y apoya los brazos como patas delanteras; con `andar`, trota en diagonal |
 
 ```html
 <laica-mascota estado="reposo" seguir curiosa></laica-mascota>

@@ -8,7 +8,9 @@ Una página web no puede dibujar fuera de la ventana del navegador. Esta pequeñ
 - Se esconde por un borde y se asoma (por abajo, desde detrás de la barra de tareas).
 - Te mira cuando el cursor está cerca.
 - La puedes **agarrar y lanzar**; un clic es una caricia.
-- **Clic derecho** sobre ella: Explorar, Caminar por la barra de tareas, Esconderse y asomarse, Volver al navegador.
+- Camina en dos patas o en **cuatro patas**.
+- **Gravedad opcional**: con gravedad cae, rebota en el suelo, camina sobre la barra de tareas, salta, se sienta y, si la lanzas, hace una parábola. Sin gravedad flota como en el espacio.
+- **Clic derecho** sobre ella: Explorar, Caminar, Esconderse y asomarse, Gravedad (casilla), En cuatro patas (casilla), Volver al navegador. Las casillas se recuerdan.
 - Cada 4 a 7 minutos te recuerda tomar agua, descansar la vista o estirarte.
 
 Es una ventana transparente, sin marco y siempre encima que cubre la pantalla. Los clics la atraviesan, así que puedes seguir usando tu computadora normalmente; solo Laica responde al ratón.

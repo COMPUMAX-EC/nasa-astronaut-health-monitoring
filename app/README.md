@@ -57,6 +57,8 @@ La mascota se importa directamente desde [`assets/laica/laica.js`](../assets/lai
 
 En la escena, Laica sigue el cursor con la cabeza, mira a los lados cuando nadie la toca y se da la vuelta en 3D al acariciarla (solo si todo está en verde). En alertas serias mira de frente, quieta. Detalle de la API (`seguir`, `curiosa`, `mirar()`, `girar()`) en [docs/11](../docs/11-mascota-laica.md).
 
+Botones 🌍 **Gravedad** y 🐾 **cuatro patas**: con gravedad, al escaparse salta, cae, rebota en el borde de abajo y camina por él; en cuatro patas trota. Las dos opciones se recuerdan y se pasan a la app de escritorio.
+
 Laica también se escapa de la escena (sola cada 15 a 35 s cuando todo está en verde, o con el botón 🚀 "Déjala explorar"): vuela por toda la pantalla, rebota contra los bordes aplastándose con una chispa, se sale por un borde, se asoma por otro ("¿Me extrañaste?") y vuelve a su sitio. Si aparece una alerta, vuelve de inmediato. Está en `src/componentes/LaicaLibre.jsx`.
 
 Con 🪟 "Sacarla del navegador" (Chrome y Edge de escritorio) Laica pasa a una mini ventana flotante que queda siempre encima, incluso sobre otras aplicaciones, y se puede arrastrar a cualquier parte de la pantalla (API Document Picture-in-Picture, `src/componentes/useVentanaLaica.js`). Con 🖥️ "Sacarla al escritorio" Laica sale del navegador de verdad: salta desde donde estaba y anda por todo el escritorio, camina sobre la barra de tareas y la puedes agarrar y lanzar. Necesita la app de escritorio de [`escritorio/`](../escritorio/README.md) (`npm install` y `npm start` una vez, para registrar el enlace `laica://`).

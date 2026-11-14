@@ -7,6 +7,14 @@ import { useVentanaLaica } from "./useVentanaLaica.js";
 // bien, y se planta al frente cuando hay una alerta. Al bajar por la página, una Laica
 // pequeña sigue acompañando desde la esquina (la compañía constante del plan, docs/12 §12.2).
 
+// Opciones que se recuerdan en este navegador (las comparte con la app de escritorio por el enlace).
+function leerOpcion(clave) {
+  try { return localStorage.getItem(clave) === "1"; } catch { return false; }
+}
+function guardarOpcion(clave, valor) {
+  try { localStorage.setItem(clave, valor ? "1" : "0"); } catch { /* sin almacenamiento */ }
+}
+
 function estrellas(n, semilla = 7) {
   let s = semilla;
   const r = () => ((s = (s * 9301 + 49297) % 233280) / 233280);
@@ -49,6 +57,11 @@ export default function Escena({ estadoLaica, mensaje, nivel, voz, esHoy, checkI
   visibleRef.current = visible;
   const fuera = useVentanaLaica({ estado: estadoLaica, mensaje, onAcariciar });
   const [enEscritorio, setEnEscritorio] = useState(false);
+  const [gravedad, setGravedad] = useState(() => leerOpcion("laica-gravedad"));
+  const [cuatro, setCuatro] = useState(() => leerOpcion("laica-cuatro"));
+  const alternarGravedad = () => setGravedad((g) => { guardarOpcion("laica-gravedad", !g); return !g; });
+  const alternarCuatro = () => setCuatro((c) => { guardarOpcion("laica-cuatro", !c); return !c; });
+  const patas = cuatro ? "cuatro" : undefined;
   const conRaton = typeof window !== "undefined" && window.matchMedia?.("(pointer: fine)").matches;
 
   // Fuera del navegador: abre la app de escritorio de Laica (carpeta escritorio/) con un enlace
@@ -61,6 +74,8 @@ export default function Escena({ estadoLaica, mensaje, nivel, voz, esHoy, checkI
       y: String(Math.round(window.screenY + barra + (r ? r.top + r.height / 2 : window.innerHeight / 2))),
       estado: estadoLaica,
       msg: "¡Salí del navegador!",
+      gravedad: gravedad ? "1" : "0",
+      patas: cuatro ? "cuatro" : "dos",
     });
     window.location.href = `laica://salir?${q}`;
     setEnEscritorio(true);
@@ -125,7 +140,7 @@ export default function Escena({ estadoLaica, mensaje, nivel, voz, esHoy, checkI
         <div className={`escenario ${tranquila ? "pasea" : "al-frente"}`}>
           <button type="button" className={`laica-boton${salto ? " salta" : ""}${ausente ? " oculta" : ""}`} onClick={acariciar}
             aria-label="Acariciar a Laica">
-            <laica-mascota ref={laicaRef} estado={estadoLaica} tamano="230" seguir="" curiosa=""></laica-mascota>
+            <laica-mascota ref={laicaRef} estado={estadoLaica} tamano="230" seguir="" curiosa="" patas={patas}></laica-mascota>
           </button>
           <span className="sombra-laica" aria-hidden="true" />
         </div>
@@ -148,6 +163,12 @@ export default function Escena({ estadoLaica, mensaje, nivel, voz, esHoy, checkI
               {puedeSalir && !libre && (
                 <button type="button" onClick={() => setLibre(true)}><span aria-hidden="true">🚀</span> Déjala explorar</button>
               )}
+              <button type="button" onClick={alternarGravedad} aria-pressed={gravedad}>
+                <span aria-hidden="true">{gravedad ? "🌍" : "🪐"}</span> Gravedad: {gravedad ? "sí" : "no"}
+              </button>
+              <button type="button" onClick={alternarCuatro} aria-pressed={cuatro}>
+                <span aria-hidden="true">🐾</span> {cuatro ? "En cuatro patas" : "En dos patas"}
+              </button>
               {conRaton && !fuera.abierta && (
                 <button type="button" onClick={enEscritorio ? traerDeVuelta : alEscritorio} aria-pressed={enEscritorio}>
                   <span aria-hidden="true">🖥️</span> {enEscritorio ? "Traer a Laica de vuelta" : "Sacarla al escritorio"}
@@ -171,7 +192,7 @@ export default function Escena({ estadoLaica, mensaje, nivel, voz, esHoy, checkI
       {!visible && (
         <aside className={`compania nivel-${nivel}`} aria-label="Laica te acompaña">
           <button type="button" className={`compania-laica${ausente ? " oculta" : ""}`} onClick={acariciar} aria-label="Acariciar a Laica">
-            <laica-mascota ref={miniRef} estado={estadoLaica} tamano="92" seguir="" curiosa=""></laica-mascota>
+            <laica-mascota ref={miniRef} estado={estadoLaica} tamano="92" seguir="" curiosa="" patas={patas}></laica-mascota>
           </button>
           <div className="compania-texto">
             <p>{voz.escuchando ? voz.parcial || "Te escucho…" : mensaje}</p>
@@ -191,7 +212,7 @@ export default function Escena({ estadoLaica, mensaje, nivel, voz, esHoy, checkI
       )}
 
       {libre && (
-        <LaicaLibre estado={estadoLaica} activa={puedeSalir} casa={casa}
+        <LaicaLibre estado={estadoLaica} activa={puedeSalir} casa={casa} gravedad={gravedad} cuatro={cuatro}
           onVolver={() => setLibre(false)} onAcariciar={onAcariciar} />
       )}
     </>

@@ -70,7 +70,7 @@ function mostrar(pedido) {
   if (CAPTURA) {
     setTimeout(async () => {
       const info = await ventana.webContents.executeJavaScript(
-        `JSON.stringify({ definida: !!customElements.get("laica-mascota"), sombra: !!document.querySelector("laica-mascota").shadowRoot,
+        `JSON.stringify({ ...window.laicaDepurar?.(), definida: !!customElements.get("laica-mascota"), sombra: !!document.querySelector("laica-mascota").shadowRoot,
           mueve: document.getElementById("laica").style.transform, burbuja: document.querySelector(".burbuja").textContent,
           tam: [innerWidth, innerHeight] })`);
       console.log("[laica] estado", info);
@@ -89,13 +89,16 @@ function atender(url) {
 }
 
 ipcMain.on("raton", (_e, atrapar) => ventana?.setIgnoreMouseEvents(!atrapar, { forward: true }));
-ipcMain.on("menu", () => {
+ipcMain.on("menu", (_e, opciones = {}) => {
   if (!ventana) return;
   const orden = (o) => () => ventana?.webContents.send("orden", o);
   Menu.buildFromTemplate([
     { label: "Explorar", click: orden("explorar") },
     { label: "Caminar por la barra de tareas", click: orden("caminar") },
     { label: "Esconderse y asomarse", click: orden("asomarse") },
+    { type: "separator" },
+    { label: "Gravedad", type: "checkbox", checked: Boolean(opciones.gravedad), click: orden("gravedad") },
+    { label: "En cuatro patas", type: "checkbox", checked: Boolean(opciones.cuatro), click: orden("cuatro") },
     { type: "separator" },
     { label: "Volver al navegador", click: () => app.quit() },
   ]).popup({ window: ventana });

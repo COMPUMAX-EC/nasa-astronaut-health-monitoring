@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 // Laica suelta: se escapa de la escena, vuela por toda la pantalla, rebota contra los bordes
 // (se aplasta y suelta una chispa), al final se sale de la pantalla y se asoma por un borde
 // antes de volver a su sitio. Solo cuando todo está en verde; si aparece una alerta, vuelve ya.
+// Con gravedad: salta, cae, rebota en el borde de abajo y camina por él (en dos o cuatro patas).
 
 const FRASES = {
   salir: ["¡Me voy a explorar!", "Este panel me queda chico.", "Vuelvo enseguida… creo."],
@@ -16,12 +17,15 @@ const al = (l) => l[Math.floor(Math.random() * l.length)];
 const ANCHO = 120;
 const ALTO = Math.round(ANCHO * 340 / 300); // proporción del dibujo de Laica
 const VEL = 250; // px/s
+const G = 1500;  // gravedad, px/s²
 
 // Dónde se asoma según el borde: posición (fuera y asomada), giro para que la cabeza apunte
 // hacia adentro y lado de la burbuja.
 function asomo(borde, W, H) {
   const y = H * (0.2 + Math.random() * 0.5), x = W * (0.15 + Math.random() * 0.6);
   switch (borde) {
+    case "izq-suelo": return { x0: -ANCHO - 30, y0: H - ALTO, x1: -ANCHO * 0.42, y1: H - ALTO, rot: 0, burbuja: "der" };
+    case "der-suelo": return { x0: W + 30, y0: H - ALTO, x1: W - ANCHO * 0.58, y1: H - ALTO, rot: 0, burbuja: "izq" };
     case "izq": return { x0: -ANCHO - 30, y0: y, x1: -ANCHO * 0.42, y1: y, rot: 90, burbuja: "der" };
     case "der": return { x0: W + 30, y0: y, x1: W - ANCHO * 0.58, y1: y, rot: -90, burbuja: "izq" };
     case "arriba": return { x0: x, y0: -ALTO - 30, x1: x, y1: -ALTO * 0.45, rot: 180, burbuja: "abajo" };
@@ -29,7 +33,7 @@ function asomo(borde, W, H) {
   }
 }
 
-export default function LaicaLibre({ estado, activa, casa, onVolver, onAcariciar }) {
+export default function LaicaLibre({ estado, activa, casa, onVolver, onAcariciar, gravedad = false, cuatro = false }) {
   const capa = useRef(null);
   const cuerpo = useRef(null);
   const golpe = useRef(null);
@@ -42,6 +46,8 @@ export default function LaicaLibre({ estado, activa, casa, onVolver, onAcariciar
   const volverRef = useRef(onVolver);
   volverRef.current = onVolver;
   const decirRef = useRef(() => {});
+  const gravedadRef = useRef(gravedad);
+  gravedadRef.current = gravedad;
 
   useEffect(() => {
     let tFrase;
@@ -80,12 +86,16 @@ export default function LaicaLibre({ estado, activa, casa, onVolver, onAcariciar
     const ang = -Math.PI / 2 + (Math.random() - 0.5) * 2; // sale hacia arriba, en diagonal
     let vx = Math.cos(ang) * VEL, vy = Math.sin(ang) * VEL;
     let fase = "volando", choques = 0;
+    const andar = (si) => laica.current?.toggleAttribute("andar", si);
+    const velAndar = () => (laica.current?.getAttribute("patas") === "cuatro" ? 130 : 75);
+    if (gravedadRef.current) { vx = (Math.random() - 0.5) * 400; vy = -850; fase = "cayendo"; }
     const maxChoques = 3 + Math.floor(Math.random() * 3);
     let rot = 0, rotObj = 0, asomada = null;
     const inicio = performance.now();
     let tFase = inicio, antes = inicio, raf = 0;
 
-    const cambiar = (f, t) => { fase = f; tFase = t; };
+    let duracion = 0;
+    const cambiar = (f, t, ms = 0) => { fase = f; tFase = t; duracion = ms; andar(f === "caminando" || f === "saliendo"); };
 
     const paso = (t) => {
       const dt = Math.min(0.05, (t - antes) / 1000);
@@ -95,8 +105,48 @@ export default function LaicaLibre({ estado, activa, casa, onVolver, onAcariciar
       const el = laica.current;
 
       if (!activaRef.current && fase !== "volviendo") cambiar("volviendo", t);
+      // Si cambian la gravedad mientras vuela o camina, se adapta.
+      if (gravedadRef.current && fase === "volando") cambiar("cayendo", t);
+      if (!gravedadRef.current && (fase === "cayendo" || fase === "caminando")) { vy = -VEL; vx = (Math.sign(vx) || 1) * VEL * 0.6; cambiar("volando", t); }
 
-      if (fase === "volando" || fase === "escapando") {
+      if (fase === "cayendo") {
+        vy += G * dt;
+        x += vx * dt;
+        y += vy * dt;
+        esc += (1 - esc) * k;
+        rotObj = Math.max(-20, Math.min(20, vx / 30));
+        el?.mirar?.(Math.sign(vx) * Math.min(0.9, Math.abs(vx) / 300), Math.max(-0.5, Math.min(0.5, vy / 1200)));
+        ponerLado(y < 70 ? "abajo" : "arriba");
+        if (x < 0 && vx < 0) { x = 0; vx = -vx * 0.75; aplastar("x", "left center"); chispa(0, y + ALTO / 2); }
+        if (x > W - ANCHO && vx > 0) { x = W - ANCHO; vx = -vx * 0.75; aplastar("x", "right center"); chispa(W, y + ALTO / 2); }
+        if (y < 0 && vy < 0) { y = 0; vy = -vy * 0.5; }
+        if (y >= H - ALTO && vy > 0) {
+          y = H - ALTO;
+          aplastar("y", "center bottom");
+          if (vy > 420) { chispa(x + ANCHO / 2, H); vy = -vy * 0.42; vx *= 0.8; if (Math.random() < 0.4) decir(al(FRASES.choque)); }
+          else { vx = (Math.sign(vx) || 1) * velAndar(); vy = 0; cambiar("caminando", t, 5000 + Math.random() * 6000); }
+        }
+      } else if (fase === "caminando" || fase === "saliendo") {
+        x += vx * dt;
+        y = H - ALTO;
+        rotObj = 0;
+        esc += (1 - esc) * k;
+        el?.mirar?.(Math.sign(vx) * 0.9, 0.15);
+        ponerLado("arriba");
+        if (fase === "saliendo") {
+          if (x < -ANCHO - 20 || x > W + 20) cambiar("fuera", t);
+        } else if ((x < 0 && vx < 0) || (x > W - ANCHO && vx > 0)) {
+          if (choques >= 2) { cambiar("saliendo", t); decir(al(FRASES.escapar)); }
+          else { x = Math.max(0, Math.min(W - ANCHO, x)); vx = -vx; choques++; }
+        } else if (t - tFase > duracion) {
+          vx = Math.sign(vx) * (150 + Math.random() * 200);
+          vy = -(650 + Math.random() * 300);
+          cambiar("cayendo", t);
+        }
+        if (t - inicio > 30000) cambiar("volviendo", t);
+      }
+
+      else if (fase === "volando" || fase === "escapando") {
         x += vx * dt;
         y += vy * dt + Math.sin(t / 260) * 0.6; // un poco de vaivén
         esc += (1 - esc) * k;
@@ -130,7 +180,7 @@ export default function LaicaLibre({ estado, activa, casa, onVolver, onAcariciar
         }
       } else if (fase === "fuera") {
         if (t - tFase > 1800) {
-          const borde = al(["izq", "der", "arriba", "abajo"]);
+          const borde = gravedadRef.current ? al(["izq-suelo", "der-suelo"]) : al(["izq", "der", "arriba", "abajo"]);
           asomada = asomo(borde, W, H);
           x = asomada.x0; y = asomada.y0; rot = rotObj = asomada.rot;
           esc = 1;
@@ -184,7 +234,7 @@ export default function LaicaLibre({ estado, activa, casa, onVolver, onAcariciar
         <div ref={cuerpo} className="libre-cuerpo">
           <div ref={golpe} className="libre-golpe">
             <button type="button" className="libre-boton" onClick={tocar} aria-label="Acariciar a Laica (está explorando)">
-              <laica-mascota ref={laica} estado={estado} tamano={String(ANCHO)}></laica-mascota>
+              <laica-mascota ref={laica} estado={estado} tamano={String(ANCHO)} patas={cuatro ? "cuatro" : undefined}></laica-mascota>
             </button>
           </div>
         </div>
