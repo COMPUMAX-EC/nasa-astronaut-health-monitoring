@@ -25,6 +25,8 @@ Aquí se reúne la documentación **oficial de NASA** (y de agencias socias) má
 | 10 | [Soluciones similares](docs/10-soluciones-similares.md) | CMO‑DA (NASA+Google), AMOS, Astroskin, Cognition, CIMON, EXPAND, proyectos de Space Apps… y qué hueco cubrimos |
 | 11 | [Laica, la mascota](docs/11-mascota-laica.md) | Componente animado con 10 acciones que reflejan el estado de salud ([demo](assets/laica/demo.html)) |
 | 12 | [Plan de proyecto](docs/12-plan-de-proyecto.md) | La app completa: personalidad de Laica (compañía, humor y asistente), módulos, fases, demo y roles |
+| 13 | [Pitch](docs/13-pitch.md) ([English](docs/13-pitch.en.md)) | Guion de 7 diapositivas y ~5 min según la rúbrica, preguntas del jurado y lista de entrega |
+| — | [Guía y rúbrica de la sede](docs/rubrica/README.md) | Resumen de la rúbrica oficial de Sangolquí 2026 ([PDF](docs/rubrica/guia-participantes-y-rubrica-sangolqui-2026.pdf)), penalizaciones y pesos por categoría |
 
 ## 📱 La app
 
@@ -75,4 +77,4 @@ Material educativo para un reto/hackathon. No es un dispositivo médico ni susti
 
 ## Licencia
 
-Textos propios bajo CC BY 4.0; código bajo MIT. El contenido de NASA citado es, en general, de dominio público (revisa las NASA Media Usage Guidelines).
+Textos propios bajo CC BY 4.0; código bajo MIT (ver [LICENSE](LICENSE)). El contenido de NASA citado es, en general, de dominio público (revisa las NASA Media Usage Guidelines).
