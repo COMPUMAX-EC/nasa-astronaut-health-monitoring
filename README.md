@@ -18,7 +18,7 @@ Aquí se reúne la documentación **oficial de NASA** (y de agencias socias) má
 | 6 | [Propuesta de arquitectura del software](docs/06-propuesta-arquitectura.md) | Diseño sugerido, alertas, modelo de datos, MVP |
 | 7 | [Glosario](docs/07-glosario.md) | Siglas NASA (SANS, HRP, OCHMO, BHP…) |
 | 8 | [Cómputo, IA y limitaciones](docs/08-computo-ia-y-limitaciones.md) | Hardware a bordo, radiación, SWaP, visión artificial vs. alternativas |
-| 9 | [Matriz de riesgo de indicadores](docs/09-matriz-riesgo-indicadores.md) | 46 indicadores con probabilidad × gravedad, frecuencia de medición y formas de recolectarlos ([CSV](data/indicadores.csv)) |
+| 9 | [Matriz de riesgo de indicadores](docs/09-matriz-riesgo-indicadores.md) | 46 indicadores con probabilidad × gravedad, frecuencia de medición, formas de recolectarlos, instrumentación disponible a bordo y viabilidad por cámara ([CSV](data/indicadores.csv)) |
 
 ## 🛠️ Scripts
 
