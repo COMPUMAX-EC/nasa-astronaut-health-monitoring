@@ -1,5 +1,7 @@
 # 🧑‍🚀 Monitorización de Salud para Astronautas — Kit de documentación NASA
 
+<img src="assets/laica/laica.svg" alt="Laica, la mascota del proyecto" width="160" align="right">
+
 Repositorio de referencia para el reto **"Crear software de monitorización de la salud para astronautas en misiones espaciales"**.
 
 > Las misiones de larga duración exponen a los astronautas a radiación espacial, aislamiento y confinamiento, gravedad alterada y un entorno cerrado y hostil, lo que puede provocar cambios en el sistema inmunitario, pérdida ósea, eventos cardiovasculares y problemas de salud mental. En misiones largas los astronautas son en gran medida responsables de detectar estos cambios en sí mismos. **El reto:** desarrollar un software que recopile indicadores de salud y permita a los astronautas evaluar su estado y actuar en consecuencia.
@@ -20,6 +22,7 @@ Aquí se reúne la documentación **oficial de NASA** (y de agencias socias) má
 | 8 | [Cómputo, IA y limitaciones](docs/08-computo-ia-y-limitaciones.md) | Hardware a bordo, radiación, SWaP, visión artificial vs. alternativas |
 | 9 | [Matriz de riesgo de indicadores](docs/09-matriz-riesgo-indicadores.md) | 46 indicadores con probabilidad × gravedad, frecuencia de medición, formas de recolectarlos, instrumentación disponible a bordo y viabilidad por cámara ([CSV](data/indicadores.csv)) |
 | 10 | [Soluciones similares](docs/10-soluciones-similares.md) | CMO‑DA (NASA+Google), AMOS, Astroskin, Cognition, CIMON, EXPAND, proyectos de Space Apps… y qué hueco cubrimos |
+| 11 | [Laica, la mascota](docs/11-mascota-laica.md) | Componente animado con 10 acciones que reflejan el estado de salud ([demo](assets/laica/demo.html)) |
 
 ## 🗂️ Datos
 

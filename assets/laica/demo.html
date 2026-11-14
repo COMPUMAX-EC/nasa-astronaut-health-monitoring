@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Laica · acciones</title>
+<style>
+  :root {
+    --fondo: #EAF6FF; --tarjeta: #ffffff; --texto: #1F2A5A; --suave: #5B6B99;
+    --borde: #D3DDF5; --acento: #2F6BFF;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --fondo: #0B1230; --tarjeta: #151E45; --texto: #EAF0FF; --suave: #A9B5DA; --borde: #2A3670; --acento: #7FA6FF; }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; font-family: system-ui, "Segoe UI", Roboto, sans-serif;
+    background: radial-gradient(circle at 30% 20%, #ffffff22, transparent 50%), var(--fondo);
+    color: var(--texto); min-height: 100vh; padding: 24px 16px;
+  }
+  main { max-width: 920px; margin: 0 auto; display: grid; gap: 20px; grid-template-columns: minmax(260px, 1fr) minmax(260px, 1.1fr); align-items: start; }
+  @media (max-width: 720px) { main { grid-template-columns: 1fr; } }
+  h1 { margin: 0 0 4px; font-size: 1.6rem; }
+  p.sub { margin: 0 0 18px; color: var(--suave); }
+  .escena {
+    background: radial-gradient(circle at 50% 40%, #1d2b6b, #0b1230 70%); border-radius: 24px;
+    min-height: 380px; display: grid; place-items: center; position: relative; overflow: hidden;
+  }
+  .escena::before {
+    content: ""; position: absolute; inset: 0;
+    background-image: radial-gradient(2px 2px at 20% 30%, #fff, transparent), radial-gradient(1.5px 1.5px at 70% 20%, #fff, transparent),
+      radial-gradient(1.5px 1.5px at 85% 70%, #fff, transparent), radial-gradient(2px 2px at 35% 80%, #fff, transparent),
+      radial-gradient(1px 1px at 55% 55%, #fff, transparent), radial-gradient(1.5px 1.5px at 10% 65%, #fff, transparent);
+    opacity: .8;
+  }
+  .burbuja {
+    position: absolute; top: 16px; left: 16px; right: 16px; background: #fff; color: #1F2A5A;
+    border-radius: 16px; padding: 10px 14px; font-size: .95rem; box-shadow: 0 6px 20px #0004; min-height: 44px;
+  }
+  .fase { position: absolute; bottom: 16px; font-weight: 700; color: #fff; font-size: 1.2rem; letter-spacing: .5px; min-height: 1.5em; }
+  .panel { background: var(--tarjeta); border: 1px solid var(--borde); border-radius: 20px; padding: 18px; }
+  .botones { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 10px; }
+  button {
+    font: inherit; text-align: left; border: 1px solid var(--borde); background: transparent; color: var(--texto);
+    border-radius: 14px; padding: 10px 12px; cursor: pointer; transition: transform .1s, border-color .2s, background .2s;
+  }
+  button:hover { border-color: var(--acento); }
+  button:active { transform: scale(.97); }
+  button[aria-pressed="true"] { background: var(--acento); border-color: var(--acento); color: #fff; }
+  button b { display: block; }
+  button span { font-size: .8rem; opacity: .8; }
+  table { width: 100%; border-collapse: collapse; font-size: .85rem; margin-top: 14px; }
+  td { padding: 6px 4px; border-top: 1px solid var(--borde); vertical-align: top; }
+  td:first-child { font-weight: 600; white-space: nowrap; }
+</style>
+</head>
+<body>
+  <main>
+    <section>
+      <h1>Laica 🐕‍🚀</h1>
+      <p class="sub">Mascota de la app de salud. Elige una acción para verla animada.</p>
+      <div class="escena">
+        <div class="burbuja" id="burbuja">¡Hola! Soy Laica. Te acompaño a cuidar tu salud en la misión.</div>
+        <laica-mascota id="laica" estado="saludar" tamano="250"></laica-mascota>
+        <div class="fase" id="fase"></div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="botones" id="botones"></div>
+      <table id="tabla"></table>
+    </section>
+  </main>
+
+<script src="laica.js"></script>
+<script>
+  const ACCIONES = {
+    reposo:    { emoji: "🙂", evento: "Sin novedades", dice: "Todo en orden. Recuerda tu check-in de hoy." },
+    saludar:   { emoji: "👋", evento: "Abrir la app / buenos días", dice: "¡Hola! Soy Laica. Te acompaño a cuidar tu salud en la misión." },
+    hablar:    { emoji: "💬", evento: "Consejo o explicación de una alerta", dice: "Tu sueño bajó 3 noches seguidas. ¿Probamos acostarnos 30 min antes?" },
+    celebrar:  { emoji: "🎉", evento: "Meta cumplida / racha de check-ins", dice: "¡7 días seguidos de check-in! Tu línea base ya es más precisa." },
+    ejercicio: { emoji: "🏋️", evento: "Sesión de ejercicio en curso", dice: "¡Vamos! 12 repeticiones, buena técnica." },
+    respirar:  { emoji: "🌬️", evento: "Estrés alto: respiración guiada", dice: "Respiremos juntos: respiración en caja, 4 segundos por fase." },
+    dormir:    { emoji: "😴", evento: "Hora de dormir / modo nocturno", dice: "Es hora de descansar. Bajo la luz de la pantalla." },
+    alerta:    { emoji: "🟡", evento: "Alerta amarilla (vigilar)", dice: "Tu frecuencia cardiaca en reposo está +1.3 DE sobre tu línea base. Repite la medición mañana." },
+    urgente:   { emoji: "🔴", evento: "Alerta roja (actuar ya)", dice: "Síntomas visuales nuevos. Sigue el protocolo SANS y avisa al oficial médico." },
+    radiacion: { emoji: "☢️", evento: "Evento de partículas solares (DONKI)", dice: "Evento solar en curso. Ve al refugio de radiación ahora." },
+  };
+
+  const laica = document.getElementById("laica");
+  const burbuja = document.getElementById("burbuja");
+  const fase = document.getElementById("fase");
+  const botones = document.getElementById("botones");
+  const tabla = document.getElementById("tabla");
+  let temporizador;
+
+  function respiracion() {
+    const fases = ["Inhala", "Sostén", "Exhala", "Sostén"];
+    let i = 0;
+    const paso = () => { fase.textContent = fases[i % 4] + " · 4 s"; i++; };
+    paso();
+    temporizador = setInterval(paso, 4000);
+  }
+
+  function elegir(estado) {
+    clearInterval(temporizador); fase.textContent = "";
+    laica.estado = estado;
+    burbuja.textContent = ACCIONES[estado].dice;
+    if (estado === "respirar") respiracion();
+    botones.querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", b.dataset.estado === estado));
+  }
+
+  Object.entries(ACCIONES).forEach(([estado, a]) => {
+    const b = document.createElement("button");
+    b.dataset.estado = estado;
+    b.innerHTML = `<b>${a.emoji} ${estado}</b><span>${a.evento}</span>`;
+    b.onclick = () => elegir(estado);
+    botones.appendChild(b);
+    tabla.insertAdjacentHTML("beforeend", `<tr><td>${estado}</td><td>${a.evento}</td></tr>`);
+  });
+  elegir("saludar");
+</script>
+</body>
+</html>
