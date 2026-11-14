@@ -1,0 +1,14 @@
+{
+  "name": "laica-escritorio",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Laica fuera del navegador: vuela, camina y rebota por todo el escritorio",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "node --test \"test/*.test.js\""
+  },
+  "devDependencies": {
+    "electron": "33.2.1"
+  }
+}

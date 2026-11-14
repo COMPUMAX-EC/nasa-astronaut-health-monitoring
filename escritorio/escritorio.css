@@ -1,0 +1,29 @@
+html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; background: transparent; user-select: none; }
+body { font: 14px "Segoe UI", system-ui, sans-serif; color: #eef2ff; }
+
+.libre { position: fixed; left: 0; top: 0; width: 130px; height: 147px; cursor: grab; will-change: transform; }
+.libre.arrastrando { cursor: grabbing; }
+.cuerpo, .golpe { width: 100%; height: 100%; transform-origin: 50% 50%; }
+.golpe.golpe-x { animation: golpe-x .38s ease-out; }
+.golpe.golpe-y { animation: golpe-y .38s ease-out; }
+@keyframes golpe-x { 30% { transform: scale(.7, 1.18); } 65% { transform: scale(1.08, .95); } }
+@keyframes golpe-y { 30% { transform: scale(1.18, .7); } 65% { transform: scale(.95, 1.08); } }
+
+.burbuja {
+  position: absolute; margin: 0; padding: 7px 12px; max-width: 260px; width: max-content;
+  background: #13214a; border: 1px solid #24376e; border-radius: 12px; box-shadow: 0 6px 18px #0009;
+  pointer-events: none; animation: aparecer .2s ease-out;
+}
+.burbuja.b-arriba { bottom: 100%; left: 50%; transform: translateX(-50%); margin-bottom: 4px; }
+.burbuja.b-abajo  { top: 100%; left: 50%; transform: translateX(-50%); margin-top: 4px; }
+.burbuja.b-der    { left: 60%; top: 35%; }
+.burbuja.b-izq    { right: 60%; top: 35%; }
+@keyframes aparecer { from { opacity: 0; } }
+
+.chispa {
+  position: fixed; width: 60px; height: 60px; margin: -30px 0 0 -30px; pointer-events: none; border-radius: 50%;
+  background: radial-gradient(circle, #fff 0, #FFD447cc 25%, #FFD44700 65%); animation: chispa .55s ease-out forwards;
+}
+@keyframes chispa { from { transform: scale(.3); opacity: 1; } to { transform: scale(1.9); opacity: 0; } }
+
+@media (prefers-reduced-motion: reduce) { .golpe, .chispa { animation: none !important; } }

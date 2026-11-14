@@ -59,7 +59,7 @@ En la escena, Laica sigue el cursor con la cabeza, mira a los lados cuando nadie
 
 Laica también se escapa de la escena (sola cada 15 a 35 s cuando todo está en verde, o con el botón 🚀 "Déjala explorar"): vuela por toda la pantalla, rebota contra los bordes aplastándose con una chispa, se sale por un borde, se asoma por otro ("¿Me extrañaste?") y vuelve a su sitio. Si aparece una alerta, vuelve de inmediato. Está en `src/componentes/LaicaLibre.jsx`.
 
-Con 🪟 "Sacarla del navegador" (Chrome y Edge de escritorio) Laica pasa a una mini ventana flotante que queda siempre encima, incluso sobre otras aplicaciones, y se puede arrastrar a cualquier parte de la pantalla (API Document Picture-in-Picture, `src/componentes/useVentanaLaica.js`). Una página web no puede dibujar directamente sobre el escritorio; para que camine libre por todo el escritorio haría falta una app de escritorio (por ejemplo Tauri o Electron con ventana transparente).
+Con 🪟 "Sacarla del navegador" (Chrome y Edge de escritorio) Laica pasa a una mini ventana flotante que queda siempre encima, incluso sobre otras aplicaciones, y se puede arrastrar a cualquier parte de la pantalla (API Document Picture-in-Picture, `src/componentes/useVentanaLaica.js`). Con 🖥️ "Sacarla al escritorio" Laica sale del navegador de verdad: salta desde donde estaba y anda por todo el escritorio, camina sobre la barra de tareas y la puedes agarrar y lanzar. Necesita la app de escritorio de [`escritorio/`](../escritorio/README.md) (`npm install` y `npm start` una vez, para registrar el enlace `laica://`).
 
 Si cambias el dibujo en `laica.js`, regenera la imagen estática y el ícono con `python scripts/generar_laica_svg.py`.
 

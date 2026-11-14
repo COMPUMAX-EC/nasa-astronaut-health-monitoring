@@ -48,6 +48,27 @@ export default function Escena({ estadoLaica, mensaje, nivel, voz, esHoy, checkI
   const visibleRef = useRef(true);
   visibleRef.current = visible;
   const fuera = useVentanaLaica({ estado: estadoLaica, mensaje, onAcariciar });
+  const [enEscritorio, setEnEscritorio] = useState(false);
+  const conRaton = typeof window !== "undefined" && window.matchMedia?.("(pointer: fine)").matches;
+
+  // Fuera del navegador: abre la app de escritorio de Laica (carpeta escritorio/) con un enlace
+  // laica:// y le pasa el punto de la pantalla donde está ahora, para que salte desde ahí.
+  const alEscritorio = () => {
+    const r = laicaRef.current?.getBoundingClientRect();
+    const barra = Math.max(0, window.outerHeight - window.innerHeight); // pestañas y barra de direcciones
+    const q = new URLSearchParams({
+      x: String(Math.round(window.screenX + (r ? r.left + r.width / 2 : window.innerWidth / 2))),
+      y: String(Math.round(window.screenY + barra + (r ? r.top + r.height / 2 : window.innerHeight / 2))),
+      estado: estadoLaica,
+      msg: "¡Salí del navegador!",
+    });
+    window.location.href = `laica://salir?${q}`;
+    setEnEscritorio(true);
+  };
+  const traerDeVuelta = () => {
+    window.location.href = "laica://volver";
+    setEnEscritorio(false);
+  };
 
   useEffect(() => {
     if (!ref.current || typeof IntersectionObserver === "undefined") return;
@@ -58,8 +79,8 @@ export default function Escena({ estadoLaica, mensaje, nivel, voz, esHoy, checkI
 
   const tranquila = nivel === "verde";
   const sinMovimiento = typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
-  const puedeSalir = tranquila && !sinMovimiento && !fuera.abierta;
-  const ausente = libre || fuera.abierta; // Laica no está en su sitio
+  const puedeSalir = tranquila && !sinMovimiento && !fuera.abierta && !enEscritorio;
+  const ausente = libre || fuera.abierta || enEscritorio; // Laica no está en su sitio
   // Dónde vuelve: a la escena si se ve, o a la esquina de compañía si se bajó por la página.
   const casa = () => (visibleRef.current ? laicaRef.current : miniRef.current)?.getBoundingClientRect();
 
@@ -122,21 +143,28 @@ export default function Escena({ estadoLaica, mensaje, nivel, voz, esHoy, checkI
           )}
           <Controles voz={voz} esHoy={esHoy} checkIn={checkIn} onCheckIn={onCheckIn} mensaje={mensaje} />
           {voz.vozActiva && voz.soporte.hablar && <SelectorVoz />}
-          {(puedeSalir || fuera.abierta) && (
+          {(puedeSalir || fuera.abierta || conRaton) && (
             <div className="botones-laica escapadas">
               {puedeSalir && !libre && (
                 <button type="button" onClick={() => setLibre(true)}><span aria-hidden="true">🚀</span> Déjala explorar</button>
               )}
-              {fuera.soportada && (
+              {conRaton && !fuera.abierta && (
+                <button type="button" onClick={enEscritorio ? traerDeVuelta : alEscritorio} aria-pressed={enEscritorio}>
+                  <span aria-hidden="true">🖥️</span> {enEscritorio ? "Traer a Laica de vuelta" : "Sacarla al escritorio"}
+                </button>
+              )}
+              {fuera.soportada && !enEscritorio && (
                 <button type="button" onClick={fuera.abierta ? fuera.cerrar : fuera.abrir} aria-pressed={fuera.abierta}>
                   <span aria-hidden="true">🪟</span> {fuera.abierta ? "Traer a Laica de vuelta" : "Sacarla del navegador"}
                 </button>
               )}
             </div>
           )}
-          <p className="pista">{fuera.abierta
-            ? "Laica está en una ventanita flotante: arrástrala a cualquier parte de tu pantalla."
-            : "Toca a Laica para saludarla."}</p>
+          <p className="pista">{enEscritorio
+            ? "Laica anda por tu escritorio: agárrala y lánzala, o clic derecho sobre ella para el menú. Si no apareció, instala la app de escritorio (carpeta escritorio/ del repositorio)."
+            : fuera.abierta
+              ? "Laica está en una ventanita flotante: arrástrala a cualquier parte de tu pantalla."
+              : "Toca a Laica para saludarla."}</p>
         </div>
       </section>
 
