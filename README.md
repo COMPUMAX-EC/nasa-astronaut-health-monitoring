@@ -28,6 +28,10 @@ Aquí se reúne la documentación **oficial de NASA** (y de agencias socias) má
 | 13 | [Pitch](docs/13-pitch.md) ([English](docs/13-pitch.en.md)) | Guion de 7 diapositivas y ~5 min según la rúbrica, preguntas del jurado y lista de entrega |
 | — | [Guía y rúbrica de la sede](docs/rubrica/README.md) | Resumen de la rúbrica oficial de Sangolquí 2026 ([PDF](docs/rubrica/guia-participantes-y-rubrica-sangolqui-2026.pdf)), penalizaciones y pesos por categoría |
 
+## 📦 Entregables
+
+[`entregables/`](entregables/): [ficha del proyecto](entregables/ficha-proyecto.md), [datos de la NASA usados](entregables/datos-nasa.md) y [declaración de uso de IA](entregables/declaracion-ia.md), en español e inglés.
+
 ## 📱 La app
 
 [`app/`](app/) tiene la app offline (React + Vite, PWA). Ya funcionan las **fases 1 a 3**: Laica (que habla y escucha), los 6 indicadores del reto con su tendencia, 30 días simulados, check‑in, alertas 🟢🟡🟠🔴 y el cuerpo humano clicable. Cómo correrla: [app/README.md](app/README.md).
