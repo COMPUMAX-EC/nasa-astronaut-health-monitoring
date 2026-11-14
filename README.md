@@ -21,6 +21,13 @@ Aquí se reúne la documentación **oficial de NASA** (y de agencias socias) má
 | 9 | [Matriz de riesgo de indicadores](docs/09-matriz-riesgo-indicadores.md) | 46 indicadores con probabilidad × gravedad, frecuencia de medición, formas de recolectarlos, instrumentación disponible a bordo y viabilidad por cámara ([CSV](data/indicadores.csv)) |
 | 10 | [Soluciones similares](docs/10-soluciones-similares.md) | CMO‑DA (NASA+Google), AMOS, Astroskin, Cognition, CIMON, EXPAND, proyectos de Space Apps… y qué hueco cubrimos |
 
+## 🗂️ Datos
+
+| Carpeta / archivo | Contenido |
+|---|---|
+| [`data/indicadores.csv`](data/indicadores.csv) | Los 46 indicadores de la matriz de riesgo |
+| [`data/salud/`](data/salud/) | Estrés, aislamiento y conexión social: documentos de **OMS, OPS y MSP Ecuador** e instrumentos de medición (WHO‑5, PSS, PHQ, GAD, UCLA‑3, Lubben…) |
+
 ## 🛠️ Scripts
 
 | Script | Qué hace |

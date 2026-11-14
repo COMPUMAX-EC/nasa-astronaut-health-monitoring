@@ -1,0 +1,15 @@
+instrumento,mide,tipo_medida,items,rango,puntos_corte_uso_comun,frecuencia_sugerida_a_bordo,indicador_matriz,fuente_original,licencia,notas
+WHO-5,Bienestar subjetivo,Subjetiva,5,0-100 (puntaje bruto 0-25 x4),"<=50 bienestar bajo (tamizar depresión); <=28 probable depresión",Semanal,PS-01,OMS (1998),"Copyright de la OMS; traducción al español no oficial",Muy breve; buena opción para tendencia semanal
+PSS-10,Estrés percibido,Subjetiva,10,0-40,"0-13 bajo; 14-26 moderado; 27-40 alto",Mensual,PS-01,Cohen et al. (1983),Uso libre no comercial,Existe versión validada en español
+PSS-4,Estrés percibido (versión corta),Subjetiva,4,0-16,"Sin corte estándar; usar tendencia frente a la línea base",Semanal,PS-01,Cohen et al. (1983),Uso libre no comercial,Útil para seguimiento frecuente
+PHQ-2,Síntomas depresivos (tamizaje),Subjetiva,2,0-6,">=3 positivo: aplicar PHQ-9",Diaria o semanal,PS-01,Kroenke et al. (2003),"Libre, sin permiso",Primer filtro del check-in
+PHQ-9,Síntomas depresivos,Subjetiva,9,0-27,"5 leve; 10 moderado; 15 moderadamente grave; 20 grave",Si PHQ-2 es positivo,PS-01,Kroenke et al. (2001),"Libre, sin permiso","Ítem 9 (autolesión) activa protocolo inmediato"
+GAD-2,Ansiedad (tamizaje),Subjetiva,2,0-6,">=3 positivo: aplicar GAD-7",Diaria o semanal,PS-01,Kroenke et al. (2007),"Libre, sin permiso",Primer filtro del check-in
+GAD-7,Ansiedad,Subjetiva,7,0-21,"5 leve; 10 moderada; 15 grave",Si GAD-2 es positivo,PS-01,Spitzer et al. (2006),"Libre, sin permiso",
+UCLA-3,Soledad subjetiva,Subjetiva,3,3-9,">=6 soledad",Semanal,PS-02,Hughes et al. (2004),Uso libre académico,Versión corta de la UCLA Loneliness Scale
+De Jong Gierveld-6,Soledad emocional y social,Subjetiva,6,0-6,">=2 soledad",Mensual,PS-02,De Jong Gierveld y Van Tilburg (2006),Uso libre académico,Separa soledad emocional y social
+Lubben-6 (LSNS-6),Red social / aislamiento objetivo,Objetiva (autorreporte),6,0-30,"<12 riesgo de aislamiento",Mensual,PS-02,Lubben et al. (2006),Uso libre académico,Adaptar: familia en Tierra + compañeros de tripulación
+Registro de contacto,Aislamiento objetivo,Objetiva (automática),-,minutos/semana,Caída sostenida frente a la línea base personal,Automático,PS-02,Propio del proyecto,-,"Llamadas, mensajes y tiempo compartido con la tripulación"
+Cohesión del equipo (ítems breves),Clima y conflicto del equipo,Subjetiva (anónima),3-5,Likert 1-5,Caída frente a la línea base del equipo,Semanal,PS-03,Propio del proyecto (inspirado en NASA BHP),-,Respuestas anónimas y agregadas
+Estrés diario 0-10,Estrés momentáneo,Subjetiva,1,0-10,">=7 durante 3 días: alerta amarilla",Diaria,PS-01,Escala analógica simple,-,Se combina con VFC y sueño
+Expresión facial (valencia/activación),Estado afectivo,Objetiva (cámara en el dispositivo),-,z-score frente a la línea base,|z|>=2 sostenido y concordante con cuestionario,Diaria (opcional),PS-01,Propio del proyecto,-,Privacidad desde el diseño (docs/09 sección 9.7.5)
