@@ -570,6 +570,9 @@ svg.laica.p-cuatro.andando .cola { animation-duration: .3s; }
   opacity: 0; transition: opacity .08s linear; pointer-events: none; user-select: none; -webkit-user-drag: none;
 }
 .foto img.activa { opacity: 1; }
+.foto canvas.rig { position: absolute; left: -18%; top: -18%; width: 136%; height: 136%; pointer-events: none; }
+.foto.rig-on img { visibility: hidden; }
+.foto.rig-on.andando, .foto.rig-on.ladra { animation: none; }
 .fx { position: absolute; opacity: 0; pointer-events: none; font-weight: 800; line-height: 1; transition: opacity .3s; }
 .fx.zzz { top: 4%; right: 6%; color: #fff; font-size: calc(var(--tam) * .1); text-shadow: 0 2px 0 #1F2A5A; }
 .fx.zzz i { font-style: normal; font-size: .7em; margin-left: .1em; }
@@ -614,8 +617,304 @@ svg.laica.p-cuatro.andando .cola { animation-duration: .3s; }
 }
 `;
 
+  // ---------- Esqueleto sobre las fotos (modo foto) ----------
+  // Cada foto de Canva se dibuja en WebGL sobre una malla. Varias "zonas" con un pivote (orejas,
+  // mandíbula, nariz, cabeza, muñecas, cada pata, cola, mochila, torso) deforman la malla con
+  // pesos suaves, así cada parte se mueve sola sin cortar la imagen. Coordenadas en píxeles de
+  // las imágenes originales de 1254 px (el recorte de las .webp es x 19..1220, y 2..1235).
+  // [nombre, centro x, centro y, radio x, radio y, pivote x, pivote y]
+  const RIG = {
+    frente: { dir: 0, zonas: [
+      ["mandibula", 650, 468, 95, 42, 650, 420], ["nariz", 645, 322, 48, 38, 645, 322],
+      ["oreja1", 450, 250, 75, 95, 495, 195], ["oreja2", 805, 215, 75, 85, 760, 175],
+      ["cabeza", 632, 300, 310, 265, 632, 540],
+      ["muneca1", 535, 1095, 85, 55, 530, 1045], ["muneca2", 740, 1095, 85, 55, 735, 1045],
+      ["pata1", 525, 960, 90, 175, 520, 820], ["pata2", 725, 960, 90, 175, 725, 820],
+      ["pataT1", 390, 1050, 80, 90, 420, 980], ["pataT2", 880, 1050, 80, 90, 850, 980],
+      ["cola", 285, 965, 120, 150, 380, 1010],
+      ["torso", 630, 620, 420, 560, 630, 1060], ["cuerpo", 630, 640, 700, 700, 630, 1150],
+    ] },
+    derecha: { dir: 1, zonas: [
+      ["mandibula", 885, 400, 100, 40, 830, 372], ["nariz", 945, 272, 42, 36, 945, 272],
+      ["oreja1", 860, 180, 80, 70, 810, 165], ["oreja2", 590, 250, 75, 95, 640, 200],
+      ["cabeza", 700, 300, 310, 260, 700, 540],
+      ["muneca1", 790, 1110, 105, 50, 770, 1060], ["muneca2", 965, 1095, 85, 50, 950, 1050],
+      ["pata1", 730, 980, 95, 170, 700, 860], ["pata2", 915, 1000, 80, 140, 880, 880],
+      ["pataT1", 560, 1030, 120, 120, 520, 900],
+      ["cola", 260, 955, 150, 165, 430, 1010], ["mochila", 390, 650, 95, 160, 450, 640],
+      ["torso", 680, 620, 430, 560, 560, 1050], ["cuerpo", 620, 640, 700, 700, 620, 1150],
+    ] },
+    izquierda: { dir: -1, zonas: [
+      ["mandibula", 355, 410, 100, 40, 420, 375], ["nariz", 330, 290, 42, 36, 330, 290],
+      ["oreja1", 380, 190, 75, 85, 420, 170], ["oreja2", 610, 230, 75, 95, 580, 190],
+      ["cabeza", 520, 300, 310, 260, 520, 540],
+      ["muneca1", 400, 1110, 100, 50, 410, 1060], ["muneca2", 265, 1085, 85, 50, 285, 1045],
+      ["pata1", 440, 980, 95, 170, 450, 860], ["pata2", 300, 1000, 80, 140, 330, 890],
+      ["pataT1", 650, 1040, 120, 110, 690, 910],
+      ["cola", 940, 960, 150, 165, 800, 1010], ["mochila", 790, 630, 95, 160, 730, 620],
+      ["torso", 540, 620, 430, 560, 660, 1050], ["cuerpo", 600, 640, 700, 700, 600, 1150],
+    ] },
+    espalda: { dir: 0, espalda: true, zonas: [
+      ["oreja1", 480, 290, 85, 110, 525, 195], ["oreja2", 775, 290, 85, 110, 730, 195],
+      ["cabeza", 630, 270, 300, 250, 630, 500], ["mochila", 630, 640, 150, 180, 630, 520],
+      ["cola", 630, 1040, 160, 175, 630, 880],
+      ["pataT1", 370, 1050, 80, 80, 400, 990], ["pataT2", 890, 1050, 80, 80, 860, 990],
+      ["torso", 630, 600, 420, 560, 630, 1050], ["cuerpo", 630, 640, 700, 700, 630, 1150],
+    ] },
+    saludando: { dir: 0, zonas: [
+      ["mandibula", 740, 455, 90, 40, 740, 410], ["nariz", 712, 312, 42, 36, 712, 312],
+      ["oreja1", 480, 255, 75, 95, 520, 200], ["oreja2", 820, 175, 70, 75, 780, 150],
+      ["cabeza", 640, 290, 310, 265, 650, 560],
+      ["mano", 1035, 410, 90, 95, 985, 485], ["brazo", 950, 540, 140, 170, 880, 650],
+      ["muneca1", 590, 1105, 90, 50, 590, 1055], ["pata1", 600, 980, 90, 160, 590, 850],
+      ["pataT1", 880, 1075, 90, 70, 850, 1010],
+      ["cola", 220, 1000, 150, 160, 390, 1040], ["mochila", 350, 700, 90, 150, 410, 700],
+      ["torso", 640, 620, 420, 560, 640, 1060], ["cuerpo", 640, 640, 700, 700, 640, 1150],
+    ] },
+  };
+  // Orden: primero las partes pequeñas, después las que las cargan (cabeza, torso, cuerpo).
+  const ORDEN = ["mandibula", "nariz", "oreja1", "oreja2", "cabeza", "mano", "brazo", "muneca1", "muneca2",
+    "pata1", "pata2", "pataT1", "pataT2", "cola", "mochila", "torso", "cuerpo"];
+  const RECORTE = { x: 19, y: 2, w: 1201, h: 1233 }, MARGEN = 0.18, MALLA = 40;
+  const suave = (x) => (x <= 0 ? 0 : x >= 1 ? 1 : x * x * (3 - 2 * x));
+  const hacia = (v, meta, dt, vel) => v + (meta - v) * Math.min(1, dt * vel);
+
+  class Esqueleto {
+    constructor(lienzo, imgs, host) {
+      this.c = lienzo; this.host = host; this.imgs = imgs;
+      const gl = lienzo.getContext("webgl2", { premultipliedAlpha: true, antialias: true })
+        || lienzo.getContext("webgl", { premultipliedAlpha: true, antialias: true });
+      if (!gl) throw new Error("sin WebGL");
+      this.gl = gl; this.gl2 = typeof WebGL2RenderingContext !== "undefined" && gl instanceof WebGL2RenderingContext;
+      const sh = (tipo, src) => { const s = gl.createShader(tipo); gl.shaderSource(s, src); gl.compileShader(s); return s; };
+      const pr = gl.createProgram();
+      gl.attachShader(pr, sh(gl.VERTEX_SHADER, "attribute vec2 p;attribute vec2 t;varying vec2 v;void main(){gl_Position=vec4(p,0.,1.);v=t;}"));
+      gl.attachShader(pr, sh(gl.FRAGMENT_SHADER, "precision mediump float;uniform sampler2D s;varying vec2 v;void main(){gl_FragColor=texture2D(s,v);}"));
+      gl.linkProgram(pr);
+      if (!gl.getProgramParameter(pr, gl.LINK_STATUS)) throw new Error("shader");
+      gl.useProgram(pr);
+      gl.enable(gl.BLEND); gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+      // Malla: texcoords fijas, posiciones nuevas en cada cuadro.
+      const n = MALLA + 1;
+      this.n = n;
+      const tc = new Float32Array(n * n * 2);
+      this.reposo = new Float32Array(n * n * 2);
+      for (let j = 0; j < n; j++) for (let i = 0; i < n; i++) {
+        const k = (j * n + i) * 2, u = i / MALLA, v = j / MALLA;
+        tc[k] = u; tc[k + 1] = v;
+        this.reposo[k] = RECORTE.x + u * RECORTE.w; this.reposo[k + 1] = RECORTE.y + v * RECORTE.h;
+      }
+      const idx = new Uint16Array(MALLA * MALLA * 6);
+      let q = 0;
+      for (let j = 0; j < MALLA; j++) for (let i = 0; i < MALLA; i++) {
+        const a = j * n + i, b = a + 1, c = a + n, d = c + 1;
+        idx.set([a, b, c, b, d, c], q); q += 6;
+      }
+      this.nIdx = idx.length;
+      const bt = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, bt); gl.bufferData(gl.ARRAY_BUFFER, tc, gl.STATIC_DRAW);
+      const lt = gl.getAttribLocation(pr, "t"); gl.enableVertexAttribArray(lt); gl.vertexAttribPointer(lt, 2, gl.FLOAT, false, 0, 0);
+      this.bp = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, this.bp);
+      this.pos = new Float32Array(n * n * 2);
+      gl.bufferData(gl.ARRAY_BUFFER, this.pos, gl.DYNAMIC_DRAW);
+      const lp = gl.getAttribLocation(pr, "p"); gl.enableVertexAttribArray(lp); gl.vertexAttribPointer(lp, 2, gl.FLOAT, false, 0, 0);
+      const bi = gl.createBuffer(); gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, bi); gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, idx, gl.STATIC_DRAW);
+      // Pesos de cada zona para cada vértice (en reposo), por vista.
+      this.pesos = {};
+      for (const [vista, def] of Object.entries(RIG)) {
+        this.pesos[vista] = def.zonas.map(([, cx, cy, rx, ry]) => {
+          const w = new Float32Array(n * n);
+          for (let k = 0; k < n * n; k++) {
+            const dx = (this.reposo[k * 2] - cx) / rx, dy = (this.reposo[k * 2 + 1] - cy) / ry;
+            const e = Math.sqrt(dx * dx + dy * dy);
+            w[k] = e <= 1 ? 1 : suave(1 - (e - 1) / 0.45);
+          }
+          return w;
+        });
+      }
+      this.tex = {};
+      // Estado animado (todo se suaviza para que no haya saltos).
+      this.t = 0; this.fase = 0; this.paso = 0; this.boca = 0.4; this.parada = 0; this.rastreo = 0; this.olfato = 0;
+      this.golpe = 0; this.orejas = [{ a: 0, w: 0 }, { a: 0, w: 0 }]; this.proxTic = 2; this.bobPrevio = 0; this.velBob = 0;
+    }
+
+    // Sube la foto de una vista a la GPU (falla si la imagen es de otro origen).
+    _textura(vista) {
+      if (this.tex[vista]) return this.tex[vista];
+      const img = this.imgs[vista];
+      if (!img || !img.complete || !img.naturalWidth) return null;
+      const gl = this.gl, t = gl.createTexture();
+      gl.bindTexture(gl.TEXTURE_2D, t);
+      gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, true);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+      if (this.gl2) { gl.generateMipmap(gl.TEXTURE_2D); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR); }
+      else gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+      this.tex[vista] = t;
+      return t;
+    }
+
+    // Postura de cada zona en este instante: ángulo (rad), desplazamiento (px) y escala.
+    _pose(dt, vista) {
+      const h = this.host, e = h.estado, def = RIG[vista], dir = def.dir, quieto = h._sinMovimiento;
+      const P = {};
+      const z = (n) => (P[n] || (P[n] = { a: 0, x: 0, y: 0, sx: 1, sy: 1 }));
+      if (quieto) return P;
+      const t = (this.t += dt), TAU = Math.PI * 2, gesto = h.getAttribute("gesto");
+      const andando = h.hasAttribute("andar"), cuatro = h.getAttribute("patas") === "cuatro";
+      // Paso: cuánto camina (sube y baja suave al arrancar y frenar).
+      const metaPaso = andando ? 1 : e === "ejercicio" ? 0.7 : 0;
+      this.paso = hacia(this.paso, metaPaso, dt, 5);
+      const frec = andando ? (cuatro ? 3.2 : 2.6) : 2;
+      this.fase += dt * TAU * frec * Math.max(0.3, this.paso);
+      const w = this.paso, f = this.fase;
+      this.parada = hacia(this.parada, gesto === "parada" ? 1 : 0, dt, 3.2);
+      this.rastreo = hacia(this.rastreo, gesto === "rastrear" ? 1 : 0, dt, 3);
+      this.olfato = hacia(this.olfato, gesto === "oler" || gesto === "rastrear" ? 1 : 0, dt, 6);
+      this.golpe *= Math.exp(-dt * 7);
+      const p = this.parada, r = this.rastreo;
+
+      // Patas, pata por pata: se balancean, se levantan al ir hacia adelante y doblan la muñeca.
+      const lado = vista === "derecha" || vista === "izquierda";
+      const pata = (n, m, off, amp, alza) => {
+        const s = Math.sin(f + off), c = Math.cos(f + off), sube = Math.max(0, c);
+        if (lado) { z(n).a += -dir * w * amp * s; z(n).y += -w * alza * sube; if (m) z(m).a += dir * w * 0.45 * sube; }
+        else { z(n).y += -w * alza * 1.3 * Math.max(0, s); if (m) z(m).a += (n === "pata1" ? -1 : 1) * w * 0.25 * Math.max(0, s); }
+      };
+      pata("pata1", "muneca1", 0, 0.3, 20);
+      pata("pata2", "muneca2", Math.PI, 0.3, 20);
+      pata("pataT1", null, Math.PI / 2, 0.22, 14);
+      pata("pataT2", null, Math.PI * 1.5, 0.22, 14);
+
+      // Cuerpo: respira, rebota al andar y se balancea.
+      const resp = e === "dormir" ? 0.03 * Math.sin(TAU * t / 5) : 0.012 * Math.sin(TAU * t / 3.4);
+      const bob = w * 10 * (1 - Math.cos(2 * f)) / 2;
+      z("cuerpo").sy = 1 + resp; z("cuerpo").y = -bob;
+      z("cuerpo").a = lado ? dir * w * 0.02 * Math.sin(2 * f) : w * 0.03 * Math.sin(f);
+      const velBob = (bob - this.bobPrevio) / Math.max(dt, 1e-3);
+      const acel = (velBob - this.velBob) / Math.max(dt, 1e-3);
+      this.bobPrevio = bob; this.velBob = velBob;
+      z("mochila").y = w * 5 * Math.sin(2 * f - 1.2);
+
+      // Cabeza: se mece, sigue el paso con retraso, olfatea, rastrea el suelo, ladra hacia arriba.
+      const cab = z("cabeza");
+      cab.a = 0.03 * Math.sin(TAU * t / 4.3) + w * 0.04 * Math.sin(2 * f - 0.6);
+      cab.y = w * 4 * Math.sin(2 * f - 0.8);
+      if (e === "dormir") { cab.a += lado ? dir * 0.1 : 0; cab.y += 14; }
+      if (e === "hablar") cab.a += 0.025 * Math.sin(TAU * t * 2.2);
+      const oler = gesto === "oler" ? 1 : 0;
+      if (lado) cab.a += dir * (0.12 * oler + 0.3 * r) + r * 0.06 * Math.sin(TAU * t * 0.8);
+      else { cab.y += 18 * oler + 36 * r; cab.a += r * 0.12 * Math.sin(TAU * t * 0.7); }
+      cab.a += (lado ? -dir : 0) * 0.1 * this.golpe; cab.y -= 8 * this.golpe;
+
+      // Boca: abre y cierra (jadea, habla, ladra); dormida la cierra.
+      let metaBoca = 0.35 + 0.15 * Math.sin(TAU * t * 1.2);
+      if (e === "hablar") metaBoca = 0.5 + 0.5 * Math.sin(TAU * t * 4);
+      else if (e === "celebrar" || e === "ejercicio" || w > 0.3) metaBoca = 0.55 + 0.35 * Math.sin(TAU * t * 3.5);
+      else if (e === "dormir") metaBoca = 0;
+      else if (["alerta", "urgente", "radiacion", "respirar"].includes(e)) metaBoca = 0.15;
+      if (this.olfato > 0.5) metaBoca = 0.05;
+      const forzada = h._boca;
+      if (forzada != null) metaBoca = forzada;
+      this.boca = hacia(this.boca, Math.max(metaBoca, this.golpe), dt, 14);
+      const ab = this.boca - 0.4;
+      if (lado) z("mandibula").a = dir * ab * 0.7; else { z("mandibula").y = ab * 40; z("mandibula").sy = 1 + ab * 0.3; }
+
+      // Nariz: olfatea en ráfagas rápidas.
+      const raf = this.olfato * Math.max(0, Math.sin(TAU * t * 7)) * (Math.sin(TAU * t * 0.9) > -0.3 ? 1 : 0);
+      z("nariz").sx = z("nariz").sy = 1 + 0.08 * raf;
+      z("nariz").y = -3 * raf;
+
+      // Orejas: resortes que rebotan con el paso y los golpes; se aplastan con alertas.
+      let metaOreja = 0;
+      if (e === "alerta") metaOreja = 0.25; else if (e === "urgente" || e === "radiacion") metaOreja = 0.38;
+      else if (e === "dormir") metaOreja = 0.2; else if (e === "celebrar") metaOreja = -0.12;
+      if (this.olfato > 0.5) metaOreja = -0.08;
+      this.proxTic -= dt;
+      const tic = this.proxTic <= 0 && e !== "dormir";
+      if (tic) this.proxTic = 2 + Math.random() * 4;
+      this.orejas.forEach((o, i) => {
+        const s = i === 0 ? -1 : 1;
+        o.w += (-90 * (o.a - metaOreja) - 7 * o.w - acel * 0.0035 + (e === "celebrar" ? 6 * Math.sin(TAU * t * 2) : 0)) * dt;
+        if (tic && (i === 0 ? Math.random() < 0.7 : Math.random() < 0.5)) o.w += (Math.random() * 2 - 1) * 5;
+        o.a += o.w * dt;
+        z("oreja" + (i + 1)).a = s * o.a;
+      });
+
+      // Cola: mueve más o menos según el ánimo; con miedo, metida.
+      const COLA = { reposo: [0.18, 1.6], saludar: [0.3, 3], hablar: [0.2, 2], celebrar: [0.45, 4.5], ejercicio: [0.25, 3],
+        respirar: [0.04, 0.6], dormir: [0, 1], alerta: [0.05, 1], urgente: [0.03, 6], radiacion: [0.03, 6] };
+      const [amp, fc] = COLA[e] || COLA.reposo;
+      const ampC = Math.max(amp, w * 0.3, r * 0.25);
+      const metida = ["urgente", "radiacion"].includes(e) ? 1 : 0;
+      const cola = z("cola");
+      cola.a = ampC * Math.sin(TAU * t * Math.max(fc, w * 3)) + (def.espalda ? 0 : (dir || 1) * -0.3 * metida);
+      if (def.espalda) cola.sy = 1 - 0.15 * metida;
+
+      // Saludo: el brazo se mece y la mano dobla la muñeca con retraso.
+      z("brazo").a = 0.25 * Math.sin(TAU * t * 2.2);
+      z("mano").a = 0.35 * Math.sin(TAU * t * 2.2 - 0.8);
+
+      // En dos patas: el torso sube y se echa atrás, las patas delanteras se levantan y cuelgan.
+      if (p > 0.001) {
+        const to = z("torso");
+        to.y += -(lado ? 70 : 55) * p; to.a += (lado ? -dir * 0.15 : 0) * p + p * 0.03 * Math.sin(TAU * t * 0.7);
+        for (const [n, m, s] of [["pata1", "muneca1", -1], ["pata2", "muneca2", 1]]) {
+          if (lado) { z(n).y += -18 * p; z(m).a += dir * 0.3 * p; }
+          else { z(n).y += -70 * p; z(m).a += s * 0.35 * p; }
+        }
+      }
+      // Rastrear: se inclina hacia adelante con el hocico al suelo.
+      if (r > 0.001 && lado) z("torso").a += dir * 0.08 * r;
+      return P;
+    }
+
+    sacudir(f = 1) {
+      this.orejas.forEach((o) => (o.w += (Math.random() < 0.5 ? -1 : 1) * 6 * f));
+    }
+    ladrido() { this.golpe = 1; this.sacudir(0.6); }
+
+    dibujar(dt, vista) {
+      const gl = this.gl, c = this.c;
+      const tex = this._textura(vista);
+      if (!tex) return false;
+      const def = RIG[vista], P = this._pose(dt, vista), pesos = this.pesos[vista];
+      const n2 = this.n * this.n, pos = this.pos, rep = this.reposo;
+      // Rectángulo de la foto dentro del lienzo (la foto llena el ancho y se apoya abajo).
+      const W = c.width / (1 + 2 * MARGEN), H = c.height / (1 + 2 * MARGEN);
+      const altoFoto = W * 739 / 720, x0 = MARGEN * W, y0 = MARGEN * H + H - altoFoto;
+      const ex = W / RECORTE.w, ey = altoFoto / RECORTE.h;
+      for (let k = 0; k < n2; k++) { pos[k * 2] = rep[k * 2]; pos[k * 2 + 1] = rep[k * 2 + 1]; }
+      const zonas = def.zonas.map((zz, i) => [zz, pesos[i]]).sort((a, b) => ORDEN.indexOf(a[0][0]) - ORDEN.indexOf(b[0][0]));
+      for (const [[nom, , , , , px, py], w] of zonas) {
+        const q = P[nom];
+        if (!q || (!q.a && !q.x && !q.y && q.sx === 1 && q.sy === 1)) continue;
+        const co = Math.cos(q.a), si = Math.sin(q.a);
+        for (let k = 0; k < n2; k++) {
+          const peso = w[k];
+          if (!peso) continue;
+          const X = pos[k * 2], Y = pos[k * 2 + 1];
+          const dx = (X - px) * q.sx, dy = (Y - py) * q.sy;
+          const nx = px + co * dx - si * dy + q.x, ny = py + si * dx + co * dy + q.y;
+          pos[k * 2] = X + (nx - X) * peso; pos[k * 2 + 1] = Y + (ny - Y) * peso;
+        }
+      }
+      for (let k = 0; k < n2; k++) {
+        const cx = x0 + (pos[k * 2] - RECORTE.x) * ex, cy = y0 + (pos[k * 2 + 1] - RECORTE.y) * ey;
+        pos[k * 2] = cx / c.width * 2 - 1; pos[k * 2 + 1] = 1 - cy / c.height * 2;
+      }
+      gl.viewport(0, 0, c.width, c.height);
+      gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT);
+      gl.bindTexture(gl.TEXTURE_2D, tex);
+      gl.bindBuffer(gl.ARRAY_BUFFER, this.bp); gl.bufferSubData(gl.ARRAY_BUFFER, 0, pos);
+      gl.drawElements(gl.TRIANGLES, this.nIdx, gl.UNSIGNED_SHORT, 0);
+      return true;
+    }
+  }
+
   class LaicaMascota extends HTMLElement {
-    static get observedAttributes() { return ["estado", "tamano", "seguir", "curiosa", "andar", "patas"]; }
+    static get observedAttributes() { return ["estado", "tamano", "seguir", "curiosa", "andar", "patas", "gesto"]; }
 
     constructor() {
       super();
@@ -632,7 +931,7 @@ svg.laica.p-cuatro.andando .cola { animation-duration: .3s; }
       if (fotos) {
         const imgs = VISTAS.map((v) => `<img data-v="${v}" src="${fotos[v]}" alt="" draggable="false" decoding="async">`).join("");
         root.innerHTML = `<style>${CSS}</style><div class="envoltura foto-modo"><div class="giro">
-          <div class="foto" role="img" aria-label="Laica, la perrita astronauta">${imgs}
+          <div class="foto" role="img" aria-label="Laica, la perrita astronauta">${imgs}<canvas class="rig" aria-hidden="true"></canvas>
             <span class="fx zzz">Z<i>z</i><i>z</i></span>
             <span class="fx destellos"><b style="left:6%;top:12%">✦</b><b style="right:8%;top:6%">✦</b><b style="right:2%;top:42%">✦</b><b style="left:2%;top:46%">✦</b></span>
             <span class="fx rad">☢</span><span class="fx sudor">💧</span>
@@ -643,6 +942,15 @@ svg.laica.p-cuatro.andando .cola { animation-duration: .3s; }
         this._giro.addEventListener("animationend", () => this._giro.classList.remove("cambio"));
         this._foto.addEventListener("animationend", (e) => { if (e.animationName === "f-ladra") this._foto.classList.remove("ladra"); });
         this._svgs = [];
+        this._lienzo = root.querySelector("canvas.rig");
+        try {
+          this._rig = new Esqueleto(this._lienzo, Object.fromEntries(this._fotos.map((i) => [i.dataset.v, i])), this);
+        } catch { this._rig = null; this._lienzo.remove(); }
+        if (this._rig) {
+          new ResizeObserver(() => this._medir()).observe(this._foto);
+          new IntersectionObserver((es) => { this._enPantalla = es[0].isIntersecting; this._animar(); }).observe(this._foto);
+          for (const i of this._fotos) i.addEventListener("load", () => this._animar());
+        }
       } else {
         const espalda = SVG.replace('class="laica"', 'class="laica espalda" aria-hidden="true"');
         root.innerHTML = `<style>${CSS}</style><div class="envoltura">${SVG}${espalda}</div>`;
@@ -655,8 +963,33 @@ svg.laica.p-cuatro.andando .cola { animation-duration: .3s; }
       });
     }
 
+    _medir() {
+      const r = this._foto.getBoundingClientRect(), d = Math.min(2, window.devicePixelRatio || 1);
+      const w = Math.round(r.width * 1.36 * d), h = Math.round(r.height * 1.36 * d);
+      if (w && h && (this._lienzo.width !== w || this._lienzo.height !== h)) { this._lienzo.width = w; this._lienzo.height = h; this._tUlt = 0; this._animar(); }
+    }
+
+    // Bucle de dibujo del esqueleto: solo corre mientras Laica está en pantalla.
+    _animar() {
+      if (!this._rig || this._raf || !this.isConnected || this._enPantalla === false) return;
+      const cuadro = (ts) => {
+        this._raf = 0;
+        if (!this._rig || !this.isConnected || this._enPantalla === false) return;
+        const dt = this._tUlt ? Math.min(0.05, (ts - this._tUlt) / 1000) : 0.016;
+        this._tUlt = ts;
+        let ok = false;
+        try { ok = this._lienzo.width > 0 && this._rig.dibujar(dt, this.vista); }
+        catch { this._rig = null; this._foto.classList.remove("rig-on"); this._lienzo.remove(); return; } // p. ej. imagen de otro origen
+        this._foto.classList.toggle("rig-on", ok);
+        if (!this._sinMovimiento || !ok) this._raf = requestAnimationFrame(cuadro);
+      };
+      this._raf = requestAnimationFrame(cuadro);
+    }
+
     connectedCallback() {
       this._montar();
+      this._tUlt = 0;
+      this._animar();
       if (!this.hasAttribute("estado")) this.setAttribute("estado", "reposo");
       this._aplicar();
       window.addEventListener("pointermove", this._alMover, { passive: true });
@@ -665,7 +998,9 @@ svg.laica.p-cuatro.andando .cola { animation-duration: .3s; }
 
     disconnectedCallback() {
       window.removeEventListener("pointermove", this._alMover);
-      clearTimeout(this._tc);
+      clearTimeout(this._tc); clearTimeout(this._tgesto);
+      if (this._raf) cancelAnimationFrame(this._raf);
+      this._raf = 0;
     }
 
     attributeChangedCallback() { this._aplicar(); }
@@ -699,6 +1034,7 @@ svg.laica.p-cuatro.andando .cola { animation-duration: .3s; }
       const antes = this._vista;
       this._vista = v;
       for (const img of this._fotos) img.classList.toggle("activa", img.dataset.v === v);
+      if (this._sinMovimiento) this._animar(); // sin animación: redibuja una vez la vista nueva
       if (antes && !this._sinMovimiento) { // un leve "aplastón" lateral simula el giro
         this._giro.classList.remove("cambio");
         void this._giro.offsetWidth;
@@ -708,6 +1044,7 @@ svg.laica.p-cuatro.andando .cola { animation-duration: .3s; }
 
     _sonar(tipo, volumen) {
       Sonido.tocar(tipo, volumen);
+      this._rig?.ladrido();
       if (this._foto && !this._sinMovimiento && !this.hasAttribute("andar")) {
         this._foto.classList.remove("ladra");
         void this._foto.offsetWidth;
@@ -720,6 +1057,21 @@ svg.laica.p-cuatro.andando .cola { animation-duration: .3s; }
     grunir(volumen) { this._sonar("grunido", volumen); }
     /** Se queja (gemido corto). */
     quejarse(volumen) { this._sonar("quejido", volumen); }
+    /** Olfatea un rato (nariz en ráfagas, cabeza hacia adelante). */
+    oler(ms = 2500) { this._gesto("oler", ms); }
+    /** Rastrea con el hocico pegado al suelo (true) o deja de hacerlo (false). */
+    rastrear(si = true) { this._gesto(si ? "rastrear" : null, 0); }
+    /** Se para en dos patas (true) o vuelve a sentarse (false); con ms vuelve sola. */
+    pararse(si = true, ms = 0) { this._gesto(si ? "parada" : null, ms); }
+    /** Abre (true) o cierra (false) la boca; null la deja libre (jadea, habla y ladra sola). */
+    boca(abierta = null) { this._boca = abierta == null ? null : abierta ? 1 : 0; }
+    /** Sacude orejas (al aterrizar, chocar o asustarse). */
+    sacudir(fuerza = 1) { this._rig?.sacudir(fuerza); }
+    _gesto(g, ms) {
+      clearTimeout(this._tgesto);
+      if (g) this.setAttribute("gesto", g); else this.removeAttribute("gesto");
+      if (g && ms > 0) this._tgesto = setTimeout(() => this.removeAttribute("gesto"), ms);
+    }
     /** Vista actual en modo foto: frente, izquierda, derecha, espalda o saludando. */
     get vista() { return this._vista || "frente"; }
 
@@ -771,6 +1123,8 @@ svg.laica.p-cuatro.andando .cola { animation-duration: .3s; }
           else {
             const r = Math.random();
             if (r < 0.1) this.girar(Math.random() < 0.5 ? "vuelta" : "espaldas");
+            else if (r < 0.18 && this._rig && !this.hasAttribute("gesto")) this.oler(1800 + Math.random() * 1500);
+            else if (r < 0.23 && this._rig && !this.hasAttribute("gesto") && this.estado === "reposo") this.pararse(true, 2200);
             else if (r < 0.3) this.mirar(0, 0);
             else this.mirar((Math.random() * 2 - 1) * 0.9, (Math.random() * 2 - 1) * 0.5);
           }

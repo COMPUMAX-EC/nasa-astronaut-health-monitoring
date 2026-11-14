@@ -71,6 +71,7 @@ export default function LaicaLibre({ estado, activa, casa, onVolver, onAcariciar
       setTimeout(() => s.remove(), 600);
     };
     const aplastar = (eje, origen) => {
+      laica.current?.sacudir?.(1); // las orejas rebotan con el golpe
       const g = golpe.current;
       if (!g) return;
       g.style.transformOrigin = origen;
@@ -95,7 +96,10 @@ export default function LaicaLibre({ estado, activa, casa, onVolver, onAcariciar
     let tFase = inicio, antes = inicio, raf = 0;
 
     let duracion = 0;
-    const cambiar = (f, t, ms = 0) => { fase = f; tFase = t; duracion = ms; andar(f === "caminando" || f === "saliendo"); };
+    const cambiar = (f, t, ms = 0) => {
+      fase = f; tFase = t; duracion = ms; andar(f === "caminando" || f === "saliendo");
+      laica.current?.rastrear?.(f === "caminando" && Math.random() < 0.35); // a veces camina rastreando
+    };
 
     const paso = (t) => {
       const dt = Math.min(0.05, (t - antes) / 1000);

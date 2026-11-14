@@ -71,7 +71,8 @@ function mostrar(pedido) {
     setTimeout(async () => {
       const info = await ventana.webContents.executeJavaScript(
         `JSON.stringify({ ...window.laicaDepurar?.(), definida: !!customElements.get("laica-mascota"), sombra: !!document.querySelector("laica-mascota").shadowRoot,
-          mueve: document.getElementById("laica").style.transform, burbuja: document.querySelector(".burbuja").textContent,
+          mueve: document.getElementById("laica").style.transform,
+          esqueleto: !!document.querySelector("laica-mascota")._rig && document.querySelector("laica-mascota").shadowRoot.querySelector(".foto")?.classList.contains("rig-on"), burbuja: document.querySelector(".burbuja").textContent,
           tam: [innerWidth, innerHeight] })`);
       console.log("[laica] estado", info);
       const img = await ventana.webContents.capturePage();
@@ -96,6 +97,9 @@ ipcMain.on("menu", (_e, opciones = {}) => {
     { label: "Explorar", click: orden("explorar") },
     { label: "Caminar por la barra de tareas", click: orden("caminar") },
     { label: "Esconderse y asomarse", click: orden("asomarse") },
+    { label: "Olfatear", click: orden("oler") },
+    { label: "Rastrear", click: orden("rastrear") },
+    { label: "Pararse en dos patas", click: orden("parada") },
     { type: "separator" },
     { label: "Gravedad", type: "checkbox", checked: Boolean(opciones.gravedad), click: orden("gravedad") },
     { label: "En cuatro patas", type: "checkbox", checked: Boolean(opciones.cuatro), click: orden("cuatro") },

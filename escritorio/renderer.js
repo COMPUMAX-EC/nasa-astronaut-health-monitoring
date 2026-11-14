@@ -77,6 +77,7 @@ window.addEventListener("error", (e) => console.log("ERROR", e.message, e.filena
     setTimeout(() => s.remove(), 600);
   }
   function aplastar(eje, origen) {
+    laica.sacudir?.(1); // las orejas rebotan con el golpe
     golpe.style.transformOrigin = origen;
     golpe.classList.remove("golpe-x", "golpe-y");
     void golpe.offsetWidth;
@@ -117,6 +118,8 @@ window.addEventListener("error", (e) => console.log("ERROR", e.message, e.filena
     tFase = ahora();
     duracion = ms;
     andar(f === "caminando");
+    // A veces camina rastreando, con el hocico pegado al suelo.
+    laica.rastrear?.(f === "caminando" && Math.random() < 0.35);
   }
 
   // Sin gravedad: vuela en línea recta y rebota.
@@ -207,6 +210,9 @@ window.addEventListener("error", (e) => console.log("ERROR", e.message, e.filena
       decir(al(opciones.cuatro ? FRASES.cuatroSi : FRASES.cuatroNo));
       return;
     }
+    if (o === "oler") { laica.oler?.(3000); return; }
+    if (o === "rastrear") { laica.rastrear?.(laica.getAttribute("gesto") !== "rastrear"); return; }
+    if (o === "parada") { laica.pararse?.(true, 3500); return; }
     if (quieta) return;
     if (o === "explorar") {
       if (opciones.gravedad) { soltar(entre(-450, 450), -1100); (decir(al(FRASES.salto)), sonar("salto")); }
