@@ -5,6 +5,7 @@
 //     y si la lanzas hace una parábola.
 // Camina en dos patas o en cuatro. Clic derecho: menú (gravedad, cuatro patas y más).
 
+window.addEventListener("error", (e) => console.log("ERROR", e.message, e.filename, e.lineno));
 (() => {
   const ANCHO = 130;
   const ALTO = Math.round(ANCHO * 340 / 300);
@@ -82,6 +83,19 @@
     golpe.classList.add(eje === "x" ? "golpe-x" : "golpe-y");
   }
   const mirar = (x, y) => laica.mirar?.(x, y);
+
+  // Ladridos, gruñidos y quejidos reales (CC0) según el momento: [acción, probabilidad, alternativa].
+  const SONIDO_DE = {
+    libre: ["ladrar", 1], choque: ["quejarse", 0.35], escapar: ["ladrar", 1], asomar: ["ladrar", 0.6, "grunir"],
+    cosquillas: ["grunir", 1], agarrar: ["quejarse", 1], lanzar: ["ladrar", 1], salto: ["ladrar", 0.4],
+    aterrizar: ["grunir", 0.3], despegar: ["ladrar", 0.3], sentarse: ["grunir", 0.3], salud: ["ladrar", 1],
+  };
+  function sonar(clave) {
+    const s = SONIDO_DE[clave];
+    if (!s) return;
+    if (Math.random() < s[1]) laica[s[0]]?.(0.55);
+    else if (s[2]) laica[s[2]]?.(0.55);
+  }
   const andar = (si) => laica.toggleAttribute("andar", si && !quieta);
   const ponerPatas = () => {
     if (opciones.cuatro) laica.setAttribute("patas", "cuatro");
@@ -165,11 +179,17 @@
     laica.girar?.("vuelta");
     if (d.mensaje) {
       decir(d.mensaje, 4200);
-      setTimeout(() => decir(al(FRASES.libre)), 4400);
-    } else decir(al(FRASES.libre));
+      setTimeout(() => (decir(al(FRASES.libre)), sonar("libre")), 4400);
+    } else (decir(al(FRASES.libre)), sonar("libre"));
   }
 
   function ordenar(o) {
+    if (o === "sonido") {
+      const si = !window.LaicaSonido?.activo?.();
+      window.LaicaSonido?.poner?.(si);
+      if (si) laica.ladrar?.(0.55);
+      return;
+    }
     if (o === "gravedad") {
       opciones.gravedad = !opciones.gravedad;
       guardar("laica-gravedad", opciones.gravedad);
@@ -189,8 +209,8 @@
     }
     if (quieta) return;
     if (o === "explorar") {
-      if (opciones.gravedad) { soltar(entre(-450, 450), -1100); decir(al(FRASES.salto)); }
-      else { volar(); decir(al(FRASES.despegar)); }
+      if (opciones.gravedad) { soltar(entre(-450, 450), -1100); (decir(al(FRASES.salto)), sonar("salto")); }
+      else { volar(); (decir(al(FRASES.despegar)), sonar("despegar")); }
     } else if (o === "caminar") {
       if (opciones.gravedad) { if (fase !== "caminando" && fase !== "cayendo") soltar(0, 0); }
       else { vx = Math.sign(vx || 1) * 120; vy = 260; cambiar("aterrizando"); }
@@ -203,7 +223,7 @@
         vy = 0;
         cambiar("escapando");
       }
-      decir(al(FRASES.escapar));
+      (decir(al(FRASES.escapar)), sonar("escapar"));
     }
   }
 
@@ -240,14 +260,14 @@
         if (eje && choques >= maxChoques) {
           cambiar("escapando");
           vx *= 1.5; vy *= 1.5;
-          decir(al(FRASES.escapar));
+          (decir(al(FRASES.escapar)), sonar("escapar"));
         } else if (eje) {
           if (eje === "x") { vx = -vx; x = Math.max(0, Math.min(W - ANCHO, x)); }
           else { vy = -vy; y = Math.max(0, Math.min(H - ALTO, y)); }
           choques++;
           aplastar(eje, origen);
           chispa(px, py);
-          if (Math.random() < 0.5) decir(al(FRASES.choque));
+          if (Math.random() < 0.5) (decir(al(FRASES.choque)), sonar("choque"));
           if (Math.random() < 0.2) laica.girar?.("vuelta");
         }
         if (enFase > duracion) { vx *= 0.5; vy = 240; cambiar("aterrizando"); }
@@ -263,8 +283,8 @@
       rotObj = Math.max(-20, Math.min(20, vx / 30));
       if (cerca) mirarCursor(); else mirar(Math.sign(vx) * Math.min(0.9, Math.abs(vx) / 300), Math.max(-0.5, Math.min(0.5, vy / 1200)));
       lado(y < 70 ? "abajo" : "arriba");
-      if (x < 0 && vx < 0) { x = 0; vx = -vx * 0.75; aplastar("x", "left center"); chispa(0, y + ALTO / 2); if (Math.random() < 0.4) decir(al(FRASES.choque)); }
-      if (x > W - ANCHO && vx > 0) { x = W - ANCHO; vx = -vx * 0.75; aplastar("x", "right center"); chispa(W, y + ALTO / 2); if (Math.random() < 0.4) decir(al(FRASES.choque)); }
+      if (x < 0 && vx < 0) { x = 0; vx = -vx * 0.75; aplastar("x", "left center"); chispa(0, y + ALTO / 2); if (Math.random() < 0.4) (decir(al(FRASES.choque)), sonar("choque")); }
+      if (x > W - ANCHO && vx > 0) { x = W - ANCHO; vx = -vx * 0.75; aplastar("x", "right center"); chispa(W, y + ALTO / 2); if (Math.random() < 0.4) (decir(al(FRASES.choque)), sonar("choque")); }
       if (y < 0 && vy < 0) { y = 0; vy = -vy * 0.5; aplastar("y", "center top"); chispa(x + ANCHO / 2, 0); }
       if (y >= suelo() && vy > 0) {
         y = suelo();
@@ -274,7 +294,7 @@
           vy = -vy * 0.42;
           vx *= 0.8;
         } else { // se queda en el suelo y camina
-          if (Math.random() < 0.4) decir(al(FRASES.aterrizar));
+          if (Math.random() < 0.4) (decir(al(FRASES.aterrizar)), sonar("aterrizar"));
           caminar(Math.sign(vx) || undefined);
         }
       }
@@ -286,7 +306,7 @@
       if (y >= suelo()) {
         aplastar("y", "center bottom");
         chispa(x + ANCHO / 2, H);
-        decir(al(FRASES.aterrizar));
+        (decir(al(FRASES.aterrizar)), sonar("aterrizar"));
         caminar(Math.sign(vx) || 1);
       }
     } else if (fase === "caminando" || fase === "saliendo") {
@@ -303,7 +323,7 @@
         const borde = (x < 0 && vx < 0) || (x > W - ANCHO && vx > 0);
         if (borde && opciones.gravedad && choques >= maxChoques) {
           cambiar("saliendo"); // se va caminando por el costado
-          decir(al(FRASES.escapar));
+          (decir(al(FRASES.escapar)), sonar("escapar"));
         } else if (borde) {
           x = Math.max(0, Math.min(W - ANCHO, x));
           vx = -vx;
@@ -311,11 +331,11 @@
         } else if (enFase > duracion) {
           if (!opciones.gravedad) {
             volar(-Math.PI / 2 + entre(-0.6, 0.6));
-            decir(al(FRASES.despegar));
+            (decir(al(FRASES.despegar)), sonar("despegar"));
           } else {
             const r = Math.random();
-            if (r < 0.4) { soltar(Math.sign(vx) * entre(150, 350), -entre(650, 950)); if (Math.random() < 0.5) decir(al(FRASES.salto)); }
-            else if (r < 0.75) { cambiar("sentada", entre(3000, 6000)); if (Math.random() < 0.5) decir(al(FRASES.sentarse)); }
+            if (r < 0.4) { soltar(Math.sign(vx) * entre(150, 350), -entre(650, 950)); if (Math.random() < 0.5) (decir(al(FRASES.salto)), sonar("salto")); }
+            else if (r < 0.75) { cambiar("sentada", entre(3000, 6000)); if (Math.random() < 0.5) (decir(al(FRASES.sentarse)), sonar("sentarse")); }
             else caminar(-Math.sign(vx));
           }
         }
@@ -338,7 +358,7 @@
     } else if (fase === "asomando") {
       x += (asomada.x1 - x) * k;
       y += (asomada.y1 - y) * k;
-      if (enFase > 700 && !asomada.dicho) { asomada.dicho = true; decir(al(FRASES.asomar)); }
+      if (enFase > 700 && !asomada.dicho) { asomada.dicho = true; (decir(al(FRASES.asomar)), sonar("asomar")); }
       if (enFase > duracion) {
         rotObj = 0;
         if (opciones.gravedad) caminar(asomada.borde === "izq" ? 1 : -1);
@@ -367,7 +387,7 @@
   document.addEventListener("mouseleave", () => { raton.x = raton.y = -1; });
   caja.addEventListener("mouseenter", () => puente.raton(true));
   caja.addEventListener("mouseleave", () => { if (!arrastre) puente.raton(false); });
-  caja.addEventListener("contextmenu", (e) => { e.preventDefault(); puente.menu({ ...opciones }); });
+  caja.addEventListener("contextmenu", (e) => { e.preventDefault(); puente.menu({ ...opciones, sonido: window.LaicaSonido?.activo?.() ?? true }); });
 
   caja.addEventListener("pointerdown", (e) => {
     if (e.button !== 0) return;
@@ -381,7 +401,7 @@
     if (!arrastre.movido && Math.hypot(e.clientX - arrastre.x0, e.clientY - arrastre.y0) > 6) {
       arrastre.movido = true;
       cambiar("arrastrada");
-      decir(al(FRASES.agarrar));
+      (decir(al(FRASES.agarrar)), sonar("agarrar"));
     }
     if (!arrastre.movido) return;
     x = e.clientX - arrastre.dx;
@@ -397,7 +417,7 @@
     arrastre = null;
     if (!a.movido) { // fue un clic: caricia
       laica.girar?.("vuelta");
-      decir(al(FRASES.cosquillas));
+      (decir(al(FRASES.cosquillas)), sonar("cosquillas"));
       return;
     }
     // Lanzamiento: la velocidad del arrastre en los últimos 120 ms.
@@ -410,7 +430,7 @@
     }
     const rapidez = Math.hypot(lx, ly);
     if (rapidez > 1400) { lx *= 1400 / rapidez; ly *= 1400 / rapidez; }
-    if (rapidez > VEL * 1.5) decir(al(FRASES.lanzar));
+    if (rapidez > VEL * 1.5) (decir(al(FRASES.lanzar)), sonar("lanzar"));
     if (faseAntes === "quieta") { cambiar("quieta"); return; }
     if (opciones.gravedad) { soltar(lx, ly); return; } // parábola de verdad
 

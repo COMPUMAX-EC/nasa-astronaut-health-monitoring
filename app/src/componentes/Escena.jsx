@@ -61,6 +61,13 @@ export default function Escena({ estadoLaica, mensaje, nivel, voz, esHoy, checkI
   const [cuatro, setCuatro] = useState(() => leerOpcion("laica-cuatro"));
   const alternarGravedad = () => setGravedad((g) => { guardarOpcion("laica-gravedad", !g); return !g; });
   const alternarCuatro = () => setCuatro((c) => { guardarOpcion("laica-cuatro", !c); return !c; });
+  // Ladridos reales: se pueden silenciar (lo guarda el propio componente de Laica).
+  const [sonido, setSonido] = useState(() => window.LaicaSonido?.activo?.() ?? true);
+  const alternarSonido = () => setSonido((v) => {
+    window.LaicaSonido?.poner?.(!v);
+    if (!v) window.LaicaSonido?.tocar?.("ladrido", 0.6);
+    return !v;
+  });
   const patas = cuatro ? "cuatro" : undefined;
   const conRaton = typeof window !== "undefined" && window.matchMedia?.("(pointer: fine)").matches;
 
@@ -112,6 +119,11 @@ export default function Escena({ estadoLaica, mensaje, nivel, voz, esHoy, checkI
     if (nivel === "verde") {
       const el = visible ? laicaRef.current : miniRef.current;
       el?.girar?.(Math.random() < 0.6 ? "vuelta" : "espaldas");
+    }
+    // Al acariciarla ladra (o gruñe juguetona); con alertas serias, no hace ruido.
+    if (nivel === "verde" || nivel === "amarillo") {
+      const el = visible ? laicaRef.current : miniRef.current;
+      if (Math.random() < 0.7) el?.ladrar?.(0.6); else el?.grunir?.(0.6);
     }
     onAcariciar();
   };
@@ -165,6 +177,9 @@ export default function Escena({ estadoLaica, mensaje, nivel, voz, esHoy, checkI
               )}
               <button type="button" onClick={alternarGravedad} aria-pressed={gravedad}>
                 <span aria-hidden="true">{gravedad ? "🌍" : "🪐"}</span> Gravedad: {gravedad ? "sí" : "no"}
+              </button>
+              <button type="button" onClick={alternarSonido} aria-pressed={sonido}>
+                <span aria-hidden="true">{sonido ? "🐶" : "🔕"}</span> Ladridos: {sonido ? "sí" : "no"}
               </button>
               <button type="button" onClick={alternarCuatro} aria-pressed={cuatro}>
                 <span aria-hidden="true">🐾</span> {cuatro ? "En cuatro patas" : "En dos patas"}

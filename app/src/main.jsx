@@ -1,5 +1,6 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
+import "./laicaRecursos.js"; // fotos y sonidos de Laica (antes que el componente)
 import "../../assets/laica/laica.js"; // registra <laica-mascota>
 import App from "./App.jsx";
 import "./styles.css";

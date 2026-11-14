@@ -10,12 +10,49 @@
  *
  * Estados: reposo, saludar, hablar, celebrar, ejercicio, respirar,
  *          dormir, alerta, urgente, radiacion
+ *
+ * Aspecto: por defecto usa las fotos del diseño de Canva del equipo (canva/*.webp, con vistas
+ * de frente, tres cuartos a cada lado, espalda y saludando). aspecto="dibujo" usa el dibujo SVG.
+ * Sonidos: laica.ladrar(), laica.grunir(), laica.quejarse() (sonidos/*.wav, CC0).
+ * Las fotos y los sonidos se buscan junto a este archivo, o donde indique window.LAICA_RECURSOS.
  */
 (() => {
   const ESTADOS = [
     "reposo", "saludar", "hablar", "celebrar", "ejercicio",
     "respirar", "dormir", "alerta", "urgente", "radiacion",
   ];
+
+  // ---------- Recursos: fotos y sonidos ----------
+  const BASE = (() => {
+    try { return document.currentScript ? new URL(".", document.currentScript.src).href : ""; } catch { return ""; }
+  })();
+  const VISTAS = ["frente", "izquierda", "derecha", "espalda", "saludando"];
+  const CANTIDAD = { ladrido: 10, grunido: 4, quejido: 3 };
+  function recursos() {
+    const r = window.LAICA_RECURSOS || {};
+    const fotos = r.fotos || (BASE ? Object.fromEntries(VISTAS.map((v) => [v, `${BASE}canva/${v}.webp`])) : null);
+    const sonidos = r.sonidos || (BASE ? Object.fromEntries(Object.entries(CANTIDAD).map(([t, n]) =>
+      [t, Array.from({ length: n }, (_, i) => `${BASE}sonidos/${t}-${i + 1}.wav`)])) : {});
+    return { fotos, sonidos };
+  }
+
+  // Ladridos, gruñidos y quejidos reales. Se pueden silenciar (se recuerda en este navegador).
+  const Sonido = {
+    activo() { try { return localStorage.getItem("laica-sonido") !== "0"; } catch { return true; } },
+    poner(si) { try { localStorage.setItem("laica-sonido", si ? "1" : "0"); } catch { /* sin almacenamiento */ } },
+    tocar(tipo, volumen = 0.7) {
+      if (!this.activo()) return null;
+      const lista = recursos().sonidos[tipo];
+      if (!lista || !lista.length) return null;
+      const a = new Audio(lista[Math.floor(Math.random() * lista.length)]);
+      a.volume = volumen;
+      a.preservesPitch = false;
+      a.playbackRate = 0.9 + Math.random() * 0.2; // cada ladrido suena un poco distinto
+      a.play().catch(() => {}); // el navegador no deja sonar nada antes del primer toque
+      return a;
+    },
+  };
+  window.LaicaSonido = Sonido;
 
   const SVG = `
 <svg class="laica" viewBox="0 0 300 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Laica, la perra astronauta">
@@ -518,7 +555,58 @@ svg.laica.p-cuatro.andando .cola { animation-duration: .3s; }
 @keyframes trote-i { 0%,50%,100% { transform: translateY(14px) rotate(-90deg); } 25% { transform: translateY(3px) rotate(-80deg); } }
 @keyframes trote-d { 0%,50%,100% { transform: translateY(14px) rotate(90deg); } 25% { transform: translateY(3px) rotate(80deg); } }
 
+/* ---------- Modo foto (diseño de Canva) ---------- */
+.envoltura.foto-modo { transform: rotateY(calc(var(--mx) * 12deg)) rotateX(calc(var(--my) * -6deg)); }
+.giro { width: 100%; transform-origin: 50% 90%; }
+.giro.cambio { animation: f-cambio .16s ease-out; }
+@keyframes f-cambio { 0% { transform: scaleX(.86); } 100% { transform: scaleX(1); } }
+.foto {
+  position: relative; width: 100%; aspect-ratio: 300 / 340; transform-origin: 50% 92%;
+  filter: drop-shadow(0 6px 8px rgba(0, 0, 0, .35));
+  animation: f-flotar 4s ease-in-out infinite;
+}
+.foto img {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; object-position: 50% 100%;
+  opacity: 0; transition: opacity .08s linear; pointer-events: none; user-select: none; -webkit-user-drag: none;
+}
+.foto img.activa { opacity: 1; }
+.fx { position: absolute; opacity: 0; pointer-events: none; font-weight: 800; line-height: 1; transition: opacity .3s; }
+.fx.zzz { top: 4%; right: 6%; color: #fff; font-size: calc(var(--tam) * .1); text-shadow: 0 2px 0 #1F2A5A; }
+.fx.zzz i { font-style: normal; font-size: .7em; margin-left: .1em; }
+.fx.destellos { inset: 0; color: #FFD447; font-size: calc(var(--tam) * .09); text-shadow: 0 0 6px #fff8; }
+.fx.destellos b { position: absolute; }
+.fx.rad { top: 2%; right: 2%; font-size: calc(var(--tam) * .14); color: #c084fc; text-shadow: 0 0 8px #a855f7; }
+.fx.sudor { top: 20%; right: 22%; font-size: calc(var(--tam) * .08); }
+
+@keyframes f-flotar   { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+@keyframes f-hablar   { from { transform: scale(1, 1); } to { transform: scale(1.025, .975); } }
+@keyframes f-saltar   { 0%,100% { transform: translateY(0) scale(1, 1); } 15% { transform: translateY(0) scale(1.06, .92); } 50% { transform: translateY(-30px) scale(.97, 1.04); } 85% { transform: translateY(0) scale(1.05, .94); } }
+@keyframes f-rebote   { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-14px); } }
+@keyframes f-respirar { 0%,100% { transform: scale(1); } 25%,50% { transform: scale(1.05); } 75% { transform: scale(1); } }
+@keyframes f-temblar  { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-3px); } 75% { transform: translateX(3px); } }
+@keyframes f-trote    { 0%,100% { transform: translateY(0) rotate(-2deg); } 50% { transform: translateY(-8px) rotate(2deg); } }
+@keyframes f-ladra    { 0%,100% { transform: translateY(0) scale(1); } 35% { transform: translateY(-5px) scale(1.05, .97); } }
+@keyframes f-girar-rad { to { transform: rotate(360deg); } }
+@keyframes f-brillo-ambar  { 0%,100% { filter: drop-shadow(0 0 4px #f5b30188); } 50% { filter: drop-shadow(0 0 16px #f5b301); } }
+@keyframes f-brillo-rojo   { 0%,100% { filter: drop-shadow(0 0 6px #ff3b3b99); } 50% { filter: drop-shadow(0 0 20px #ff3b3b); } }
+@keyframes f-brillo-violeta { 0%,100% { filter: drop-shadow(0 0 6px #a855f799); } 50% { filter: drop-shadow(0 0 20px #a855f7); } }
+
+.foto.e-hablar    { animation: f-flotar 4s ease-in-out infinite, f-hablar .45s ease-in-out infinite alternate; }
+.foto.e-celebrar  { animation: f-saltar 1s ease-in-out infinite; filter: drop-shadow(0 0 12px #34d27b); }
+.foto.e-ejercicio { animation: f-rebote .7s ease-in-out infinite; }
+.foto.e-respirar  { animation: f-respirar 16s ease-in-out infinite; filter: drop-shadow(0 0 12px #5ec8ff); }
+.foto.e-dormir    { animation: f-flotar 6s ease-in-out infinite; filter: brightness(.78) saturate(.85) drop-shadow(0 6px 8px rgba(0,0,0,.35)); }
+.foto.e-alerta    { animation: f-flotar 4s ease-in-out infinite, f-brillo-ambar 1.6s ease-in-out infinite; }
+.foto.e-urgente   { animation: f-temblar .16s linear infinite, f-brillo-rojo .7s ease-in-out infinite; }
+.foto.e-radiacion { animation: f-brillo-violeta 1.2s ease-in-out infinite; transform: scale(.94); }
+.foto.andando     { animation: f-trote .36s ease-in-out infinite; }
+.foto.ladra       { animation: f-ladra .28s ease-out; }
+.foto.e-dormir .zzz, .foto.e-celebrar .destellos, .foto.e-radiacion .rad, .foto.e-urgente .sudor { opacity: 1; }
+.foto.e-radiacion .rad { animation: f-girar-rad 3s linear infinite; }
+
 @media (prefers-reduced-motion: reduce) {
+  .foto, .giro, .fx { animation: none !important; }
+  .foto img { transition: none; }
   svg.laica.p-cuatro .cuerpo-entero { transform: translateY(28px); }
   svg.laica *, svg.laica .cuerpo-entero, .envoltura { animation: none !important; }
   .envoltura, .cara-giro, .cabeza-giro, .pupilas, .orejas-giro, .reflejos { transition: none !important; }
@@ -531,19 +619,44 @@ svg.laica.p-cuatro.andando .cola { animation-duration: .3s; }
 
     constructor() {
       super();
-      const root = this.attachShadow({ mode: "open" });
-      const espalda = SVG.replace('class="laica"', 'class="laica espalda" aria-hidden="true"');
-      root.innerHTML = `<style>${CSS}</style><div class="envoltura">${SVG}${espalda}</div>`;
-      this._svgs = [...root.querySelectorAll("svg")];
-      this._svg = this._svgs[0];
+      this.attachShadow({ mode: "open" });
+      this._alMover = (e) => this._seguirPuntero(e);
+    }
+
+    // Se arma al conectarse (ahí ya se pueden leer los atributos, como aspecto).
+    _montar() {
+      if (this._montado) return;
+      this._montado = true;
+      const root = this.shadowRoot;
+      const fotos = this.getAttribute("aspecto") === "dibujo" ? null : recursos().fotos;
+      if (fotos) {
+        const imgs = VISTAS.map((v) => `<img data-v="${v}" src="${fotos[v]}" alt="" draggable="false" decoding="async">`).join("");
+        root.innerHTML = `<style>${CSS}</style><div class="envoltura foto-modo"><div class="giro">
+          <div class="foto" role="img" aria-label="Laica, la perrita astronauta">${imgs}
+            <span class="fx zzz">Z<i>z</i><i>z</i></span>
+            <span class="fx destellos"><b style="left:6%;top:12%">✦</b><b style="right:8%;top:6%">✦</b><b style="right:2%;top:42%">✦</b><b style="left:2%;top:46%">✦</b></span>
+            <span class="fx rad">☢</span><span class="fx sudor">💧</span>
+          </div></div></div>`;
+        this._fotos = [...root.querySelectorAll(".foto img")];
+        this._foto = root.querySelector(".foto");
+        this._giro = root.querySelector(".giro");
+        this._giro.addEventListener("animationend", () => this._giro.classList.remove("cambio"));
+        this._foto.addEventListener("animationend", (e) => { if (e.animationName === "f-ladra") this._foto.classList.remove("ladra"); });
+        this._svgs = [];
+      } else {
+        const espalda = SVG.replace('class="laica"', 'class="laica espalda" aria-hidden="true"');
+        root.innerHTML = `<style>${CSS}</style><div class="envoltura">${SVG}${espalda}</div>`;
+        this._svgs = [...root.querySelectorAll("svg")];
+        this._svg = this._svgs[0];
+      }
       this._env = root.querySelector(".envoltura");
       this._env.addEventListener("animationend", (e) => {
         if (e.target === this._env) this._env.classList.remove("vuelta", "espaldas");
       });
-      this._alMover = (e) => this._seguirPuntero(e);
     }
 
     connectedCallback() {
+      this._montar();
       if (!this.hasAttribute("estado")) this.setAttribute("estado", "reposo");
       this._aplicar();
       window.addEventListener("pointermove", this._alMover, { passive: true });
@@ -566,11 +679,70 @@ svg.laica.p-cuatro.andando .cola { animation-duration: .3s; }
       const l = (v) => Math.max(-1, Math.min(1, v));
       this.style.setProperty("--mx", l(x).toFixed(3));
       this.style.setProperty("--my", l(y).toFixed(3));
+      this._mx = l(x);
+      this._actualizarVista();
     }
+
+    // Modo foto: elige la vista según hacia dónde mira (frente, tres cuartos a cada lado).
+    _actualizarVista() {
+      if (!this._fotos || this._girando) return;
+      const mx = this._mx || 0;
+      let v = "frente";
+      if (this.estado === "saludar" && Math.abs(mx) < 0.5) v = "saludando";
+      else if (mx > 0.35) v = "derecha";
+      else if (mx < -0.35) v = "izquierda";
+      this._ponerVista(v);
+    }
+
+    _ponerVista(v) {
+      if (v === this._vista) return;
+      const antes = this._vista;
+      this._vista = v;
+      for (const img of this._fotos) img.classList.toggle("activa", img.dataset.v === v);
+      if (antes && !this._sinMovimiento) { // un leve "aplastón" lateral simula el giro
+        this._giro.classList.remove("cambio");
+        void this._giro.offsetWidth;
+        this._giro.classList.add("cambio");
+      }
+    }
+
+    _sonar(tipo, volumen) {
+      Sonido.tocar(tipo, volumen);
+      if (this._foto && !this._sinMovimiento && !this.hasAttribute("andar")) {
+        this._foto.classList.remove("ladra");
+        void this._foto.offsetWidth;
+        this._foto.classList.add("ladra");
+      }
+    }
+    /** Ladra (sonido real). */
+    ladrar(volumen) { this._sonar("ladrido", volumen); }
+    /** Gruñe (juguetón o enojado). */
+    grunir(volumen) { this._sonar("grunido", volumen); }
+    /** Se queja (gemido corto). */
+    quejarse(volumen) { this._sonar("quejido", volumen); }
+    /** Vista actual en modo foto: frente, izquierda, derecha, espalda o saludando. */
+    get vista() { return this._vista || "frente"; }
 
     /** Da una vuelta completa ("vuelta") o se voltea y muestra la espalda un momento ("espaldas"). */
     girar(tipo = "vuelta") {
-      if (this._sinMovimiento) return;
+      if (this._sinMovimiento || !this._env) return;
+      if (this._fotos) {
+        // Con fotos: pasa por las vistas reales (90°, 180°, 270°) en lugar de girar una imagen plana.
+        const pasos = tipo === "espaldas"
+          ? [["derecha", 170], ["espalda", 1100], ["izquierda", 170], ["frente", 0]]
+          : [["derecha", 170], ["espalda", 170], ["izquierda", 170], ["frente", 0]];
+        clearTimeout(this._tg);
+        this._girando = true;
+        let i = 0;
+        const siguiente = () => {
+          const [v, ms] = pasos[i++];
+          this._ponerVista(v);
+          if (i < pasos.length) this._tg = setTimeout(siguiente, ms);
+          else { this._girando = false; this._actualizarVista(); }
+        };
+        siguiente();
+        return;
+      }
       this._env.classList.remove("vuelta", "espaldas");
       void this._env.offsetWidth; // reinicia la animación
       this._env.classList.add(tipo === "espaldas" ? "espaldas" : "vuelta");
@@ -625,10 +797,16 @@ svg.laica.p-cuatro.andando .cola { animation-duration: .3s; }
     }
 
     _aplicar() {
-      if (!this._svg) return;
+      if (!this._montado) return;
       const e = ESTADOS.includes(this.estado) ? this.estado : "reposo";
       const andando = this.hasAttribute("andar");
       const cuatro = this.getAttribute("patas") === "cuatro";
+      if (this._foto) {
+        ESTADOS.forEach((x) => this._foto.classList.remove("e-" + x));
+        this._foto.classList.add("e-" + e);
+        this._foto.classList.toggle("andando", andando);
+        this._actualizarVista();
+      }
       for (const svg of this._svgs) {
         ESTADOS.forEach((x) => svg.classList.remove("e-" + x));
         svg.classList.add("e-" + e);
@@ -637,7 +815,7 @@ svg.laica.p-cuatro.andando .cola { animation-duration: .3s; }
       }
       if (this._deFrente) this.mirar(0, 0);
       const t = parseInt(this.getAttribute("tamano"), 10);
-      if (t) this._env.style.width = t + "px";
+      if (t) { this._env.style.width = t + "px"; this.style.setProperty("--tam", t + "px"); }
       if (e !== this._ultimoEstado) {
         this._ultimoEstado = e;
         this.dispatchEvent(new CustomEvent("laica-estado", { detail: { estado: e } }));

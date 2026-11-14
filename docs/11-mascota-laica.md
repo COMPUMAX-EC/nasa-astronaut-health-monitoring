@@ -23,6 +23,19 @@ El SVG está dibujado **por capas** (orejas, ojos, boca, brazos, piernas, cola, 
 - **Bandera de Ecuador** en el hombro derecho, por el país del equipo.
 - **Sin logos de la NASA:** la "meatball" y el "worm" son marcas protegidas. Usarlas requiere permiso de la agencia y sugeriría un respaldo oficial que no existe. El crédito correcto es en texto: "Proyecto para el NASA Space Apps Challenge 2026".
 
+### Aspecto: diseño de Canva del equipo
+
+Por defecto Laica usa las fotos del diseño de Canva "MASCOTA NASA SPACE" del equipo: una border collie con traje de astronauta, en cinco vistas (frente, tres cuartos a la izquierda, tres cuartos a la derecha, espalda y saludando). Los originales a calidad completa (PNG 1254 px) están en [`assets/laica/canva/originales/`](../assets/laica/canva/originales/) y las versiones para la app (WebP 720 px, mismo encuadre) se generan con `python scripts/preparar_laica_canva.py`.
+
+- Al mirar a un lado (más de un tercio del giro) cambia a la vista de tres cuartos: gira ~90°.
+- `girar("vuelta")` pasa por frente → derecha → espalda → izquierda → frente; `girar("espaldas")` se queda de espaldas un momento.
+- Los estados se muestran con brillo de color (ámbar, rojo, violeta), movimiento y efectos (Zzz, estrellas, ☢, sudor).
+- `aspecto="dibujo"` vuelve al dibujo SVG anterior.
+
+### Sonidos
+
+`laica.ladrar()`, `laica.grunir()` y `laica.quejarse()` reproducen grabaciones reales (10 ladridos, 4 gruñidos, 3 quejidos, CC0; créditos en [`assets/laica/sonidos/CREDITOS.md`](../assets/laica/sonidos/CREDITOS.md)). Cada vez suena un poco distinto. `window.LaicaSonido.poner(false)` los silencia (se recuerda).
+
 ## 11.2 Acciones y cuándo usarlas
 
 | Estado | Animación | Evento de la app | Color de la luz del pecho |

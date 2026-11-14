@@ -123,7 +123,7 @@ export default function LaicaLibre({ estado, activa, casa, onVolver, onAcariciar
         if (y >= H - ALTO && vy > 0) {
           y = H - ALTO;
           aplastar("y", "center bottom");
-          if (vy > 420) { chispa(x + ANCHO / 2, H); vy = -vy * 0.42; vx *= 0.8; if (Math.random() < 0.4) decir(al(FRASES.choque)); }
+          if (vy > 420) { chispa(x + ANCHO / 2, H); vy = -vy * 0.42; vx *= 0.8; if (Math.random() < 0.4) decir(al(FRASES.choque)); if (vy < -500) el?.quejarse?.(0.45); }
           else { vx = (Math.sign(vx) || 1) * velAndar(); vy = 0; cambiar("caminando", t, 5000 + Math.random() * 6000); }
         }
       } else if (fase === "caminando" || fase === "saliendo") {
@@ -136,7 +136,7 @@ export default function LaicaLibre({ estado, activa, casa, onVolver, onAcariciar
         if (fase === "saliendo") {
           if (x < -ANCHO - 20 || x > W + 20) cambiar("fuera", t);
         } else if ((x < 0 && vx < 0) || (x > W - ANCHO && vx > 0)) {
-          if (choques >= 2) { cambiar("saliendo", t); decir(al(FRASES.escapar)); }
+          if (choques >= 2) { cambiar("saliendo", t); decir(al(FRASES.escapar)); el?.ladrar?.(0.6); }
           else { x = Math.max(0, Math.min(W - ANCHO, x)); vx = -vx; choques++; }
         } else if (t - tFase > duracion) {
           vx = Math.sign(vx) * (150 + Math.random() * 200);
@@ -165,6 +165,7 @@ export default function LaicaLibre({ estado, activa, casa, onVolver, onAcariciar
             cambiar("escapando", t);
             vx *= 1.5; vy *= 1.5;
             decir(al(FRASES.escapar));
+            el?.ladrar?.(0.6);
           } else if (eje) {
             if (eje === "x") { vx = -vx; x = Math.max(0, Math.min(W - ANCHO, x)); }
             else { vy = -vy; y = Math.max(0, Math.min(H - ALTO, y)); }
@@ -172,6 +173,7 @@ export default function LaicaLibre({ estado, activa, casa, onVolver, onAcariciar
             aplastar(eje, origen);
             chispa(cx, cy);
             if (Math.random() < 0.55) decir(al(FRASES.choque));
+            if (Math.random() < 0.35) el?.quejarse?.(0.45);
             if (Math.random() < 0.25) el?.girar?.("vuelta");
           }
           if (t - inicio > 30000) cambiar("volviendo", t);
@@ -191,7 +193,7 @@ export default function LaicaLibre({ estado, activa, casa, onVolver, onAcariciar
       } else if (fase === "asomando") {
         x += (asomada.x1 - x) * k;
         y += (asomada.y1 - y) * k;
-        if (t - tFase > 700 && !asomada.dicho) { asomada.dicho = true; decir(al(FRASES.asomar)); }
+        if (t - tFase > 700 && !asomada.dicho) { asomada.dicho = true; decir(al(FRASES.asomar)); if (Math.random() < 0.5) el?.ladrar?.(0.55); else el?.grunir?.(0.55); }
         if (t - tFase > 3400) cambiar("volviendo", t);
       } else if (fase === "volviendo") {
         const r = casa();
@@ -224,6 +226,7 @@ export default function LaicaLibre({ estado, activa, casa, onVolver, onAcariciar
   const tocar = () => {
     laica.current?.girar?.("vuelta");
     decirRef.current(al(FRASES.cosquillas));
+    laica.current?.grunir?.(0.6);
     onAcariciar();
   };
 
