@@ -4,6 +4,8 @@
 //   navegador, así que necesita internet y sale del dispositivo. Por eso es opcional y se avisa.
 //   Para una misión real habría que usar un reconocedor local (ver docs/08).
 
+import { ordenarVoces, dividirFrases } from "./voces.js";
+
 // Se busca al usarlo (no al cargar), así las pruebas pueden inyectar un reconocedor simulado.
 const obtenerSR = () => (typeof window !== "undefined" ? window.SpeechRecognition || window.webkitSpeechRecognition : null);
 
@@ -17,40 +19,69 @@ const idioma = () => {
   return n?.toLowerCase().startsWith("es") ? n : "es-ES";
 };
 
-function elegirVoz() {
-  const voces = window.speechSynthesis.getVoices().filter((v) => v.lang?.toLowerCase().startsWith("es"));
-  const pref = idioma().toLowerCase();
-  return (
-    voces.find((v) => v.lang.toLowerCase() === pref && v.localService) ||
-    voces.find((v) => v.lang.toLowerCase() === pref) ||
-    voces.find((v) => v.localService) ||
-    voces[0] ||
-    null
-  );
+// ---------- Elegir la voz ----------
+
+const CLAVE_VOZ = "laica-voz-nombre";
+const leerVozGuardada = () => { try { return localStorage.getItem(CLAVE_VOZ); } catch { return null; } };
+
+/** Voces en español, de la más natural a la más robótica. */
+export function listarVoces() {
+  if (!soporte.hablar) return [];
+  return ordenarVoces(window.speechSynthesis.getVoices(), idioma());
 }
 
-// Quita emojis y símbolos que el sintetizador leería en voz alta.
-const limpiar = (t) => t.replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}]/gu, "").replace(/₂/g, "2").trim();
+/** Avisa cuando el navegador termina de cargar las voces (en Chrome y Edge llegan tarde). */
+export function alCambiarVoces(cb) {
+  if (!soporte.hablar) return () => {};
+  const s = window.speechSynthesis;
+  s.addEventListener?.("voiceschanged", cb);
+  return () => s.removeEventListener?.("voiceschanged", cb);
+}
 
-let actual = null;
+export function vozActual() {
+  const voces = listarVoces();
+  const guardada = leerVozGuardada();
+  return voces.find((v) => v.name === guardada) ?? voces[0] ?? null;
+}
 
+export function elegirVoz(nombre) {
+  try { nombre ? localStorage.setItem(CLAVE_VOZ, nombre) : localStorage.removeItem(CLAVE_VOZ); } catch { /* sin almacenamiento */ }
+}
+
+// ---------- Hablar ----------
+
+let turno = 0; // cada llamada a hablar() invalida la anterior
+
+/**
+ * Habla frase por frase con la voz más natural disponible.
+ * onInicio se llama al empezar la primera frase; onFin, una sola vez, al terminar o al interrumpirse.
+ */
 export function hablar(texto, { onInicio, onFin } = {}) {
-  if (!soporte.hablar || !texto) { onFin?.(); return; }
+  const frases = dividirFrases(texto);
+  if (!soporte.hablar || !frases.length) { onFin?.(); return; }
   const s = window.speechSynthesis;
   s.cancel();
-  const u = new SpeechSynthesisUtterance(limpiar(texto));
-  const voz = elegirVoz();
-  if (voz) u.voice = voz;
-  u.lang = voz?.lang ?? idioma();
-  u.rate = 1.03;
-  u.pitch = 1.2; // un poco más aguda: es una perrita corgi
-  u.onstart = () => onInicio?.();
-  u.onend = u.onerror = () => { if (actual === u) actual = null; onFin?.(); };
-  actual = u;
-  s.speak(u);
+  const mio = ++turno;
+  const voz = vozActual();
+  let terminado = false;
+  const fin = () => { if (!terminado) { terminado = true; onFin?.(); } };
+
+  frases.forEach((frase, i) => {
+    const u = new SpeechSynthesisUtterance(frase);
+    if (voz) u.voice = voz;
+    u.lang = voz?.lang ?? idioma();
+    // Tono y ritmo naturales: un tono muy alto suena a juguete. Las preguntas suben un poco.
+    u.rate = 1;
+    u.pitch = /\?$/.test(frase) ? 1.12 : 1.04;
+    if (i === 0) u.onstart = () => { if (mio === turno) onInicio?.(); };
+    u.onerror = () => { if (mio === turno) fin(); };
+    if (i === frases.length - 1) u.onend = () => { if (mio === turno) fin(); };
+    s.speak(u);
+  });
 }
 
 export function callar() {
+  turno++;
   if (soporte.hablar) window.speechSynthesis.cancel();
 }
 

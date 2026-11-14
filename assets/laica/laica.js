@@ -117,9 +117,20 @@
     <!-- Cinturón -->
     <path d="M105 266 Q150 276 195 266" fill="none" stroke="var(--linea)" stroke-width="3" opacity=".45"/>
     <rect x="143" y="265" width="14" height="10" rx="3" fill="url(#lc-metal)" stroke="var(--linea)" stroke-width="2.5"/>
-    <!-- Insignia de misión -->
-    <circle cx="116" cy="251" r="7.5" fill="#2F6BFF" stroke="var(--linea)" stroke-width="2.5"/>
-    <path d="M116 246 l1.6 3.3 3.6.5 -2.6 2.5 .6 3.6 -3.2 -1.7 -3.2 1.7 .6 -3.6 -2.6 -2.5 3.6 -.5 z" fill="#FFD447"/>
+    <!-- Parche de misión propio (diseño original del equipo, no es un logo de agencia):
+         huella de corgi dorada orbitando la Tierra, con borde dorado -->
+    <g class="parche-mision">
+      <circle cx="116" cy="250" r="11" fill="#13235A" stroke="#E8B53A" stroke-width="2.5"/>
+      <circle cx="116" cy="250" r="11" fill="none" stroke="var(--linea)" stroke-width="1.2" opacity=".6"/>
+      <circle cx="112" cy="254" r="3.6" fill="#3B82F6"/>
+      <path d="M110 254.5 q1.5 -1.6 3.4 -.4" fill="none" stroke="#7DD87D" stroke-width="1.2" stroke-linecap="round"/>
+      <ellipse cx="116" cy="250" rx="9" ry="3.6" fill="none" stroke="#9FD3FF" stroke-width="1.1" transform="rotate(-25 116 250)"/>
+      <g fill="#FFD447">
+        <ellipse cx="120" cy="247.6" rx="2.2" ry="1.8"/>
+        <circle cx="117.7" cy="245" r=".9"/><circle cx="119.6" cy="244.2" r=".9"/>
+        <circle cx="121.6" cy="244.6" r=".9"/><circle cx="122.9" cy="246.2" r=".9"/>
+      </g>
+    </g>
 
     <!-- Panel del pecho con luz de estado -->
     <rect x="126" y="228" width="48" height="30" rx="7" fill="url(#lc-metal)" stroke="var(--linea)" stroke-width="4"/>
@@ -144,6 +155,13 @@
     <g class="brazo-d">
       <rect x="184" y="207" width="54" height="27" rx="13.5" fill="url(#lc-traje)" stroke="var(--linea)" stroke-width="4"/>
       <rect x="188" y="223" width="32" height="7" rx="3.5" fill="#8E9BC8" opacity=".35"/>
+      <!-- Bandera de Ecuador en el hombro (el país del equipo): amarillo, azul y rojo -->
+      <g class="bandera">
+        <rect x="193" y="210" width="20" height="6" fill="#FFD100"/>
+        <rect x="193" y="216" width="20" height="3" fill="#0072CE"/>
+        <rect x="193" y="219" width="20" height="3" fill="#EF3340"/>
+        <rect x="193" y="210" width="20" height="12" rx="1.5" fill="none" stroke="var(--linea)" stroke-width="1.6"/>
+      </g>
       <rect x="219" y="205" width="9" height="31" rx="4" fill="url(#lc-metal)" stroke="var(--linea)" stroke-width="3"/>
       <circle cx="238" cy="220" r="15" fill="url(#lc-pelaje)" stroke="var(--linea)" stroke-width="4"/>
       <path d="M247 214 Q249 220 247 226 M241 211 Q243 220 241 229" fill="none" stroke="#B9620F" stroke-width="2.2" stroke-linecap="round" opacity=".7"/>

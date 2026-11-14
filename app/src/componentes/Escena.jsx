@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import SelectorVoz from "./SelectorVoz.jsx";
 
 // Escena principal: Laica es la protagonista. Flota y pasea por el espacio cuando todo va
 // bien, y se planta al frente cuando hay una alerta. Al bajar por la página, una Laica
@@ -95,6 +96,7 @@ export default function Escena({ estadoLaica, mensaje, nivel, voz, esHoy, checkI
             </div>
           )}
           <Controles voz={voz} esHoy={esHoy} checkIn={checkIn} onCheckIn={onCheckIn} mensaje={mensaje} />
+          {voz.vozActiva && voz.soporte.hablar && <SelectorVoz />}
           <p className="pista">Toca a Laica para saludarla.</p>
         </div>
       </section>

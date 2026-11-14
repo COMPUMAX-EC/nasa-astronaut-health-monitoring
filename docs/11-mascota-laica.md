@@ -17,6 +17,12 @@ Laica no es solo decoración: **cambia de estado según la salud del astronauta*
 
 El SVG está dibujado **por capas** (orejas, ojos, boca, brazos, piernas, cola, casco, luz del pecho, halo), así que cada parte se anima por separado.
 
+### Traje
+
+- **Parche de misión propio** en el pecho: una huella de corgi dorada que orbita la Tierra. El mismo diseño es el logo de la app.
+- **Bandera de Ecuador** en el hombro derecho, por el país del equipo.
+- **Sin logos de la NASA:** la "meatball" y el "worm" son marcas protegidas. Usarlas requiere permiso de la agencia y sugeriría un respaldo oficial que no existe. El crédito correcto es en texto: "Proyecto para el NASA Space Apps Challenge 2026".
+
 ## 11.2 Acciones y cuándo usarlas
 
 | Estado | Animación | Evento de la app | Color de la luz del pecho |

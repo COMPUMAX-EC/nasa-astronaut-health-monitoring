@@ -326,3 +326,20 @@ button.primario:hover { filter: brightness(1.1); }
   .escenario.pasea .laica-boton, .escenario.al-frente .laica-boton, .rejilla .tarjeta, .laica-boton.salta laica-mascota { animation: none !important; }
   .fugaz { display: none; }
 }
+
+.selector-voz { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 8px; }
+.selector-voz label { display: flex; flex-direction: column; gap: 4px; font-size: .78rem; color: var(--suave); }
+.selector-voz select {
+  font: inherit; font-size: .85rem; color: var(--texto); background: rgba(11, 21, 48, .9);
+  border: 1px solid var(--panel-borde); border-radius: 8px; padding: 6px 8px; max-width: 280px;
+}
+.selector-voz .pista { flex-basis: 100%; }
+
+/* ---------- Identidad de misión ---------- */
+.marca { display: flex; align-items: center; gap: 12px; }
+.marca svg { flex: none; filter: drop-shadow(0 4px 12px rgba(232, 181, 58, .25)); }
+.barra h1 { font-size: 1.5rem; text-transform: uppercase; letter-spacing: .12em; font-weight: 800; }
+.sobretitulo { margin: 0 !important; font-size: .7rem; text-transform: uppercase; letter-spacing: .14em; color: #E8B53A !important; font-weight: 700; }
+.credito { flex-basis: 100%; font-size: .75rem; opacity: .8; }
+footer { flex-wrap: wrap; }
+@media (max-width: 520px) { .barra h1 { font-size: 1.2rem; } .marca svg { width: 46px; height: 46px; } }

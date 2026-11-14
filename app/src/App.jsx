@@ -7,6 +7,7 @@ import Tarjeta from "./componentes/Tarjeta.jsx";
 import Alertas from "./componentes/Alertas.jsx";
 import CuerpoHumano from "./componentes/CuerpoHumano.jsx";
 import Escena from "./componentes/Escena.jsx";
+import Parche from "./componentes/Parche.jsx";
 import { ZONAS } from "./datos/zonas.js";
 import { zonaMasGrave } from "./datos/zonas.js";
 import CheckIn from "./componentes/CheckIn.jsx";
@@ -168,9 +169,13 @@ export default function App() {
   return (
     <main className={`general-${estado.nivel}`}>
       <header className="barra">
-        <div>
-          <h1>Laica · Salud del tripulante</h1>
-          <p>{ASTRONAUTA.nombre} · {ASTRONAUTA.mision}</p>
+        <div className="marca">
+          <Parche tamano={58} />
+          <div>
+            <p className="sobretitulo">NASA Space Apps Challenge 2026 · Equipo Ecuador</p>
+            <h1>Misión Laica</h1>
+            <p>Monitoreo de salud de la tripulación · {ASTRONAUTA.nombre} · {ASTRONAUTA.mision}</p>
+          </div>
         </div>
         <span className={`conexion ${enLinea ? "si" : "no"}`}>{enLinea ? "Con conexión" : "Sin conexión · modo offline"}</span>
       </header>
@@ -218,6 +223,10 @@ export default function App() {
           Datos simulados de {DIAS} días. {guarda ? "Se guardan solo en este dispositivo." : "Este navegador no permite guardar: los datos viven en memoria."}
           {" "}Umbrales ilustrativos. Prototipo educativo, no es un dispositivo médico.
           {voz.soporte.escuchar && " Al hablar con Laica, el navegador envía el audio a su servicio de reconocimiento de voz."}
+        </p>
+        <p className="credito">
+          Proyecto para el reto "Create Health Monitoring Software for Astronauts on Space Missions" del NASA Space Apps Challenge 2026.
+          No está afiliado ni respaldado por la NASA. Fuentes públicas de NASA, CSA, OMS, OPS y MSP Ecuador.
         </p>
         <button type="button" onClick={regenerar}>Regenerar datos de prueba</button>
       </footer>

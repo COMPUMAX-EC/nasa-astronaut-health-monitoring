@@ -6,6 +6,7 @@ Aplicación web **offline** (PWA) del plan del proyecto ([docs/12](../docs/12-pl
 - **Fase 2, registro y alertas:** check‑in por teclado y clics, motor de alertas 🟢🟡🟠🔴, tarjetas coloreadas, panel de alertas con la acción sugerida y Laica que cambia de estado. Una barra permite recorrer la misión día por día.
 - **Fase 3, cuerpo clicable:** figura humana con 7 zonas. Cada una toma el color de su peor indicador y explica por qué importa en el espacio, con datos de la [matriz de riesgo](../docs/09-matriz-riesgo-indicadores.md).
 - **Voz:** Laica habla y escucha comandos en español.
+- **Identidad de misión:** "Misión Laica" con un parche propio (huella de corgi orbitando la Tierra) y crédito al NASA Space Apps Challenge 2026. **No usa el logo de la NASA:** la agencia no permite usar su insignia ni su logotipo sin autorización.
 - **Laica protagonista:** escena espacial animada (estrellas, estrellas fugaces, planeta con luna). Laica pasea cuando todo va bien y se planta al frente cuando hay una alerta. Si la tocas, salta y responde con humor; si hay una alerta, vuelve al tema. Al bajar por la página, una Laica pequeña te acompaña desde la esquina, y al elegir una zona del cuerpo te explica por qué importa. Todo el movimiento se apaga si el sistema pide reducir animaciones.
 
 ## Cómo correrla
@@ -112,7 +113,14 @@ Toca **🎤 Hablar con Laica** y di, por ejemplo:
 | "¿Cómo estoy?" | Resume las alertas activas |
 | "Ayuda" · "Check-in" | Lista de comandos · abre el formulario |
 
-**🔊 Voz activada** hace que Laica lea en voz alta sus mensajes.
+**🔊 Voz activada** hace que Laica lea en voz alta sus mensajes. Debajo aparece **Voz de Laica** para elegir la voz y probarla.
+
+Para que suene menos robótica, Laica:
+- Elige sola la voz más natural instalada: primero las neuronales ("natural" en Microsoft Edge), luego las de Google en Chrome, y prefiere acentos latinoamericanos.
+- Dice las abreviaturas como una persona: "118/76 mmHg" → "118 sobre 76", "lpm" → "latidos por minuto".
+- Habla frase por frase, con tono normal, y sube un poco el tono en las preguntas.
+
+> **La mejor voz depende del navegador.** Windows solo trae voces básicas (Helena, Laura, Pablo). Para la demo usen **Microsoft Edge**, que trae voces neuronales en español gratis, por ejemplo Dalia (México) o Andrea (Ecuador); necesitan internet. Chrome trae "Google español".
 
 - **Siempre confirma antes de guardar:** un error de reconocimiento no debe convertirse en un dato médico.
 - **Navegadores:** hablar funciona en todos los modernos; escuchar, en Chrome y Edge (Firefox no lo trae).
