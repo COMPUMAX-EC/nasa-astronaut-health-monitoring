@@ -91,3 +91,68 @@ button:focus-visible { outline: 2px solid var(--acento); outline-offset: 2px; }
   .evento { grid-template-columns: 1fr; }
   .evento .dias { grid-row: auto; }
 }
+
+/* ---------- Fase 2: niveles, alertas, check-in y línea de tiempo ---------- */
+.nivel-verde { --nivel: var(--verde); }
+.nivel-amarillo { --nivel: var(--ambar); }
+.nivel-naranja { --nivel: #fb923c; }
+.nivel-rojo { --nivel: var(--rojo); }
+
+.tarjeta { border-top: 4px solid var(--nivel, var(--panel-borde)); }
+.tarjeta.nivel-rojo { box-shadow: 0 0 0 1px var(--rojo), 0 0 18px -4px var(--rojo); }
+.estado-nivel { margin: 0; font-size: .75rem; font-weight: 600; color: var(--nivel); }
+.estado-nivel::before { content: "● "; }
+
+.burbuja.nivel-amarillo, .burbuja.nivel-naranja, .burbuja.nivel-rojo { border-color: var(--nivel); }
+.dialogo { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
+
+button.primario { background: var(--acento); color: #08122b; border-color: var(--acento); font-weight: 600; }
+button.primario:hover { filter: brightness(1.1); }
+
+.linea-tiempo { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: 14px; color: var(--suave); font-size: .9rem; }
+.linea-tiempo label { min-width: 130px; }
+.linea-tiempo input[type="range"] { flex: 1; min-width: 160px; accent-color: var(--acento); }
+.linea-tiempo button { padding: 4px 10px; font-size: .85rem; }
+
+.sin-alertas { margin: 0; padding: 12px 14px; background: var(--panel); border: 1px solid var(--panel-borde); border-radius: var(--radio); }
+.alertas { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.alerta-item {
+  display: grid; grid-template-columns: 110px 1fr; gap: 12px; padding: 12px 14px;
+  background: var(--panel); border: 1px solid var(--panel-borde); border-left: 5px solid var(--nivel); border-radius: 10px;
+}
+.alerta-item.amarillo { --nivel: var(--ambar); }
+.alerta-item.naranja { --nivel: #fb923c; }
+.alerta-item.rojo { --nivel: var(--rojo); }
+.alerta-item .nivel { font-weight: 700; color: var(--nivel); }
+.alerta-item p { margin: 4px 0 0; }
+.alerta-item small { display: block; margin-top: 6px; color: var(--suave); }
+.alerta-item .medico { color: var(--rojo); font-weight: 600; }
+
+.checkin { margin-top: 18px; padding: 16px; background: var(--panel); border: 1px solid var(--acento); border-radius: var(--radio); }
+.checkin-cabecera { display: flex; justify-content: space-between; align-items: center; }
+.checkin-cabecera h2 { margin: 0; color: var(--texto); }
+.cerrar { border: none; font-size: 1.1rem; padding: 4px 8px; }
+.animo { border: none; padding: 0; margin: 14px 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.animo legend { margin-bottom: 8px; color: var(--suave); }
+.animo button { display: flex; flex-direction: column; align-items: center; gap: 2px; min-width: 76px; font-size: .8rem; }
+.animo button span { font-size: 1.6rem; }
+.animo button.activo { border-color: var(--acento); background: rgba(108, 196, 255, .15); }
+.campos { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 12px; }
+.campos label { display: flex; flex-direction: column; gap: 4px; font-size: .85rem; }
+.campos small { color: var(--suave); }
+.campos input {
+  font: inherit; color: var(--texto); background: var(--fondo); border: 1px solid var(--panel-borde);
+  border-radius: 8px; padding: 8px 10px; width: 100%;
+}
+.campos input:focus { outline: 2px solid var(--acento); outline-offset: 1px; }
+.campos .con-error input { border-color: var(--rojo); }
+.campos em, .error-general { color: var(--rojo); font-size: .78rem; font-style: normal; }
+.acciones { display: flex; align-items: center; gap: 12px; margin-top: 14px; flex-wrap: wrap; color: var(--suave); font-size: .85rem; }
+
+.evento button.dias { border: none; padding: 0; text-align: left; color: var(--acento); text-decoration: underline; text-underline-offset: 3px; }
+.evento.activo { background: #1a2c5e; }
+
+@media (max-width: 520px) {
+  .dialogo { align-items: center; }
+  .alerta-item { grid-template-columns: 1fr; gap: 4px; }
+}

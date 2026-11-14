@@ -81,7 +81,7 @@ En el espacio no hay internet y el cómputo es limitado ([08](08-computo-ia-y-li
 |---|---|---|
 | 0. Documentación | Este repo | ✅ Listo |
 | 1. Base | PWA, modelo de datos, generador de datos de prueba ([app/](../app/)) | ✅ Listo: la app abre offline y muestra 30 días simulados |
-| 2. Registro y alertas | Formularios de signos y motor de reglas con 🟢🟡🟠🔴 | Meter 165/105 pone la alerta en 🔴 |
+| 2. Registro y alertas | Formularios de signos y motor de reglas con 🟢🟡🟠🔴 | ✅ Listo: meter 165/105 pone la alerta en 🔴 |
 | 3. Cuerpo clicable | Silueta SVG con zonas coloreadas y panel de detalle | Clic en el corazón muestra FC, presión y su riesgo |
 | 4. Laica con personalidad | Banco de frases (≈150), reglas de tono, memoria local, check‑in diario | Laica cambia de tono según la alerta y el nivel de humor |
 | 5. Gráficos y gamificación | Tendencias, rachas, insignias | Se ve una semana mala y cómo se recupera |
