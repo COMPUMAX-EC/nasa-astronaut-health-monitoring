@@ -26,6 +26,10 @@ Aquí se reúne la documentación **oficial de NASA** (y de agencias socias) má
 | 11 | [Laica, la mascota](docs/11-mascota-laica.md) | Componente animado con 10 acciones que reflejan el estado de salud ([demo](assets/laica/demo.html)) |
 | 12 | [Plan de proyecto](docs/12-plan-de-proyecto.md) | La app completa: personalidad de Laica (compañía, humor y asistente), módulos, fases, demo y roles |
 
+## 📱 La app
+
+[`app/`](app/) tiene la app offline (React + Vite, PWA). La **fase 1** ya funciona: Laica, los 6 indicadores del reto con su tendencia y 30 días simulados. Cómo correrla: [app/README.md](app/README.md).
+
 ## 🗂️ Datos
 
 | Carpeta / archivo | Contenido |
