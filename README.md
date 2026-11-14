@@ -12,6 +12,7 @@ Aquí se reúne la documentación **oficial de NASA** (y de agencias socias) má
 
 | # | Documento | Para qué sirve |
 |---|-----------|----------------|
+| 0 | [El reto oficial 2026](docs/00-reto-oficial.md) | Requisitos y preguntas guía del enunciado oficial, y dónde se cubre cada uno |
 | 1 | [Riesgos de salud en el espacio](docs/01-riesgos-salud.md) | Los 5 peligros (RIDGE) y los riesgos oficiales del Human Research Program |
 | 2 | [Estándares NASA‑STD‑3001 y boletines técnicos](docs/02-estandares-nasa-std-3001.md) | Requisitos médicos oficiales: lo que tu software debe vigilar |
 | 3 | [Indicadores de salud y sensores](docs/03-indicadores-y-sensores.md) | Qué medir por sistema corporal, con qué y cada cuánto |
@@ -20,15 +21,16 @@ Aquí se reúne la documentación **oficial de NASA** (y de agencias socias) má
 | 6 | [Propuesta de arquitectura del software](docs/06-propuesta-arquitectura.md) | Diseño sugerido, alertas, modelo de datos, MVP |
 | 7 | [Glosario](docs/07-glosario.md) | Siglas NASA (SANS, HRP, OCHMO, BHP…) |
 | 8 | [Cómputo, IA y limitaciones](docs/08-computo-ia-y-limitaciones.md) | Hardware a bordo, radiación, SWaP, visión artificial vs. alternativas |
-| 9 | [Matriz de riesgo de indicadores](docs/09-matriz-riesgo-indicadores.md) | 46 indicadores con probabilidad × gravedad, frecuencia de medición, formas de recolectarlos, instrumentación disponible a bordo y viabilidad por cámara ([CSV](data/indicadores.csv)) |
+| 9 | [Matriz de riesgo de indicadores](docs/09-matriz-riesgo-indicadores.md) | 47 indicadores (incluida glucosa en sangre) con probabilidad × gravedad, frecuencia de medición, formas de recolectarlos, instrumentación disponible a bordo y viabilidad por cámara ([CSV](data/indicadores.csv)) |
 | 10 | [Soluciones similares](docs/10-soluciones-similares.md) | CMO‑DA (NASA+Google), AMOS, Astroskin, Cognition, CIMON, EXPAND, proyectos de Space Apps… y qué hueco cubrimos |
 | 11 | [Laica, la mascota](docs/11-mascota-laica.md) | Componente animado con 10 acciones que reflejan el estado de salud ([demo](assets/laica/demo.html)) |
+| 12 | [Plan de proyecto](docs/12-plan-de-proyecto.md) | La app completa: personalidad de Laica (compañía, humor y asistente), módulos, fases, demo y roles |
 
 ## 🗂️ Datos
 
 | Carpeta / archivo | Contenido |
 |---|---|
-| [`data/indicadores.csv`](data/indicadores.csv) | Los 46 indicadores de la matriz de riesgo |
+| [`data/indicadores.csv`](data/indicadores.csv) | Los 47 indicadores de la matriz de riesgo |
 | [`data/salud/`](data/salud/) | Estrés, aislamiento y conexión social: documentos de **OMS, OPS y MSP Ecuador** e instrumentos de medición (WHO‑5, PSS, PHQ, GAD, UCLA‑3, Lubben…) |
 
 ## 🛠️ Scripts

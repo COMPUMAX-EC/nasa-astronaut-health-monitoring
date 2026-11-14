@@ -24,7 +24,7 @@ Cada celda muestra los IDs de los indicadores con esa combinación.
 |---|---|---|---|---|---|
 | **5 Casi segura** | 🟡 — | 🟠 MU-05, SM-01 | 🟠 CV-06, OS-01, OS-02, SM-02, SU-01 | 🔴 RA-01 | 🔴 — |
 | **4 Probable** | 🟢 — | 🟡 CV-02, MU-02, IN-02, SU-03, CO-03, EN-03 | 🟠 CV-01, MU-01, MU-04, VI-01, VI-02, SU-02, CO-01, PS-02, NU-01, EN-01 | 🔴 — | 🔴 — |
-| **3 Posible** | 🟢 — | 🟡 IN-03, EN-08 | 🟡 CV-03, MU-03, VI-03, IN-01, IN-04, CO-02, NU-02, EN-06 | 🟠 RN-01, PS-01, PS-03 | 🟠 — |
+| **3 Posible** | 🟢 — | 🟡 IN-03, EN-08 | 🟡 ME-01, CV-03, MU-03, VI-03, IN-01, IN-04, CO-02, NU-02, EN-06 | 🟠 RN-01, PS-01, PS-03 | 🟠 — |
 | **2 Improbable** | 🟢 — | 🟢 EN-04 | 🟡 — | 🟡 CV-05, CV-07, EN-05, EN-07 | 🟠 CV-04, RA-02 |
 | **1 Rara** | 🟢 — | 🟢 — | 🟢 — | 🟢 — | 🟡 RA-03, EN-02 |
 
@@ -65,6 +65,7 @@ Columnas nuevas:
 | EN-06 | Entorno | Carga microbiana de aire y superficies (UFC) | Infecciones, contaminación | 3 | 3 | **9** | 🟡 Medio | Mensual | • Muestreo de superficies y aire<br>• Secuenciación a bordo | ⚠️ Limitada<br>Muestreo y secuenciación experimental; cultivo se analiza en tierra | ◐ Parcial<br>RGB o microscopio | [ver](https://www.nasa.gov/wp-content/uploads/2025/05/ochmo-tb-046-microbiology-rev-a.pdf) |
 | IN-01 | Inmune | Temperatura corporal (°C) | Infección | 3 | 3 | **9** | 🟡 Medio | Diaria y ante síntomas | • Termómetro digital<br>• Sensor de temperatura del wearable | ✅ Disponible<br>Termómetro | ◐ Parcial<br>Térmica (IR) | [ver](https://www.nasa.gov/reference/nasa-std-3001v1/) |
 | IN-04 | Inmune / Hematológico | Hemograma (leucocitos, linfocitos) (células/µL) | Alteración inmune, efecto de radiación | 3 | 3 | **9** | 🟡 Medio | Mensual | • Analizador de sangre portátil<br>• Muestras para análisis en tierra | ⚠️ Limitada<br>No hay hemograma completo rutinario a bordo; dispositivos en prueba | ✖ No | [ver](https://www.nasa.gov/hrp/risks/) |
+| ME-01 | Metabólico | Glucosa en sangre (mg/dL) | Resistencia a la insulina y alteración metabólica por inactividad y microgravedad | 3 | 3 | **9** | 🟡 Medio | Semanal en ayunas y ante síntomas (o continua con CGM) | • Glucómetro capilar (gota de sangre)<br>• Monitor continuo de glucosa (CGM, sensor en la piel)<br>• HbA1c en muestras analizadas en tierra | ⚠️ Limitada<br>Glucómetro y CGM son pequeños y viables a bordo, pero no forman parte del monitoreo rutinario conocido; HbA1c se analiza en tierra | ✖ No | [ver](https://www.nasa.gov/wp-content/uploads/2023/12/ochmo-tb-013-food-and-nutrition.pdf) |
 | MU-03 | Muscular | Volumen y adherencia al ejercicio (min/día, carga) | Pérdida ósea y muscular | 3 | 3 | **9** | 🟡 Medio | Por sesión | • Registro automático del equipo (cinta, bicicleta, resistivo)<br>• Wearable de actividad<br>• Pose estimada con cámara (visión artificial) | ✅ Disponible<br>Equipos de ejercicio registran carga y tiempo | 📷 Sí<br>RGB fija en la zona de ejercicio | [ver](https://www.nasa.gov/hrp/human-health-countermeasures/) |
 | NU-02 | Nutrición | Ingesta de agua / hidratación (L/día) | Deshidratación, cálculo renal | 3 | 3 | **9** | 🟡 Medio | Diaria | • Dispensador de agua conectado<br>• Registro manual | ✅ Disponible<br>Dispensador / registro | ○ Baja<br>RGB | [ver](https://www.nasa.gov/wp-content/uploads/2023/12/ochmo-tb-013-food-and-nutrition.pdf) |
 | VI-03 | Visión (SANS) | Presión intraocular (mmHg) | SANS | 3 | 3 | **9** | 🟡 Medio | Mensual | • Tonómetro portátil | ✅ Disponible<br>Tonómetro portátil | ✖ No | [ver](https://www.nasa.gov/wp-content/uploads/2024/02/ochmo-mtb-001-sans.pdf) |
@@ -101,6 +102,7 @@ Columnas nuevas:
 | Nutrición | 2 | 🟠 Alto (12) |
 | Entorno | 8 | 🟠 Alto (12) |
 | Musculoesquelético | 1 | 🟠 Alto (10) |
+| Metabólico | 1 | 🟡 Medio (9) |
 | Inmune | 3 | 🟡 Medio (9) |
 | Inmune / Hematológico | 1 | 🟡 Medio (9) |
 
@@ -122,7 +124,7 @@ Columnas nuevas:
 | Estado | Nº | Indicadores |
 |---|---|---|
 | ✅ Disponible | 37 | CV-01, CV-02, CV-03, CV-04, CV-05, CV-07, MU-01, MU-02, MU-03, MU-05, VI-01, VI-02, VI-03, IN-01, IN-03, RA-01, RA-02, RA-03, SM-01, SU-01, SU-02, SU-03, CO-01, CO-02, CO-03, PS-01, PS-02, PS-03, NU-01, NU-02, EN-01, EN-02, EN-03, EN-04, EN-05, EN-07, EN-08 |
-| ⚠️ Limitada | 8 | CV-06, OS-02, RN-01, MU-04, IN-02, IN-04, SM-02, EN-06 |
+| ⚠️ Limitada | 9 | ME-01, CV-06, OS-02, RN-01, MU-04, IN-02, IN-04, SM-02, EN-06 |
 | ⛔ Solo en tierra | 1 | OS-01 |
 
 **Brechas importantes** (indicadores de riesgo alto sin instrumento completo a bordo):
@@ -133,6 +135,7 @@ Columnas nuevas:
 - **SM-02 Equilibrio y marcha tras aterrizaje** (🟠 Alto, ⚠️ Limitada): IMU del wearable sí; pruebas funcionales completas solo con apoyo en tierra.
 - **RN-01 Riesgo de cálculo renal (calcio urinario, volumen de orina)** (🟠 Alto, ⚠️ Limitada): Volumen de orina y ultrasonido sí; química urinaria completa no.
 - **MU-04 Capacidad aeróbica (VO2 máx. estimado)** (🟠 Alto, ⚠️ Limitada): Requiere analizador de gases; disponible solo en campañas de investigación.
+- **ME-01 Glucosa en sangre** (🟡 Medio, ⚠️ Limitada): Glucómetro y CGM son pequeños y viables a bordo, pero no forman parte del monitoreo rutinario conocido; HbA1c se analiza en tierra.
 - **IN-04 Hemograma (leucocitos, linfocitos)** (🟡 Medio, ⚠️ Limitada): No hay hemograma completo rutinario a bordo; dispositivos en prueba.
 - **EN-06 Carga microbiana de aire y superficies** (🟡 Medio, ⚠️ Limitada): Muestreo y secuenciación experimental; cultivo se analiza en tierra.
 
@@ -145,9 +148,9 @@ Columnas nuevas:
 | 📷 Sí | 4 | MU-03, IN-03, SM-02, NU-01 |
 | ◐ Parcial | 15 | CV-01, CV-06, MU-01, MU-02, MU-05, VI-02, IN-01, IN-02, SU-01, SU-02, CO-01, PS-01, EN-05, EN-06, EN-08 |
 | ○ Baja | 8 | CV-02, CV-05, CV-07, RA-03, SM-01, PS-02, PS-03, NU-02 |
-| ✖ No | 19 | CV-03, CV-04, OS-01, OS-02, RN-01, MU-04, VI-01, VI-03, IN-04, RA-01, RA-02, SU-03, CO-02, CO-03, EN-01, EN-02, EN-03, EN-04, EN-07 |
+| ✖ No | 20 | ME-01, CV-03, CV-04, OS-01, OS-02, RN-01, MU-04, VI-01, VI-03, IN-04, RA-01, RA-02, SU-03, CO-02, CO-03, EN-01, EN-02, EN-03, EN-04, EN-07 |
 
-**Conclusión rápida:** 19 de 46 indicadores se pueden obtener o complementar con cámara (4 como método principal). La cámara **no sustituye** a los wearables, dosímetros, muestras biológicas ni sensores ambientales, pero sí cubre bien el sistema musculoesquelético, la piel, la nutrición, la somnolencia y, con privacidad desde el diseño, el estado de ánimo.
+**Conclusión rápida:** 19 de 47 indicadores se pueden obtener o complementar con cámara (4 como método principal). La cámara **no sustituye** a los wearables, dosímetros, muestras biológicas ni sensores ambientales, pero sí cubre bien el sistema musculoesquelético, la piel, la nutrición, la somnolencia y, con privacidad desde el diseño, el estado de ánimo.
 
 ### 9.7.1 Detalle de los indicadores viables (📷 Sí y ◐ Parcial)
 

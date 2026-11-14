@@ -43,6 +43,8 @@ DONKI = "https://ccmc.gsfc.nasa.gov/tools/DONKI/"
 
 # (id, sistema, indicador, unidad, riesgo asociado, P, G, frecuencia de medición, [métodos], fuente)
 INDICADORES = [
+    # Metabólico (indicador citado en el enunciado oficial del reto)
+    ("ME-01", "Metabólico", "Glucosa en sangre", "mg/dL", "Resistencia a la insulina y alteración metabólica por inactividad y microgravedad", 3, 3, "Semanal en ayunas y ante síntomas (o continua con CGM)", ["Glucómetro capilar (gota de sangre)", "Monitor continuo de glucosa (CGM, sensor en la piel)", "HbA1c en muestras analizadas en tierra"], FOOD),
     # Cardiovascular
     ("CV-01", "Cardiovascular", "Frecuencia cardiaca en reposo", "lpm", "Desacondicionamiento cardiovascular", 4, 3, "Continua (resumen diario)", ["Wearable de pecho o muñeca (Bio-Monitor/Astroskin, banda)", "Oxímetro de dedo", "rPPG con cámara (opcional)"], HRP),
     ("CV-02", "Cardiovascular", "Variabilidad de la FC (VFC/HRV)", "ms (RMSSD)", "Estrés autonómico, fatiga", 4, 2, "Diaria (al despertar)", ["Banda de pecho con ECG", "Wearable de anillo o muñeca"], HRP),
@@ -112,6 +114,7 @@ G_TXT = {1: "Insignificante", 2: "Menor", 3: "Moderada", 4: "Mayor", 5: "Catastr
 # ---------------------------------------------------------------------------
 INSTR_TXT = {"D": "✅ Disponible", "L": "⚠️ Limitada", "T": "⛔ Solo en tierra"}
 INSTR = {
+    "ME-01": ("L", "Glucómetro y CGM son pequeños y viables a bordo, pero no forman parte del monitoreo rutinario conocido; HbA1c se analiza en tierra"),
     "CV-01": ("D", "Wearables y monitores de FC ya usados en la ISS"),
     "CV-02": ("D", "Banda de pecho/ECG; algoritmo de VFC en software"),
     "CV-03": ("D", "Tensiómetro automático en el kit médico"),
@@ -168,6 +171,7 @@ INSTR = {
 # ---------------------------------------------------------------------------
 CAM_TXT = {"S": "📷 Sí", "P": "◐ Parcial", "B": "○ Baja", "N": "✖ No"}
 CAM = {
+    "ME-01": ("N", "—", "Requiere sangre o sensor; la cámara solo puede leer la pantalla del glucómetro"),
     "CV-01": ("P", "RGB frontal (tableta)", "rPPG: cambios sutiles de color de la piel con cada latido; requiere quietud y buena luz"),
     "CV-02": ("B", "RGB frontal", "rPPG de alta calidad; la VFC por cámara aún es poco precisa"),
     "CV-03": ("N", "—", "Experimental (tiempo de tránsito del pulso por video); no validado"),
