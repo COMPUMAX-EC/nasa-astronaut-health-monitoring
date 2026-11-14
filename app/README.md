@@ -6,6 +6,7 @@ Aplicación web **offline** (PWA) del plan del proyecto ([docs/12](../docs/12-pl
 - **Fase 2, registro y alertas:** check‑in por teclado y clics, motor de alertas 🟢🟡🟠🔴, tarjetas coloreadas, panel de alertas con la acción sugerida y Laica que cambia de estado. Una barra permite recorrer la misión día por día.
 - **Fase 3, cuerpo clicable:** figura humana con 7 zonas. Cada una toma el color de su peor indicador y explica por qué importa en el espacio, con datos de la [matriz de riesgo](../docs/09-matriz-riesgo-indicadores.md).
 - **Voz:** Laica habla y escucha comandos en español.
+- **Laica protagonista:** escena espacial animada (estrellas, estrellas fugaces, planeta con luna). Laica pasea cuando todo va bien y se planta al frente cuando hay una alerta. Si la tocas, salta y responde con humor; si hay una alerta, vuelve al tema. Al bajar por la página, una Laica pequeña te acompaña desde la esquina, y al elegir una zona del cuerpo te explica por qué importa. Todo el movimiento se apaga si el sistema pide reducir animaciones.
 
 ## Cómo correrla
 

@@ -134,6 +134,6 @@ export function useConversacion({ estado, guardar, abrirCheckIn }) {
 
   return {
     soporte, vozActiva, escuchando, hablando, parcial, respuesta, pendiente,
-    alternarMicrofono, alternarVoz, responderPendiente, limpiar: () => setRespuesta(null),
+    alternarMicrofono, alternarVoz, responderPendiente, decir, limpiar: () => setRespuesta(null),
   };
 }

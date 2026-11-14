@@ -6,6 +6,8 @@ import { evaluar, ordenar } from "./motor/reglas.js";
 import Tarjeta from "./componentes/Tarjeta.jsx";
 import Alertas from "./componentes/Alertas.jsx";
 import CuerpoHumano from "./componentes/CuerpoHumano.jsx";
+import Escena from "./componentes/Escena.jsx";
+import { ZONAS } from "./datos/zonas.js";
 import { zonaMasGrave } from "./datos/zonas.js";
 import CheckIn from "./componentes/CheckIn.jsx";
 import { useConversacion } from "./voz/useConversacion.js";
@@ -13,6 +15,15 @@ import { useConversacion } from "./voz/useConversacion.js";
 const DIAS = 30;
 const SECUNDARIOS = ["spo2", "peso", "who5", "dosis"];
 const DIA_MS = 86400000;
+const CARICIAS = [
+  "¡Guau! Digo… hola, tripulante.",
+  "Otra caricia y te subo la racha. Es broma. ¿O no?",
+  "Sigo aquí. Siempre. Es literalmente mi trabajo.",
+  "Si me acaricias tanto, voy a pensar que extrañas la Tierra.",
+  "Datos en orden y cola en movimiento. Día perfecto.",
+  "¿Ya tomaste agua? Yo no puedo, el casco no me deja.",
+  "Tu frecuencia cardiaca está bien. La mía subió: me caes bien.",
+];
 
 async function sembrar() {
   const inicio = inicioParaHoy(DIAS);
@@ -125,6 +136,20 @@ export default function App() {
     : voz.hablando ? "hablar" : momento ? momento.estado : estado.estadoLaica;
   const mensaje = voz.respuesta ?? momento?.texto ?? estado.alertas[0]?.mensaje ?? saludo(datos, dia, esHoy);
 
+  // Caricias: con todo en orden, Laica responde con humor (lado Duo/Wilson);
+  // con una alerta, vuelve al tema (lado JARVIS). docs/12 §12.2.
+  const acariciar = () => {
+    if (estado.nivel !== "verde") { voz.decir(`Gracias, pero primero lo importante. ${estado.alertas[0].mensaje}`); return; }
+    const frase = CARICIAS[Math.floor(Math.random() * CARICIAS.length)];
+    setMomento({ estado: "celebrar", texto: null });
+    voz.decir(frase);
+  };
+
+  const elegirZona = (id) => {
+    setZona(id);
+    voz.decir(`${ZONAS[id].nombre}. ${ZONAS[id].porque}`);
+  };
+
   const tarjeta = (clave) => {
     const ind = INDICADORES[clave];
     const nivel = estado.porIndicador[clave];
@@ -157,37 +182,8 @@ export default function App() {
         {!esHoy && <button type="button" onClick={() => setDiaVista(null)}>Volver a hoy</button>}
       </section>
 
-      <section className="escena" aria-live="polite">
-        <laica-mascota estado={estadoLaica} tamano="170"></laica-mascota>
-        <div className="dialogo">
-          <p className={`burbuja nivel-${estado.nivel}`}>{mensaje}</p>
-          {voz.escuchando && (
-            <p className="oyendo" role="status"><span className="onda" aria-hidden="true"></span>{voz.parcial || "Te escucho…"}</p>
-          )}
-          {voz.pendiente && (
-            <div className="confirmar" role="group" aria-label="Confirmar datos dictados">
-              <button type="button" className="primario" onClick={() => voz.responderPendiente(true)}>Sí, guardar</button>
-              <button type="button" onClick={() => voz.responderPendiente(false)}>No</button>
-            </div>
-          )}
-          <div className="botones-laica">
-            {esHoy && !checkIn && (
-              <button type="button" className="primario" onClick={() => setCheckIn(true)}>Hacer check-in</button>
-            )}
-            {esHoy && voz.soporte.escuchar && (
-              <button type="button" className={`microfono${voz.escuchando ? " activo" : ""}`} onClick={voz.alternarMicrofono}
-                aria-pressed={voz.escuchando} title="El navegador envía el audio a su servicio de reconocimiento de voz">
-                <span aria-hidden="true">🎤</span> {voz.escuchando ? "Detener" : "Hablar con Laica"}
-              </button>
-            )}
-            {voz.soporte.hablar && (
-              <button type="button" onClick={() => voz.alternarVoz(mensaje)} aria-pressed={voz.vozActiva}>
-                <span aria-hidden="true">{voz.vozActiva ? "🔊" : "🔇"}</span> {voz.vozActiva ? "Voz activada" : "Voz apagada"}
-              </button>
-            )}
-          </div>
-        </div>
-      </section>
+      <Escena estadoLaica={estadoLaica} mensaje={mensaje} nivel={estado.nivel} voz={voz} esHoy={esHoy}
+        checkIn={checkIn} onCheckIn={() => setCheckIn(true)} onAcariciar={acariciar} />
 
       {checkIn && <CheckIn onGuardar={guardarCheckIn} onCerrar={() => setCheckIn(false)} />}
 
@@ -195,7 +191,7 @@ export default function App() {
       <Alertas alertas={estado.alertas} />
 
       <h2>Mapa del cuerpo</h2>
-      <CuerpoHumano estado={estado} ultimo={ultimo} seleccion={zona ?? zonaMasGrave(estado)} onSeleccion={setZona} />
+      <CuerpoHumano estado={estado} ultimo={ultimo} seleccion={zona ?? zonaMasGrave(estado)} onSeleccion={elegirZona} />
 
       <h2>Indicadores del reto</h2>
       <section className="rejilla">{PRINCIPALES.map(tarjeta)}</section>
