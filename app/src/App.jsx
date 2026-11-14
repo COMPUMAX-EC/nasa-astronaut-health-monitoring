@@ -5,7 +5,10 @@ import { guardarVarios, leerTodos, leerMeta, guardarMeta, vaciar, persistente } 
 import { evaluar, ordenar } from "./motor/reglas.js";
 import Tarjeta from "./componentes/Tarjeta.jsx";
 import Alertas from "./componentes/Alertas.jsx";
+import CuerpoHumano from "./componentes/CuerpoHumano.jsx";
+import { zonaMasGrave } from "./datos/zonas.js";
 import CheckIn from "./componentes/CheckIn.jsx";
+import { useConversacion } from "./voz/useConversacion.js";
 
 const DIAS = 30;
 const SECUNDARIOS = ["spo2", "peso", "who5", "dosis"];
@@ -44,6 +47,7 @@ export default function App() {
   const [guarda, setGuarda] = useState(true);
   const [enLinea, setEnLinea] = useState(navigator.onLine);
   const [checkIn, setCheckIn] = useState(false);
+  const [zona, setZona] = useState(null); // null = la zona más grave
   const [momento, setMomento] = useState({ estado: "saludar", texto: null }); // reacción breve de Laica
 
   const cargar = useCallback(async () => {
@@ -100,7 +104,10 @@ export default function App() {
     setMomento(nuevoEstado.nivel === "verde"
       ? { estado: "celebrar", texto: `¡Gracias! Guardé ${nuevas.length} dato${nuevas.length > 1 ? "s" : ""} y todo está en orden.` }
       : null);
+    return nuevoEstado;
   };
+
+  const voz = useConversacion({ estado, guardar: guardarCheckIn, abrirCheckIn: () => setCheckIn(true) });
 
   const regenerar = async () => {
     await vaciar();
@@ -114,8 +121,9 @@ export default function App() {
   const ultimo = (clave) => datos[clave]?.at(-1)?.valor;
   const serie = (clave) => datos[clave]?.map((m) => m.valor) ?? [];
   // Las alertas nunca esperan a que termine un saludo o una celebración.
-  const estadoLaica = momento && estado.nivel === "verde" ? momento.estado : estado.estadoLaica;
-  const mensaje = momento?.texto ?? estado.alertas[0]?.mensaje ?? saludo(datos, dia, esHoy);
+  const estadoLaica = estado.nivel !== "verde" ? estado.estadoLaica
+    : voz.hablando ? "hablar" : momento ? momento.estado : estado.estadoLaica;
+  const mensaje = voz.respuesta ?? momento?.texto ?? estado.alertas[0]?.mensaje ?? saludo(datos, dia, esHoy);
 
   const tarjeta = (clave) => {
     const ind = INDICADORES[clave];
@@ -145,7 +153,7 @@ export default function App() {
       <section className="linea-tiempo" aria-label="Día de la misión">
         <label htmlFor="dia">Día {dia + 1} de {diaHoy + 1}{esHoy ? " · hoy" : ""}</label>
         <input id="dia" type="range" min="0" max={diaHoy} value={dia}
-          onChange={(e) => { const d = Number(e.target.value); setDiaVista(d === diaHoy ? null : d); setMomento(null); }} />
+          onChange={(e) => { const d = Number(e.target.value); setDiaVista(d === diaHoy ? null : d); setMomento(null); voz.limpiar(); }} />
         {!esHoy && <button type="button" onClick={() => setDiaVista(null)}>Volver a hoy</button>}
       </section>
 
@@ -153,9 +161,31 @@ export default function App() {
         <laica-mascota estado={estadoLaica} tamano="170"></laica-mascota>
         <div className="dialogo">
           <p className={`burbuja nivel-${estado.nivel}`}>{mensaje}</p>
-          {esHoy && !checkIn && (
-            <button type="button" className="primario" onClick={() => setCheckIn(true)}>Hacer check-in</button>
+          {voz.escuchando && (
+            <p className="oyendo" role="status"><span className="onda" aria-hidden="true"></span>{voz.parcial || "Te escucho…"}</p>
           )}
+          {voz.pendiente && (
+            <div className="confirmar" role="group" aria-label="Confirmar datos dictados">
+              <button type="button" className="primario" onClick={() => voz.responderPendiente(true)}>Sí, guardar</button>
+              <button type="button" onClick={() => voz.responderPendiente(false)}>No</button>
+            </div>
+          )}
+          <div className="botones-laica">
+            {esHoy && !checkIn && (
+              <button type="button" className="primario" onClick={() => setCheckIn(true)}>Hacer check-in</button>
+            )}
+            {esHoy && voz.soporte.escuchar && (
+              <button type="button" className={`microfono${voz.escuchando ? " activo" : ""}`} onClick={voz.alternarMicrofono}
+                aria-pressed={voz.escuchando} title="El navegador envía el audio a su servicio de reconocimiento de voz">
+                <span aria-hidden="true">🎤</span> {voz.escuchando ? "Detener" : "Hablar con Laica"}
+              </button>
+            )}
+            {voz.soporte.hablar && (
+              <button type="button" onClick={() => voz.alternarVoz(mensaje)} aria-pressed={voz.vozActiva}>
+                <span aria-hidden="true">{voz.vozActiva ? "🔊" : "🔇"}</span> {voz.vozActiva ? "Voz activada" : "Voz apagada"}
+              </button>
+            )}
+          </div>
         </div>
       </section>
 
@@ -163,6 +193,9 @@ export default function App() {
 
       <h2>Alertas</h2>
       <Alertas alertas={estado.alertas} />
+
+      <h2>Mapa del cuerpo</h2>
+      <CuerpoHumano estado={estado} ultimo={ultimo} seleccion={zona ?? zonaMasGrave(estado)} onSeleccion={setZona} />
 
       <h2>Indicadores del reto</h2>
       <section className="rejilla">{PRINCIPALES.map(tarjeta)}</section>
@@ -188,6 +221,7 @@ export default function App() {
         <p>
           Datos simulados de {DIAS} días. {guarda ? "Se guardan solo en este dispositivo." : "Este navegador no permite guardar: los datos viven en memoria."}
           {" "}Umbrales ilustrativos. Prototipo educativo, no es un dispositivo médico.
+          {voz.soporte.escuchar && " Al hablar con Laica, el navegador envía el audio a su servicio de reconocimiento de voz."}
         </p>
         <button type="button" onClick={regenerar}>Regenerar datos de prueba</button>
       </footer>
