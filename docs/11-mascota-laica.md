@@ -57,6 +57,24 @@ Relación con la [matriz de riesgo](09-matriz-riesgo-indicadores.md): el nivel m
 
 En React funciona igual: `<laica-mascota estado={estado} tamano="200" />`.
 
+### Movimiento 3D: mira a los lados y se da la vuelta
+
+Laica no mira siempre al frente. El componente dibuja dos caras del mismo personaje (frente y espalda, con nuca y mochila grande) y las gira en 3D con CSS (`perspective`, `rotateY`, `backface-visibility`). Al girar, la cara se desliza hacia el lado al que mira y las orejas y los reflejos del casco se mueven al revés, lo que da sensación de volumen.
+
+| API | Qué hace |
+|---|---|
+| atributo `seguir` | Gira la cabeza y el cuerpo hacia el cursor (o el dedo) |
+| atributo `curiosa` | Si nadie mueve el cursor, mira a los lados sola cada 2 a 4 s; a veces da una vuelta o muestra la espalda |
+| `laica.mirar(x, y)` | Mira hacia una dirección; `x` e `y` van de -1 a 1 |
+| `laica.girar("vuelta")` | Vuelta completa de 360° |
+| `laica.girar("espaldas")` | Se voltea, muestra la espalda un momento y vuelve |
+
+```html
+<laica-mascota estado="reposo" seguir curiosa></laica-mascota>
+```
+
+En `dormir`, `respirar`, `urgente` y `radiacion` mira de frente y quieta: en una alerta seria lo que importa es el mensaje, no el juego. En `alerta` mira al frente un poco hacia abajo. En la app, al acariciarla cuando todo está en verde, se da la vuelta.
+
 **Ver la demo en local:**
 
 ```bash
@@ -68,7 +86,7 @@ Luego abre `http://localhost:8765/demo.html`.
 ## 11.4 Accesibilidad
 
 - Tiene `aria-label` para lectores de pantalla.
-- Respeta `prefers-reduced-motion`: si el usuario pide menos movimiento, Laica se queda quieta y el estado se ve solo por color y expresión.
+- Respeta `prefers-reduced-motion`: si el usuario pide menos movimiento, Laica se queda quieta (sin vueltas ni giros de cabeza) y el estado se ve solo por color y expresión.
 - Los colores de alerta siempre van acompañados de texto en la burbuja; el color nunca es la única señal.
 
 ## 11.5 Derechos de la imagen original

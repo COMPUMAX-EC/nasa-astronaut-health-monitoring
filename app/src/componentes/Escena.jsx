@@ -38,6 +38,8 @@ function Controles({ voz, esHoy, checkIn, onCheckIn, mensaje, compacto = false }
 export default function Escena({ estadoLaica, mensaje, nivel, voz, esHoy, checkIn, onCheckIn, onAcariciar }) {
   const cielo = useMemo(() => estrellas(70), []);
   const ref = useRef(null);
+  const laicaRef = useRef(null);
+  const miniRef = useRef(null);
   const [visible, setVisible] = useState(true);
   const [salto, setSalto] = useState(false);
 
@@ -52,6 +54,11 @@ export default function Escena({ estadoLaica, mensaje, nivel, voz, esHoy, checkI
   const acariciar = () => {
     setSalto(false);
     requestAnimationFrame(() => setSalto(true)); // reinicia la animación aunque se toque seguido
+    // Al acariciarla se da una vuelta en 3D (o muestra la espalda), salvo si hay una alerta.
+    if (nivel === "verde") {
+      const el = visible ? laicaRef.current : miniRef.current;
+      el?.girar?.(Math.random() < 0.6 ? "vuelta" : "espaldas");
+    }
     onAcariciar();
   };
   useEffect(() => {
@@ -79,7 +86,7 @@ export default function Escena({ estadoLaica, mensaje, nivel, voz, esHoy, checkI
         <div className={`escenario ${tranquila ? "pasea" : "al-frente"}`}>
           <button type="button" className={`laica-boton${salto ? " salta" : ""}`} onClick={acariciar}
             aria-label="Acariciar a Laica">
-            <laica-mascota estado={estadoLaica} tamano="230"></laica-mascota>
+            <laica-mascota ref={laicaRef} estado={estadoLaica} tamano="230" seguir="" curiosa=""></laica-mascota>
           </button>
           <span className="sombra-laica" aria-hidden="true" />
         </div>
@@ -104,7 +111,7 @@ export default function Escena({ estadoLaica, mensaje, nivel, voz, esHoy, checkI
       {!visible && (
         <aside className={`compania nivel-${nivel}`} aria-label="Laica te acompaña">
           <button type="button" className="compania-laica" onClick={acariciar} aria-label="Acariciar a Laica">
-            <laica-mascota estado={estadoLaica} tamano="92"></laica-mascota>
+            <laica-mascota ref={miniRef} estado={estadoLaica} tamano="92" seguir="" curiosa=""></laica-mascota>
           </button>
           <div className="compania-texto">
             <p>{voz.escuchando ? voz.parcial || "Te escucho…" : mensaje}</p>

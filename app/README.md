@@ -55,6 +55,10 @@ npm test
 
 La mascota se importa directamente desde [`assets/laica/laica.js`](../assets/laica/laica.js), así que hay una sola copia.
 
+En la escena, Laica sigue el cursor con la cabeza, mira a los lados cuando nadie la toca y se da la vuelta en 3D al acariciarla (solo si todo está en verde). En alertas serias mira de frente, quieta. Detalle de la API (`seguir`, `curiosa`, `mirar()`, `girar()`) en [docs/11](../docs/11-mascota-laica.md).
+
+Si cambias el dibujo en `laica.js`, regenera la imagen estática y el ícono con `python scripts/generar_laica_svg.py`.
+
 ## Modelo de datos
 
 Cada medición sigue el modelo de [docs/06 §6.3](../docs/06-propuesta-arquitectura.md):

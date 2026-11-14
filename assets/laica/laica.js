@@ -114,6 +114,7 @@
     <rect x="103" y="196" width="94" height="88" rx="36" fill="url(#lc-traje)" stroke="var(--linea)" stroke-width="4"/>
     <rect x="103" y="196" width="94" height="88" rx="36" fill="#7F8EC4" opacity=".38" mask="url(#lc-m-torso)"/>
     <path d="M112 214 Q118 206 128 204" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity=".9"/>
+    <g class="solo-frente">
     <!-- Cinturón -->
     <path d="M105 266 Q150 276 195 266" fill="none" stroke="var(--linea)" stroke-width="3" opacity=".45"/>
     <rect x="143" y="265" width="14" height="10" rx="3" fill="url(#lc-metal)" stroke="var(--linea)" stroke-width="2.5"/>
@@ -142,6 +143,17 @@
     <circle cx="169.5" cy="232.5" r="1.5" fill="var(--linea)" opacity=".5"/>
     <circle cx="130.5" cy="253.5" r="1.5" fill="var(--linea)" opacity=".5"/>
     <circle cx="169.5" cy="253.5" r="1.5" fill="var(--linea)" opacity=".5"/>
+
+    </g>
+
+    <!-- Vista de espalda: mochila grande con ventilas (solo al darse la vuelta) -->
+    <g class="solo-espalda">
+      <rect x="104" y="200" width="92" height="80" rx="22" fill="url(#lc-metal)" stroke="var(--linea)" stroke-width="4"/>
+      <rect x="116" y="214" width="68" height="14" rx="7" fill="var(--linea)" opacity=".2"/>
+      <rect x="116" y="234" width="68" height="14" rx="7" fill="var(--linea)" opacity=".2"/>
+      <circle class="led" cx="150" cy="264" r="6" stroke="var(--linea)" stroke-width="3"/>
+      <rect x="182" y="256" width="9" height="14" rx="3" fill="#E8B53A" stroke="var(--linea)" stroke-width="2"/>
+    </g>
 
     <!-- Brazo izquierdo (el que saluda) -->
     <g class="brazo-i">
@@ -175,7 +187,9 @@
     <circle cx="192" cy="207" r="2.3" fill="var(--linea)" opacity=".55"/>
 
     <!-- Cabeza -->
+    <g class="cabeza-giro">
     <g class="cabeza">
+      <g class="orejas-giro">
       <g class="oreja-i">
         <path d="M100 112 L90 44 L138 84 Z" fill="url(#lc-pelaje)" stroke="var(--linea)" stroke-width="4" stroke-linejoin="round"/>
         <path d="M104 101 L98 60 L127 85 Z" fill="var(--rosa)"/>
@@ -188,11 +202,13 @@
         <path d="M196 101 L199 78 L187 92 Z" fill="#E07F88" opacity=".6"/>
         <path d="M193 99 L186 90 M189 102 L182 94" stroke="var(--crema)" stroke-width="2.5" stroke-linecap="round"/>
       </g>
+      </g>
       <ellipse cx="150" cy="136" rx="64" ry="54" fill="url(#lc-pelaje)" stroke="var(--linea)" stroke-width="4"/>
       <!-- Sombra de volumen de la cabeza -->
       <ellipse cx="150" cy="136" rx="64" ry="54" fill="#B85E0C" opacity=".35" mask="url(#lc-m-cabeza)"/>
       <!-- Mechón -->
       <path d="M140 87 Q144 74 150 84 Q155 72 160 87" fill="url(#lc-pelaje)" stroke="var(--linea)" stroke-width="3" stroke-linejoin="round"/>
+      <g class="cara-giro">
       <!-- Mancha blanca de la frente y hocico -->
       <path d="M141 90 Q150 85 159 90 L163 138 L137 138 Z" fill="url(#lc-crema)"/>
       <ellipse cx="150" cy="160" rx="42" ry="27" fill="url(#lc-crema)"/>
@@ -205,12 +221,14 @@
 
       <!-- Ojos abiertos -->
       <g class="ojos">
+        <g class="pupilas">
         <ellipse cx="127" cy="134" rx="8" ry="10" fill="url(#lc-ojo)"/>
         <ellipse cx="173" cy="134" rx="8" ry="10" fill="url(#lc-ojo)"/>
         <circle cx="130" cy="129.5" r="3" fill="#fff"/>
         <circle cx="176" cy="129.5" r="3" fill="#fff"/>
         <circle cx="124.5" cy="138.5" r="1.4" fill="#fff" opacity=".8"/>
         <circle cx="170.5" cy="138.5" r="1.4" fill="#fff" opacity=".8"/>
+        </g>
       </g>
       <!-- Ojos cerrados (dormir / respirar) -->
       <g class="ojos-cerrados" fill="none" stroke="var(--linea)" stroke-width="4" stroke-linecap="round">
@@ -243,16 +261,27 @@
 
       <!-- Gota de sudor (urgente) -->
       <path class="sudor" d="M203 104 Q196 116 203 121 Q210 116 203 104 Z" fill="#7CC8FF" stroke="var(--linea)" stroke-width="2.5"/>
+      </g>
+      <!-- Nuca (solo de espaldas): pelaje sin cara -->
+      <g class="nuca">
+        <ellipse cx="150" cy="136" rx="62" ry="52" fill="url(#lc-pelaje)"/>
+        <ellipse cx="150" cy="136" rx="62" ry="52" fill="#B85E0C" opacity=".3" mask="url(#lc-m-cabeza)"/>
+        <path d="M128 168 Q150 182 172 168" fill="none" stroke="#B9620F" stroke-width="3" stroke-linecap="round" opacity=".5"/>
+        <path d="M150 92 L150 120" stroke="#B9620F" stroke-width="2.5" stroke-linecap="round" opacity=".35"/>
+      </g>
+    </g>
     </g>
 
     <!-- Casco de cristal con reflejos -->
     <circle class="casco" cx="150" cy="128" r="92" fill="url(#lc-cristal)" stroke="var(--linea)" stroke-width="5"/>
+    <g class="reflejos">
     <circle cx="150" cy="128" r="86" fill="none" stroke="#fff" stroke-width="2" opacity=".35"/>
     <path d="M83 104 A70 70 0 0 1 118 54" fill="none" stroke="#fff" stroke-width="10" stroke-linecap="round" opacity=".8"/>
     <path d="M76 128 A75 75 0 0 1 79 113" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" opacity=".6"/>
     <path d="M190 196 A82 82 0 0 0 222 168" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" opacity=".35"/>
     <circle cx="214" cy="170" r="5" fill="#fff" opacity=".7"/>
     <circle cx="203" cy="182" r="2.5" fill="#fff" opacity=".6"/>
+    </g>
 
     <!-- Antena con luz (mismo color que el panel) -->
     <path d="M196 49 L211 20" stroke="var(--linea)" stroke-width="4" stroke-linecap="round"/>
@@ -287,8 +316,30 @@
 `;
 
   const CSS = `
-:host { display: inline-block; --tam: 240px; }
-.envoltura { width: var(--tam); }
+:host { display: inline-block; --tam: 240px; --mx: 0; --my: 0; perspective: 900px; }
+.envoltura {
+  width: var(--tam); position: relative; transform-style: preserve-3d;
+  transform: rotateY(calc(var(--mx) * 26deg)) rotateX(calc(var(--my) * -8deg));
+  transition: transform .6s cubic-bezier(.2, .8, .2, 1);
+}
+/* Dos caras del mismo personaje: frente y espalda, para poder darse la vuelta en 3D */
+svg.laica { backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+svg.laica.espalda { position: absolute; top: 0; left: 0; transform: rotateY(180deg); }
+.solo-espalda, .nuca { display: none; }
+svg.espalda .solo-espalda, svg.espalda .nuca { display: inline; }
+svg.espalda .solo-frente, svg.espalda .cara-giro, svg.espalda .halo { display: none; }
+svg.espalda .oreja-i > :not(:first-child), svg.espalda .oreja-d > :not(:first-child) { display: none; }
+/* Giro de cabeza: la cara se desliza, las orejas y los reflejos van al revés */
+.cabeza-giro { transform-origin: 150px 190px; transform: rotate(calc(var(--mx) * 4deg)) translate(calc(var(--mx) * 4px), calc(var(--my) * 3px)); transition: transform .45s ease-out; }
+.cara-giro   { transform: translate(calc(var(--mx) * 13px), calc(var(--my) * 6px)); transition: transform .45s ease-out; }
+.pupilas     { transform: translate(calc(var(--mx) * 2.5px), calc(var(--my) * 2px)); transition: transform .3s ease-out; }
+.orejas-giro { transform: translateX(calc(var(--mx) * -6px)); transition: transform .5s ease-out; }
+.reflejos    { transform: translateX(calc(var(--mx) * -7px)); transition: transform .6s ease-out; }
+/* Vueltas */
+.envoltura.vuelta  { animation: vuelta 1.2s cubic-bezier(.45, 0, .2, 1); }
+.envoltura.espaldas { animation: espaldas 2.6s cubic-bezier(.45, 0, .2, 1); }
+@keyframes vuelta   { from { transform: rotateY(0); } to { transform: rotateY(360deg); } }
+@keyframes espaldas { 0% { transform: rotateY(0); } 30%, 70% { transform: rotateY(180deg); } 100% { transform: rotateY(360deg); } }
 svg.laica {
   width: 100%; height: auto; overflow: visible; display: block;
   --linea: #1F2A5A; --naranja: #F39A2B; --crema: #FFF6EA; --rosa: #F4A3A8;
@@ -434,28 +485,92 @@ svg.laica.e-radiacion { --led: #B266FF; --halo: #B266FF; }
 
 /* Accesibilidad: sin movimiento si el usuario lo pide */
 @media (prefers-reduced-motion: reduce) {
-  svg.laica *, svg.laica .cuerpo-entero { animation: none !important; }
+  svg.laica *, svg.laica .cuerpo-entero, .envoltura { animation: none !important; }
+  .envoltura, .cara-giro, .cabeza-giro, .pupilas, .orejas-giro, .reflejos { transition: none !important; }
   .halo { opacity: .6 !important; }
 }
 `;
 
   class LaicaMascota extends HTMLElement {
-    static get observedAttributes() { return ["estado", "tamano"]; }
+    static get observedAttributes() { return ["estado", "tamano", "seguir", "curiosa"]; }
 
     constructor() {
       super();
       const root = this.attachShadow({ mode: "open" });
-      root.innerHTML = `<style>${CSS}</style><div class="envoltura">${SVG}</div>`;
-      this._svg = root.querySelector("svg");
+      const espalda = SVG.replace('class="laica"', 'class="laica espalda" aria-hidden="true"');
+      root.innerHTML = `<style>${CSS}</style><div class="envoltura">${SVG}${espalda}</div>`;
+      this._svgs = [...root.querySelectorAll("svg")];
+      this._svg = this._svgs[0];
       this._env = root.querySelector(".envoltura");
+      this._env.addEventListener("animationend", (e) => {
+        if (e.target === this._env) this._env.classList.remove("vuelta", "espaldas");
+      });
+      this._alMover = (e) => this._seguirPuntero(e);
     }
 
     connectedCallback() {
       if (!this.hasAttribute("estado")) this.setAttribute("estado", "reposo");
       this._aplicar();
+      window.addEventListener("pointermove", this._alMover, { passive: true });
+      this._programarCuriosidad();
+    }
+
+    disconnectedCallback() {
+      window.removeEventListener("pointermove", this._alMover);
+      clearTimeout(this._tc);
     }
 
     attributeChangedCallback() { this._aplicar(); }
+
+    get _sinMovimiento() {
+      return Boolean(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+    }
+
+    /** Mira hacia una dirección: x e y entre -1 (izquierda/arriba) y 1 (derecha/abajo). */
+    mirar(x = 0, y = 0) {
+      const l = (v) => Math.max(-1, Math.min(1, v));
+      this.style.setProperty("--mx", l(x).toFixed(3));
+      this.style.setProperty("--my", l(y).toFixed(3));
+    }
+
+    /** Da una vuelta completa ("vuelta") o se voltea y muestra la espalda un momento ("espaldas"). */
+    girar(tipo = "vuelta") {
+      if (this._sinMovimiento) return;
+      this._env.classList.remove("vuelta", "espaldas");
+      void this._env.offsetWidth; // reinicia la animación
+      this._env.classList.add(tipo === "espaldas" ? "espaldas" : "vuelta");
+    }
+
+    // Estados en los que Laica mira de frente, quieta: descanso, respiración y alertas serias.
+    get _deFrente() { return ["dormir", "respirar", "urgente", "radiacion"].includes(this.estado); }
+
+    _seguirPuntero(e) {
+      if (!this.hasAttribute("seguir") || this._deFrente) return;
+      const r = this.getBoundingClientRect();
+      if (!r.width) return;
+      const cx = r.left + r.width / 2, cy = r.top + r.height * 0.4;
+      this.mirar((e.clientX - cx) / (window.innerWidth / 2), (e.clientY - cy) / (window.innerHeight / 2));
+      this._ultimoPuntero = Date.now();
+    }
+
+    // Curiosidad: si nadie mueve el cursor, mira a los lados sola y a veces se da la vuelta.
+    _programarCuriosidad() {
+      clearTimeout(this._tc);
+      this._tc = setTimeout(() => {
+        const quieto = Date.now() - (this._ultimoPuntero || 0) > 3500;
+        if (this.hasAttribute("curiosa") && quieto && !this._sinMovimiento) {
+          if (this._deFrente) this.mirar(0, 0);
+          else if (this.estado === "alerta") this.mirar(0, 0.1);
+          else {
+            const r = Math.random();
+            if (r < 0.1) this.girar(Math.random() < 0.5 ? "vuelta" : "espaldas");
+            else if (r < 0.3) this.mirar(0, 0);
+            else this.mirar((Math.random() * 2 - 1) * 0.9, (Math.random() * 2 - 1) * 0.5);
+          }
+        }
+        this._programarCuriosidad();
+      }, 1800 + Math.random() * 2600);
+    }
 
     get estado() { return this.getAttribute("estado") || "reposo"; }
     set estado(v) { this.setAttribute("estado", v); }
@@ -470,8 +585,11 @@ svg.laica.e-radiacion { --led: #B266FF; --halo: #B266FF; }
     _aplicar() {
       if (!this._svg) return;
       const e = ESTADOS.includes(this.estado) ? this.estado : "reposo";
-      ESTADOS.forEach((x) => this._svg.classList.remove("e-" + x));
-      this._svg.classList.add("e-" + e);
+      for (const svg of this._svgs) {
+        ESTADOS.forEach((x) => svg.classList.remove("e-" + x));
+        svg.classList.add("e-" + e);
+      }
+      if (this._deFrente) this.mirar(0, 0);
       const t = parseInt(this.getAttribute("tamano"), 10);
       if (t) this._env.style.width = t + "px";
       this.dispatchEvent(new CustomEvent("laica-estado", { detail: { estado: e } }));
