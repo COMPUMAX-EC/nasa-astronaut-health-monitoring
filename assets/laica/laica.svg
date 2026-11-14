@@ -1,5 +1,5 @@
 <!-- Generado desde laica.js (estado: reposo). Edita laica.js, no este archivo. -->
-<svg viewBox="0 0 300 340" xmlns="http://www.w3.org/2000/svg" role="img" class="laica e-reposo" aria-label="Laica, la perra astronauta">
+<svg class="laica e-reposo" viewBox="0 0 300 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Laica, la perra astronauta">
   <style>
 svg.laica {
   width: 100%; height: auto; overflow: visible; display: block;
@@ -150,67 +150,180 @@ svg.laica.e-radiacion { --led: #B266FF; --halo: #B266FF; }
   .halo { opacity: .6 !important; }
 }
 </style>
-  <g class="cuerpo-entero">
+  <defs>
+    <radialGradient id="lc-brillo" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#7FD1FF" stop-opacity=".35"/>
+      <stop offset=".6" stop-color="#7FD1FF" stop-opacity=".08"/>
+      <stop offset="1" stop-color="#7FD1FF" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="lc-pelaje" cx="38%" cy="30%" r="80%">
+      <stop offset="0" stop-color="#FFC069"/>
+      <stop offset=".55" stop-color="#F39A2B"/>
+      <stop offset="1" stop-color="#D9761A"/>
+    </radialGradient>
+    <radialGradient id="lc-crema" cx="45%" cy="35%" r="75%">
+      <stop offset="0" stop-color="#FFFFFF"/>
+      <stop offset="1" stop-color="#F6E6D2"/>
+    </radialGradient>
+    <linearGradient id="lc-traje" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FFFFFF"/>
+      <stop offset=".6" stop-color="#EEF2FD"/>
+      <stop offset="1" stop-color="#CDD6F2"/>
+    </linearGradient>
+    <linearGradient id="lc-metal" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#EEF2FF"/>
+      <stop offset=".5" stop-color="#C3CDEE"/>
+      <stop offset="1" stop-color="#8E9DD3"/>
+    </linearGradient>
+    <linearGradient id="lc-bota" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#C9D3F2"/>
+      <stop offset="1" stop-color="#7E8EC9"/>
+    </linearGradient>
+    <radialGradient id="lc-cristal" cx="35%" cy="28%" r="78%">
+      <stop offset="0" stop-color="#FFFFFF" stop-opacity=".30"/>
+      <stop offset=".55" stop-color="#B0DEFF" stop-opacity=".16"/>
+      <stop offset=".88" stop-color="#6FA8E6" stop-opacity=".30"/>
+      <stop offset="1" stop-color="#3D6FB8" stop-opacity=".55"/>
+    </radialGradient>
+    <radialGradient id="lc-ojo" cx="40%" cy="35%" r="70%">
+      <stop offset="0" stop-color="#3B4C8C"/>
+      <stop offset="1" stop-color="#141C42"/>
+    </radialGradient>
+    <filter id="lc-sombra" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="8" stdDeviation="7" flood-color="#060B24" flood-opacity=".38"/>
+    </filter>
+    <mask id="lc-m-cabeza">
+      <ellipse cx="150" cy="136" rx="64" ry="54" fill="#fff"/>
+      <ellipse cx="141" cy="125" rx="64" ry="54" fill="#000"/>
+    </mask>
+    <mask id="lc-m-torso">
+      <rect x="103" y="196" width="94" height="88" rx="36" fill="#fff"/>
+      <rect x="93" y="188" width="94" height="88" rx="36" fill="#000"/>
+    </mask>
+  </defs>
+
+  <!-- Brillo ambiental (no se mueve) -->
+  <circle cx="150" cy="175" r="150" fill="url(#lc-brillo)"/>
+
+  <g class="cuerpo-entero" filter="url(#lc-sombra)">
     <!-- Halo de alerta alrededor del casco -->
     <circle class="halo" cx="150" cy="128" r="102" fill="none" stroke-width="10"/>
 
-    <!-- Cola -->
+    <!-- Mochila de soporte vital (detrás del cuerpo) -->
+    <rect x="90" y="198" width="120" height="74" rx="20" fill="url(#lc-metal)" stroke="var(--linea)" stroke-width="4"/>
+    <rect x="96" y="214" width="8" height="40" rx="4" fill="var(--linea)" opacity=".18"/>
+    <rect x="196" y="214" width="8" height="40" rx="4" fill="var(--linea)" opacity=".18"/>
+
+    <!-- Cola con punta blanca -->
     <g class="cola">
-      <ellipse cx="203" cy="286" rx="16" ry="11" fill="var(--naranja)" stroke="var(--linea)" stroke-width="4" transform="rotate(-25 203 286)"/>
+      <g transform="rotate(-25 203 286)">
+        <ellipse cx="203" cy="286" rx="17" ry="11.5" fill="url(#lc-pelaje)" stroke="var(--linea)" stroke-width="4"/>
+        <ellipse cx="214" cy="285" rx="6.5" ry="7" fill="url(#lc-crema)"/>
+        <path d="M193 291 Q203 295 213 291" fill="none" stroke="#C96A10" stroke-width="2" opacity=".5" stroke-linecap="round"/>
+      </g>
     </g>
 
-    <!-- Piernas y botas -->
+    <!-- Piernas, rodilleras y botas -->
     <g class="piernas" stroke="var(--linea)" stroke-width="4" stroke-linejoin="round">
-      <g class="pierna-i"><rect x="112" y="262" width="32" height="50" rx="15" fill="var(--traje)"/><ellipse cx="128" cy="314" rx="19" ry="11" fill="var(--panel)"/></g>
-      <g class="pierna-d"><rect x="156" y="262" width="32" height="50" rx="15" fill="var(--traje)"/><ellipse cx="172" cy="314" rx="19" ry="11" fill="var(--panel)"/></g>
+      <g class="pierna-i">
+        <rect x="112" y="262" width="32" height="50" rx="15" fill="url(#lc-traje)"/>
+        <rect x="133" y="270" width="7" height="34" rx="3.5" fill="#8E9BC8" opacity=".35" stroke="none"/>
+        <ellipse cx="128" cy="288" rx="11" ry="7" fill="url(#lc-metal)" stroke-width="3"/>
+        <ellipse cx="128" cy="314" rx="19" ry="11" fill="url(#lc-bota)"/>
+        <path d="M112 318 Q128 326 144 318" fill="none" stroke-width="3" opacity=".6"/>
+      </g>
+      <g class="pierna-d">
+        <rect x="156" y="262" width="32" height="50" rx="15" fill="url(#lc-traje)"/>
+        <rect x="177" y="270" width="7" height="34" rx="3.5" fill="#8E9BC8" opacity=".35" stroke="none"/>
+        <ellipse cx="172" cy="288" rx="11" ry="7" fill="url(#lc-metal)" stroke-width="3"/>
+        <ellipse cx="172" cy="314" rx="19" ry="11" fill="url(#lc-bota)"/>
+        <path d="M156 318 Q172 326 188 318" fill="none" stroke-width="3" opacity=".6"/>
+      </g>
     </g>
 
     <!-- Torso del traje -->
-    <rect x="103" y="196" width="94" height="88" rx="36" fill="var(--traje)" stroke="var(--linea)" stroke-width="4"/>
+    <rect x="103" y="196" width="94" height="88" rx="36" fill="url(#lc-traje)" stroke="var(--linea)" stroke-width="4"/>
+    <rect x="103" y="196" width="94" height="88" rx="36" fill="#7F8EC4" opacity=".38" mask="url(#lc-m-torso)"/>
+    <path d="M112 214 Q118 206 128 204" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity=".9"/>
+    <!-- Cinturón -->
+    <path d="M105 266 Q150 276 195 266" fill="none" stroke="var(--linea)" stroke-width="3" opacity=".45"/>
+    <rect x="143" y="265" width="14" height="10" rx="3" fill="url(#lc-metal)" stroke="var(--linea)" stroke-width="2.5"/>
+    <!-- Insignia de misión -->
+    <circle cx="116" cy="251" r="7.5" fill="#2F6BFF" stroke="var(--linea)" stroke-width="2.5"/>
+    <path d="M116 246 l1.6 3.3 3.6.5 -2.6 2.5 .6 3.6 -3.2 -1.7 -3.2 1.7 .6 -3.6 -2.6 -2.5 3.6 -.5 z" fill="#FFD447"/>
+
     <!-- Panel del pecho con luz de estado -->
-    <rect x="126" y="228" width="48" height="30" rx="7" fill="var(--panel)" stroke="var(--linea)" stroke-width="4"/>
+    <rect x="126" y="228" width="48" height="30" rx="7" fill="url(#lc-metal)" stroke="var(--linea)" stroke-width="4"/>
     <circle class="led" cx="139" cy="243" r="6.5" stroke="var(--linea)" stroke-width="3"/>
+    <ellipse cx="137" cy="240.5" rx="2.4" ry="1.6" fill="#fff" opacity=".85"/>
     <rect x="152" y="237" width="15" height="4" rx="2" fill="var(--linea)" opacity=".55"/>
     <rect x="152" y="245" width="10" height="4" rx="2" fill="var(--linea)" opacity=".55"/>
+    <circle cx="130.5" cy="232.5" r="1.5" fill="var(--linea)" opacity=".5"/>
+    <circle cx="169.5" cy="232.5" r="1.5" fill="var(--linea)" opacity=".5"/>
+    <circle cx="130.5" cy="253.5" r="1.5" fill="var(--linea)" opacity=".5"/>
+    <circle cx="169.5" cy="253.5" r="1.5" fill="var(--linea)" opacity=".5"/>
 
     <!-- Brazo izquierdo (el que saluda) -->
     <g class="brazo-i">
-      <rect x="62" y="207" width="54" height="27" rx="13.5" fill="var(--traje)" stroke="var(--linea)" stroke-width="4"/>
-      <circle cx="62" cy="220" r="15" fill="var(--naranja)" stroke="var(--linea)" stroke-width="4"/>
+      <rect x="62" y="207" width="54" height="27" rx="13.5" fill="url(#lc-traje)" stroke="var(--linea)" stroke-width="4"/>
+      <rect x="80" y="223" width="32" height="7" rx="3.5" fill="#8E9BC8" opacity=".35"/>
+      <rect x="72" y="205" width="9" height="31" rx="4" fill="url(#lc-metal)" stroke="var(--linea)" stroke-width="3"/>
+      <circle cx="62" cy="220" r="15" fill="url(#lc-pelaje)" stroke="var(--linea)" stroke-width="4"/>
+      <path d="M53 214 Q51 220 53 226 M59 211 Q57 220 59 229" fill="none" stroke="#B9620F" stroke-width="2.2" stroke-linecap="round" opacity=".7"/>
     </g>
     <!-- Brazo derecho -->
     <g class="brazo-d">
-      <rect x="184" y="207" width="54" height="27" rx="13.5" fill="var(--traje)" stroke="var(--linea)" stroke-width="4"/>
-      <circle cx="238" cy="220" r="15" fill="var(--naranja)" stroke="var(--linea)" stroke-width="4"/>
+      <rect x="184" y="207" width="54" height="27" rx="13.5" fill="url(#lc-traje)" stroke="var(--linea)" stroke-width="4"/>
+      <rect x="188" y="223" width="32" height="7" rx="3.5" fill="#8E9BC8" opacity=".35"/>
+      <rect x="219" y="205" width="9" height="31" rx="4" fill="url(#lc-metal)" stroke="var(--linea)" stroke-width="3"/>
+      <circle cx="238" cy="220" r="15" fill="url(#lc-pelaje)" stroke="var(--linea)" stroke-width="4"/>
+      <path d="M247 214 Q249 220 247 226 M241 211 Q243 220 241 229" fill="none" stroke="#B9620F" stroke-width="2.2" stroke-linecap="round" opacity=".7"/>
     </g>
 
-    <!-- Cuello del traje -->
-    <ellipse cx="150" cy="204" rx="58" ry="13" fill="var(--panel)" stroke="var(--linea)" stroke-width="4"/>
+    <!-- Anillo del cuello con tornillos -->
+    <ellipse cx="150" cy="204" rx="58" ry="13" fill="url(#lc-metal)" stroke="var(--linea)" stroke-width="4"/>
+    <path d="M100 201 Q150 190 200 201" fill="none" stroke="#fff" stroke-width="3" opacity=".8" stroke-linecap="round"/>
+    <circle cx="108" cy="207" r="2.3" fill="var(--linea)" opacity=".55"/>
+    <circle cx="150" cy="215" r="2.3" fill="var(--linea)" opacity=".55"/>
+    <circle cx="192" cy="207" r="2.3" fill="var(--linea)" opacity=".55"/>
 
     <!-- Cabeza -->
     <g class="cabeza">
       <g class="oreja-i">
-        <path d="M100 112 L90 44 L138 84 Z" fill="var(--naranja)" stroke="var(--linea)" stroke-width="4" stroke-linejoin="round"/>
+        <path d="M100 112 L90 44 L138 84 Z" fill="url(#lc-pelaje)" stroke="var(--linea)" stroke-width="4" stroke-linejoin="round"/>
         <path d="M104 101 L98 60 L127 85 Z" fill="var(--rosa)"/>
+        <path d="M104 101 L101 78 L113 92 Z" fill="#E07F88" opacity=".6"/>
+        <path d="M107 99 L114 90 M111 102 L118 94" stroke="var(--crema)" stroke-width="2.5" stroke-linecap="round"/>
       </g>
       <g class="oreja-d">
-        <path d="M200 112 L210 44 L162 84 Z" fill="var(--naranja)" stroke="var(--linea)" stroke-width="4" stroke-linejoin="round"/>
+        <path d="M200 112 L210 44 L162 84 Z" fill="url(#lc-pelaje)" stroke="var(--linea)" stroke-width="4" stroke-linejoin="round"/>
         <path d="M196 101 L202 60 L173 85 Z" fill="var(--rosa)"/>
+        <path d="M196 101 L199 78 L187 92 Z" fill="#E07F88" opacity=".6"/>
+        <path d="M193 99 L186 90 M189 102 L182 94" stroke="var(--crema)" stroke-width="2.5" stroke-linecap="round"/>
       </g>
-      <ellipse cx="150" cy="136" rx="64" ry="54" fill="var(--naranja)" stroke="var(--linea)" stroke-width="4"/>
+      <ellipse cx="150" cy="136" rx="64" ry="54" fill="url(#lc-pelaje)" stroke="var(--linea)" stroke-width="4"/>
+      <!-- Sombra de volumen de la cabeza -->
+      <ellipse cx="150" cy="136" rx="64" ry="54" fill="#B85E0C" opacity=".35" mask="url(#lc-m-cabeza)"/>
+      <!-- Mechón -->
+      <path d="M140 87 Q144 74 150 84 Q155 72 160 87" fill="url(#lc-pelaje)" stroke="var(--linea)" stroke-width="3" stroke-linejoin="round"/>
       <!-- Mancha blanca de la frente y hocico -->
-      <path d="M141 90 Q150 85 159 90 L163 138 L137 138 Z" fill="var(--crema)"/>
-      <ellipse cx="150" cy="160" rx="42" ry="27" fill="var(--crema)"/>
+      <path d="M141 90 Q150 85 159 90 L163 138 L137 138 Z" fill="url(#lc-crema)"/>
+      <ellipse cx="150" cy="160" rx="42" ry="27" fill="url(#lc-crema)"/>
+      <path d="M118 172 Q150 192 182 172" fill="none" stroke="#E2CDB4" stroke-width="3" stroke-linecap="round" opacity=".8"/>
+      <!-- Brillo de la frente -->
+      <ellipse cx="118" cy="106" rx="12" ry="7" fill="#fff" opacity=".28" transform="rotate(-25 118 106)"/>
       <!-- Mejillas -->
-      <ellipse cx="113" cy="156" rx="9" ry="5" fill="var(--rosa)" opacity=".7"/>
-      <ellipse cx="187" cy="156" rx="9" ry="5" fill="var(--rosa)" opacity=".7"/>
+      <ellipse cx="113" cy="156" rx="9" ry="5" fill="var(--rosa)" opacity=".75"/>
+      <ellipse cx="187" cy="156" rx="9" ry="5" fill="var(--rosa)" opacity=".75"/>
 
       <!-- Ojos abiertos -->
       <g class="ojos">
-        <ellipse cx="127" cy="134" rx="7.5" ry="9.5" fill="var(--linea)"/>
-        <ellipse cx="173" cy="134" rx="7.5" ry="9.5" fill="var(--linea)"/>
-        <circle cx="129.5" cy="130" r="2.6" fill="#fff"/>
-        <circle cx="175.5" cy="130" r="2.6" fill="#fff"/>
+        <ellipse cx="127" cy="134" rx="8" ry="10" fill="url(#lc-ojo)"/>
+        <ellipse cx="173" cy="134" rx="8" ry="10" fill="url(#lc-ojo)"/>
+        <circle cx="130" cy="129.5" r="3" fill="#fff"/>
+        <circle cx="176" cy="129.5" r="3" fill="#fff"/>
+        <circle cx="124.5" cy="138.5" r="1.4" fill="#fff" opacity=".8"/>
+        <circle cx="170.5" cy="138.5" r="1.4" fill="#fff" opacity=".8"/>
       </g>
       <!-- Ojos cerrados (dormir / respirar) -->
       <g class="ojos-cerrados" fill="none" stroke="var(--linea)" stroke-width="4" stroke-linecap="round">
@@ -224,12 +337,14 @@ svg.laica.e-radiacion { --led: #B266FF; --halo: #B266FF; }
       </g>
 
       <!-- Nariz -->
-      <ellipse cx="150" cy="151" rx="7.5" ry="5.2" fill="var(--linea)"/>
+      <ellipse cx="150" cy="151" rx="7.5" ry="5.2" fill="url(#lc-ojo)"/>
+      <ellipse cx="147.5" cy="149" rx="2.6" ry="1.5" fill="#fff" opacity=".7"/>
 
       <!-- Bocas (se muestra una según el estado) -->
       <g class="boca boca-sonrisa">
         <path d="M139 159 Q150 170 161 159" fill="none" stroke="var(--linea)" stroke-width="3.5" stroke-linecap="round"/>
         <path d="M145 164 Q150 176 155 164 Z" fill="var(--rosa)" stroke="var(--linea)" stroke-width="2.5"/>
+        <path d="M150 166 L150 171" stroke="#E07F88" stroke-width="1.5" stroke-linecap="round"/>
       </g>
       <g class="boca boca-abierta">
         <ellipse cx="150" cy="166" rx="9" ry="9" fill="var(--linea)"/>
@@ -243,10 +358,19 @@ svg.laica.e-radiacion { --led: #B266FF; --halo: #B266FF; }
       <path class="sudor" d="M203 104 Q196 116 203 121 Q210 116 203 104 Z" fill="#7CC8FF" stroke="var(--linea)" stroke-width="2.5"/>
     </g>
 
-    <!-- Casco de cristal -->
-    <circle class="casco" cx="150" cy="128" r="92" fill="var(--cristal)" stroke="var(--linea)" stroke-width="5"/>
-    <path d="M83 104 A70 70 0 0 1 118 54" fill="none" stroke="#fff" stroke-width="10" stroke-linecap="round" opacity=".75"/>
-    <circle cx="214" cy="170" r="6" fill="#fff" opacity=".6"/>
+    <!-- Casco de cristal con reflejos -->
+    <circle class="casco" cx="150" cy="128" r="92" fill="url(#lc-cristal)" stroke="var(--linea)" stroke-width="5"/>
+    <circle cx="150" cy="128" r="86" fill="none" stroke="#fff" stroke-width="2" opacity=".35"/>
+    <path d="M83 104 A70 70 0 0 1 118 54" fill="none" stroke="#fff" stroke-width="10" stroke-linecap="round" opacity=".8"/>
+    <path d="M76 128 A75 75 0 0 1 79 113" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" opacity=".6"/>
+    <path d="M190 196 A82 82 0 0 0 222 168" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" opacity=".35"/>
+    <circle cx="214" cy="170" r="5" fill="#fff" opacity=".7"/>
+    <circle cx="203" cy="182" r="2.5" fill="#fff" opacity=".6"/>
+
+    <!-- Antena con luz (mismo color que el panel) -->
+    <path d="M196 49 L211 20" stroke="var(--linea)" stroke-width="4" stroke-linecap="round"/>
+    <circle class="led antena" cx="212" cy="17" r="6" stroke="var(--linea)" stroke-width="3"/>
+    <circle cx="210.2" cy="15.2" r="1.8" fill="#fff" opacity=".85"/>
 
     <!-- Zzz (dormir) -->
     <g class="zzz" fill="#FFFFFF" stroke="var(--linea)" stroke-width="1.5" font-family="Arial Rounded MT Bold, Arial, sans-serif" font-weight="700">
