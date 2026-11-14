@@ -28,7 +28,7 @@ Aquí se reúne la documentación **oficial de NASA** (y de agencias socias) má
 
 ## 📱 La app
 
-[`app/`](app/) tiene la app offline (React + Vite, PWA). Ya funcionan las **fases 1 y 2**: Laica, los 6 indicadores del reto con su tendencia, 30 días simulados, check‑in y alertas 🟢🟡🟠🔴. Cómo correrla: [app/README.md](app/README.md).
+[`app/`](app/) tiene la app offline (React + Vite, PWA). Ya funcionan las **fases 1 a 3**: Laica (que habla y escucha), los 6 indicadores del reto con su tendencia, 30 días simulados, check‑in, alertas 🟢🟡🟠🔴 y el cuerpo humano clicable. Cómo correrla: [app/README.md](app/README.md).
 
 ## 🗂️ Datos
 

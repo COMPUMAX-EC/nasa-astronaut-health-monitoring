@@ -1,9 +1,11 @@
-# App Laica · Salud del tripulante (fases 1 y 2)
+# App Laica · Salud del tripulante (fases 1 a 3 y voz)
 
 Aplicación web **offline** (PWA) del plan del proyecto ([docs/12](../docs/12-plan-de-proyecto.md)). Ya funcionan:
 
 - **Fase 1, base:** 30 días simulados de un tripulante, con Laica, los 6 indicadores del reto y los eventos de la misión.
 - **Fase 2, registro y alertas:** check‑in por teclado y clics, motor de alertas 🟢🟡🟠🔴, tarjetas coloreadas, panel de alertas con la acción sugerida y Laica que cambia de estado. Una barra permite recorrer la misión día por día.
+- **Fase 3, cuerpo clicable:** figura humana con 7 zonas. Cada una toma el color de su peor indicador y explica por qué importa en el espacio, con datos de la [matriz de riesgo](../docs/09-matriz-riesgo-indicadores.md).
+- **Voz:** Laica habla y escucha comandos en español.
 
 ## Cómo correrla
 
@@ -39,7 +41,13 @@ npm test
 | `src/motor/validacion.js` | Rechaza errores de tipeo en el check-in (por ejemplo 1650 en vez de 165) |
 | `src/componentes/CheckIn.jsx` | Formulario de check-in: caras para el ánimo y campos opcionales |
 | `src/componentes/Alertas.jsx` | Panel de alertas: motivo, acción, si hay que avisar al médico de vuelo y referencia |
-| `src/App.jsx` | Pantalla principal: Laica, barra de días, alertas, tarjetas y eventos |
+| `src/componentes/CuerpoHumano.jsx` | Figura clicable (ratón, teclado o botones) y panel de detalle de cada zona |
+| `src/datos/zonas.js` | Zonas del cuerpo, sus indicadores y por qué importan |
+| `src/datos/matriz.js` + `csv.js` | Incluye `data/indicadores.csv` en la app para explicar cada indicador sin conexión |
+| `src/voz/interpretar.js` | Entiende frases como "mi presión es 120 sobre 80" o "¿cómo estoy?" (reglas, sin IA ni nube) |
+| `src/voz/voz.js` | Hablar y escuchar con la Web Speech API del navegador |
+| `src/voz/useConversacion.js` | Conversación: escuchar → repetir lo entendido → confirmar → guardar → responder |
+| `src/App.jsx` | Pantalla principal: Laica, barra de días, alertas, cuerpo, tarjetas y eventos |
 | `sw.plantilla.js` + `vite.config.js` | Service worker que guarda todos los archivos en la primera visita para funcionar sin conexión |
 | `test/` | Pruebas con `node:test` (sin dependencias extra) |
 
@@ -91,6 +99,33 @@ Cada medición sigue el modelo de [docs/06 §6.3](../docs/06-propuesta-arquitect
 3. En **Eventos de la misión**, haz clic en "Día 18" (tormenta solar) o "Día 8–10" (mal sueño) para ver cómo estaba la misión ese día.
 4. **Regenerar datos de prueba** borra lo ingresado y vuelve al inicio.
 
-## Siguiente: fase 3
+## Voz: hablar con Laica
 
-Silueta del cuerpo clicable: cada zona se colorea con el peor nivel de sus indicadores.
+Toca **🎤 Hablar con Laica** y di, por ejemplo:
+
+| Frase | Qué hace |
+|---|---|
+| "Mi presión es 120 sobre 80" | Laica repite lo que entendió y pregunta "¿Lo guardo?". Responde **sí** o **no** (en voz o con los botones) |
+| "Pulso 62 y temperatura 36 punto 8" | Varios datos en una frase |
+| "Dormí 6 horas y media" · "Me siento bien" | Sueño y ánimo |
+| "¿Cómo estoy?" | Resume las alertas activas |
+| "Ayuda" · "Check-in" | Lista de comandos · abre el formulario |
+
+**🔊 Voz activada** hace que Laica lea en voz alta sus mensajes.
+
+- **Siempre confirma antes de guardar:** un error de reconocimiento no debe convertirse en un dato médico.
+- **Navegadores:** hablar funciona en todos los modernos; escuchar, en Chrome y Edge (Firefox no lo trae).
+- **Privacidad:** Chrome y Edge envían el audio a su servicio de reconocimiento, así que escuchar necesita internet y el audio sale del dispositivo. La app lo avisa. Para una misión real habría que usar un reconocedor local (por ejemplo Vosk o Whisper en el dispositivo; ver [docs/08](../docs/08-computo-ia-y-limitaciones.md)).
+- El micrófono requiere HTTPS (o localhost).
+
+## Despliegue en Vercel
+
+El repo tiene [`vercel.json`](../vercel.json) en la raíz: instala y compila `app/` y publica `app/dist`. Se compila desde la raíz porque la app importa la mascota (`assets/laica`) y la matriz (`data/indicadores.csv`).
+
+1. En [vercel.com/new](https://vercel.com/new), importa el repo de GitHub.
+2. Deja la carpeta raíz del proyecto como `./` (no `app`). Vercel toma el resto de `vercel.json`.
+3. Cada push a `main` vuelve a desplegar.
+
+## Siguiente: fase 4
+
+Personalidad de Laica: banco de frases con niveles de humor (ver [docs/12 §12.2](../docs/12-plan-de-proyecto.md)).
