@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import SelectorVoz from "./SelectorVoz.jsx";
+import LaicaLibre from "./LaicaLibre.jsx";
+import { useVentanaLaica } from "./useVentanaLaica.js";
 
 // Escena principal: Laica es la protagonista. Flota y pasea por el espacio cuando todo va
 // bien, y se planta al frente cuando hay una alerta. Al bajar por la página, una Laica
@@ -42,6 +44,10 @@ export default function Escena({ estadoLaica, mensaje, nivel, voz, esHoy, checkI
   const miniRef = useRef(null);
   const [visible, setVisible] = useState(true);
   const [salto, setSalto] = useState(false);
+  const [libre, setLibre] = useState(false);
+  const visibleRef = useRef(true);
+  visibleRef.current = visible;
+  const fuera = useVentanaLaica({ estado: estadoLaica, mensaje, onAcariciar });
 
   useEffect(() => {
     if (!ref.current || typeof IntersectionObserver === "undefined") return;
@@ -51,6 +57,18 @@ export default function Escena({ estadoLaica, mensaje, nivel, voz, esHoy, checkI
   }, []);
 
   const tranquila = nivel === "verde";
+  const sinMovimiento = typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+  const puedeSalir = tranquila && !sinMovimiento && !fuera.abierta;
+  const ausente = libre || fuera.abierta; // Laica no está en su sitio
+  // Dónde vuelve: a la escena si se ve, o a la esquina de compañía si se bajó por la página.
+  const casa = () => (visibleRef.current ? laicaRef.current : miniRef.current)?.getBoundingClientRect();
+
+  // Cada tanto, si todo está en verde y nadie le está hablando, se escapa a explorar la pantalla.
+  useEffect(() => {
+    if (!puedeSalir || libre || voz.escuchando || voz.pendiente) return;
+    const t = setTimeout(() => { if (!document.hidden) setLibre(true); }, 15000 + Math.random() * 20000);
+    return () => clearTimeout(t);
+  }, [puedeSalir, libre, voz.escuchando, voz.pendiente]);
   const acariciar = () => {
     setSalto(false);
     requestAnimationFrame(() => setSalto(true)); // reinicia la animación aunque se toque seguido
@@ -84,7 +102,7 @@ export default function Escena({ estadoLaica, mensaje, nivel, voz, esHoy, checkI
         </div>
 
         <div className={`escenario ${tranquila ? "pasea" : "al-frente"}`}>
-          <button type="button" className={`laica-boton${salto ? " salta" : ""}`} onClick={acariciar}
+          <button type="button" className={`laica-boton${salto ? " salta" : ""}${ausente ? " oculta" : ""}`} onClick={acariciar}
             aria-label="Acariciar a Laica">
             <laica-mascota ref={laicaRef} estado={estadoLaica} tamano="230" seguir="" curiosa=""></laica-mascota>
           </button>
@@ -104,13 +122,27 @@ export default function Escena({ estadoLaica, mensaje, nivel, voz, esHoy, checkI
           )}
           <Controles voz={voz} esHoy={esHoy} checkIn={checkIn} onCheckIn={onCheckIn} mensaje={mensaje} />
           {voz.vozActiva && voz.soporte.hablar && <SelectorVoz />}
-          <p className="pista">Toca a Laica para saludarla.</p>
+          {(puedeSalir || fuera.abierta) && (
+            <div className="botones-laica escapadas">
+              {puedeSalir && !libre && (
+                <button type="button" onClick={() => setLibre(true)}><span aria-hidden="true">🚀</span> Déjala explorar</button>
+              )}
+              {fuera.soportada && (
+                <button type="button" onClick={fuera.abierta ? fuera.cerrar : fuera.abrir} aria-pressed={fuera.abierta}>
+                  <span aria-hidden="true">🪟</span> {fuera.abierta ? "Traer a Laica de vuelta" : "Sacarla del navegador"}
+                </button>
+              )}
+            </div>
+          )}
+          <p className="pista">{fuera.abierta
+            ? "Laica está en una ventanita flotante: arrástrala a cualquier parte de tu pantalla."
+            : "Toca a Laica para saludarla."}</p>
         </div>
       </section>
 
       {!visible && (
         <aside className={`compania nivel-${nivel}`} aria-label="Laica te acompaña">
-          <button type="button" className="compania-laica" onClick={acariciar} aria-label="Acariciar a Laica">
+          <button type="button" className={`compania-laica${ausente ? " oculta" : ""}`} onClick={acariciar} aria-label="Acariciar a Laica">
             <laica-mascota ref={miniRef} estado={estadoLaica} tamano="92" seguir="" curiosa=""></laica-mascota>
           </button>
           <div className="compania-texto">
@@ -128,6 +160,11 @@ export default function Escena({ estadoLaica, mensaje, nivel, voz, esHoy, checkI
             )}
           </div>
         </aside>
+      )}
+
+      {libre && (
+        <LaicaLibre estado={estadoLaica} activa={puedeSalir} casa={casa}
+          onVolver={() => setLibre(false)} onAcariciar={onAcariciar} />
       )}
     </>
   );

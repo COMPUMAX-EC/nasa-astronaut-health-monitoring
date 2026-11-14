@@ -73,7 +73,7 @@ Laica no mira siempre al frente. El componente dibuja dos caras del mismo person
 <laica-mascota estado="reposo" seguir curiosa></laica-mascota>
 ```
 
-En `dormir`, `respirar`, `urgente` y `radiacion` mira de frente y quieta: en una alerta seria lo que importa es el mensaje, no el juego. En `alerta` mira al frente un poco hacia abajo. En la app, al acariciarla cuando todo está en verde, se da la vuelta.
+En `dormir`, `respirar`, `urgente` y `radiacion` mira de frente y quieta: en una alerta seria lo que importa es el mensaje, no el juego. En `alerta` mira al frente un poco hacia abajo. En la app, al acariciarla cuando todo está en verde, se da la vuelta. Además, en la app se escapa a recorrer la pantalla, rebota en los bordes, se sale y se asoma, y puede pasar a una ventana flotante fuera del navegador (ver [app/README](../app/README.md)).
 
 **Ver la demo en local:**
 
