@@ -18,7 +18,7 @@ El equipo declara que usó herramientas de Inteligencia Artificial en el desarro
 - **El reconocimiento de voz.** Lo hace la Web Speech API del navegador, con un intérprete de reglas propio.
 - **Los datos.** Ningún dato del usuario se envía a servicios de IA ni a la nube.
 
-**Logos:** el proyecto **no usa** la insignia ("meatball") ni el logotipo ("worm") de la NASA, ni logos de la NASA hechos con IA. El crédito se da en texto: "Proyecto para el NASA Space Apps Challenge 2026". El proyecto no está afiliado ni respaldado por la NASA.
+**Logos:** el proyecto **no usa** la insignia ("meatball") ni el logotipo ("worm") de la NASA, ni logos de la NASA hechos con IA. Las diapositivas llevan, pequeño, el logo oficial del NASA Space Apps Challenge (sin modificar, no generado con IA) solo para identificar el evento, como permite la guía de marca de Space Apps. El crédito se da en texto: "Proyecto para el NASA Space Apps Challenge 2026". El proyecto no está afiliado ni respaldado por la NASA.
 
 **Otros recursos de terceros:**
 

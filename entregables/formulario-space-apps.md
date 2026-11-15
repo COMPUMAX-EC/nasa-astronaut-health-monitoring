@@ -89,7 +89,7 @@ Phrase bank and local memory, live DONKI feed, mission profiles, camera-based he
 Texto para el campo, si hay uno:
 
 ```
-We used Claude (Anthropic) as a coding and writing assistant: application code, the mascot's animation rig, documentation and the pitch script. Every output was reviewed and tested by the team (33 automated tests). [If applicable: Laica's images were created in Canva with AI image tools and carry a visible "SI-generated" watermark.] No SI was used for audio (CC0 sound effects) or for the data: thresholds and events come from official NASA sources, and no user data is sent to any AI service. No NASA logos, flags or mission identifiers were used or generated. Full declaration: entregables/declaracion-ia.md in the repository.
+We used Claude (Anthropic) as a coding and writing assistant: application code, the mascot's animation rig, documentation and the pitch script. Every output was reviewed and tested by the team (33 automated tests). [If applicable: Laica's images were created in Canva with AI image tools and carry a visible "SI-generated" watermark.] No SI was used for audio (CC0 sound effects) or for the data: thresholds and events come from official NASA sources, and no user data is sent to any AI service. The official NASA Space Apps Challenge logo appears on the slides only to identify the event; no NASA insignia (meatball or worm), flags or mission identifiers were used or generated. Full declaration: entregables/declaracion-ia.md in the repository.
 ```
 
 ---
@@ -141,4 +141,4 @@ Marcar las dos casillas (términos y obra original) **solo después** de comprob
 - [ ] Todos los enlaces abren sin iniciar sesión, en una ventana privada.
 - [ ] Las diapositivas son 7 como máximo y el enlace es público.
 - [ ] La pregunta de las imágenes de Canva está resuelta (marca de agua si se hicieron con IA).
-- [ ] No aparece ningún logo, bandera ni identificador de misión de la NASA.
+- [ ] Solo aparece el logo oficial de Space Apps (identifica el evento); ninguna insignia, bandera ni identificador de misión de la NASA.

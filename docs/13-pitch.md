@@ -5,7 +5,7 @@
 Guion del pitch en vivo (en español) para la sede Sangolquí, armado sobre la [rúbrica oficial](rubrica/README.md). Son **7 diapositivas** (el máximo; con 8 se pierde 1 punto) y unos **5 minutos** de exposición. La guía no fija la duración: hay ≈ 15 minutos por equipo para pitch, Q&A y calificación, así que **confirmen el tiempo con el Staff** y recorten la demo si les dan menos.
 
 - **Diapositivas:** las del artefacto "Misión Laica — Pitch" (se exportan a PDF o PPTX). Las notas del orador de cada diapositiva tienen el texto de abajo.
-- **Placeholders a llenar:** `[Nombre del equipo]`, `[Nombre 1..3]` con sus roles, `[enlace público de Vercel]` y la nota sobre IA en las imágenes de Canva.
+- **Placeholders a llenar:** `[enlace público de Vercel]` y la nota sobre IA en las imágenes de Canva.
 
 ## 1. Estructura y tiempos
 
@@ -27,7 +27,7 @@ La historia sigue **Problema → Solución con datos → Impacto**, que es lo qu
 
 > En Marte, un mensaje a la Tierra tarda hasta **22 minutos** en llegar, y otros 22 en volver. Si a las 3 de la mañana a un astronauta le sube la presión, ¿quién le dice si es grave?
 >
-> Somos el equipo [nombre], de Ecuador. Nuestro reto es *Create Health Monitoring Software for Astronauts on Space Missions*. Esta es **Misión Laica**… y ella es Laica.
+> Somos el equipo Compumax Evolution, de Ecuador: Melany Irua, Diego Paz y Geovanny Basantes. Nuestro reto es *Create Health Monitoring Software for Astronauts on Space Missions*. Esta es **Misión Laica**… y ella es Laica.
 
 *(Si la app está abierta, que Laica salude y ladre aquí: abre con energía.)*
 

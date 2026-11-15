@@ -4,8 +4,8 @@ Texto listo para copiar en la plataforma global de NASA Space Apps y en el formu
 
 | Campo | Valor |
 |---|---|
-| **Equipo / Team** | [Nombre del equipo] |
-| **Integrantes y roles / Members** | [Nombre 1: frontend y cuerpo clicable] · [Nombre 2: datos, motor de alertas y fuentes NASA] · [Nombre 3: diseño de Laica y pitch] |
+| **Equipo / Team** | Compumax Evolution |
+| **Integrantes y roles / Members** | Melany Irua · Diego Paz · Geovanny Basantes |
 | **Sede / Local event** | NASA Space Apps Challenge Sangolquí 2026, Universidad de las Fuerzas Armadas ESPE, Ecuador |
 | **Reto / Challenge** | Create Health Monitoring Software for Astronauts on Space Missions |
 | **Repositorio / Repository** | https://github.com/COMPUMAX-EC/nasa-astronaut-health-monitoring |
