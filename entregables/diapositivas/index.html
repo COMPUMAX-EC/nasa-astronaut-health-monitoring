@@ -1,0 +1,475 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Misión Laica · Pitch</title>
+<!-- Con internet usa las fuentes del deck; sin internet cae a Arial sin romper nada. -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400..700&family=Inter:wght@400;600&display=swap">
+<style>
+* { margin: 0; box-sizing: border-box; }
+html, body { height: 100%; background: #04091a; overflow: hidden; }
+#escenario { position: absolute; left: 50%; top: 50%; width: 1920px; height: 1080px; transform-origin: 0 0; }
+#escenario > section { position: absolute; inset: 0; width: 1920px; height: 1080px; overflow: hidden; transition: opacity 450ms ease; }
+#escenario > section.saliendo { opacity: 0; }
+#escenario aside { display: none; }
+img, video { display: block; }
+.icono, svg.icono { display: block; }
+#notas { position: fixed; left: 0; right: 0; bottom: 0; max-height: 32vh; overflow: auto; padding: 16px 24px; background: rgba(4,9,26,.92); color: #e6edf8; font: 18px/1.5 Inter, Arial, sans-serif; display: none; }
+#notas.ver { display: block; }
+#ayuda { position: fixed; right: 16px; bottom: 12px; color: rgba(230,237,248,.55); font: 13px Inter, Arial, sans-serif; transition: opacity .6s; }
+:root {
+  --noche: #07173F;
+  --noche2: #0B2C6E;
+  --crema: #F5F8FD;
+  --crema2: #E6EDF8;
+  --naranja: #D0281A;
+  --azul: #2E96F5;
+  --tinta: #1B2D57;
+  --suave: #C3D3EE;
+  --fondo: #0A2A6B;
+  --fondo-claro: #C9D6EC;
+}
+body { font-family: 'Inter', Arial, sans-serif; color: var(--crema); }
+section { counter-increment: page; padding: 128px 128px 160px; background: linear-gradient(135deg, #0042A6 0%, #07173F 100%); display: flex; flex-direction: column; gap: 40px; }
+section.claro { background: var(--fondo-claro); color: var(--tinta); }
+section.acento { background: var(--naranja); color: var(--noche); }
+h1, h2, h3 { font-family: 'Space Grotesk', Arial, sans-serif; }
+h1 { font-size: 120px; font-weight: 700; line-height: 1.0; color: var(--crema); }
+h2 { font-size: 72px; font-weight: 700; line-height: 1.05; color: var(--crema); }
+section.claro h2 { color: var(--noche); }
+h3 { font-size: 44px; font-weight: 600; line-height: 1.1; }
+.ceja { font-size: 28px; font-weight: 600; letter-spacing: 3px; color: var(--naranja); }
+section.claro .ceja { color: #D0281A; }
+.texto { font-size: 32px; line-height: 1.4; color: var(--suave); }
+section.claro .texto { color: var(--tinta); }
+.pie { position: absolute; left: 128px; bottom: 64px; width: 1664px; font-size: 24px; color: var(--suave); display: flex; justify-content: space-between; }
+section.claro .pie { color: var(--tinta); }
+.fila { display: flex; gap: 32px; }
+.tarjeta { flex: 1; background: var(--noche2); border-top: 5px solid #D0281A; border-radius: 24px; padding: 40px; display: flex; flex-direction: column; gap: 16px; }
+section.claro .tarjeta { background: var(--crema2); }
+.tarjeta h3 { color: var(--crema); font-size: 40px; }
+section.claro .tarjeta h3 { color: var(--noche); }
+.tarjeta .texto { font-size: 28px; }
+.icono { width: 56px; height: 56px; color: var(--naranja); }
+section.claro .icono { color: #D0281A; }
+.grande { font-family: 'Space Grotesk', Arial, sans-serif; font-size: 120px; font-weight: 700; line-height: 1; color: var(--naranja); }
+.tabla { font-size: 28px; color: var(--tinta); }
+.paso { display: flex; gap: 24px; align-items: center; }
+.num { font-family: 'Space Grotesk', Arial, sans-serif; font-size: 44px; font-weight: 700; color: var(--naranja); width: 64px; }
+.paso .texto { font-size: 30px; }
+.entra { animation: subir 600ms ease-out both; animation-delay: calc(var(--i, 0) * 120ms); }
+@keyframes subir { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+
+.escena-clip { position: absolute; border-radius: 32px; object-fit: cover; box-shadow: 0 12px 32px rgba(14, 22, 48, .28); }
+.laica-clip { position: absolute; object-fit: contain; transform-origin: 50% 93%; }
+.laica-vuelo { position: absolute; object-fit: contain; transform-origin: 50% 93%; opacity: 0; }
+.rejilla { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; width: 1000px; }
+.rejilla .tarjeta { padding: 32px; }
+.logo-sa { position: absolute; left: 40px; top: 32px; width: 88px; height: 88px; border-radius: 18px; box-shadow: 0 4px 14px rgba(10,16,32,.28); }
+
+section.claro .num, section.claro .grande { color: #D0281A; }
+
+
+/* RUTAS */
+.ruta-problema { animation: ruta-problema 3.89s linear 450ms both; }
+@keyframes ruta-problema {
+  0.00% { transform: translate(-52px, 316px) rotate(0.0deg) scale(-0.900, 0.900); opacity: 1; }
+  3.08% { transform: translate(-52px, 316px) rotate(0.0deg) scale(-0.972, 0.810); opacity: 1; }
+  7.19% { transform: translate(-314px, 128px) rotate(8.1deg) scale(-0.845, 0.958); opacity: 1; }
+  11.30% { transform: translate(-575px, 4px) rotate(3.1deg) scale(-0.878, 0.922); opacity: 1; }
+  15.41% { transform: translate(-837px, -54px) rotate(-3.1deg) scale(-0.923, 0.878); opacity: 1; }
+  19.52% { transform: translate(-1099px, -46px) rotate(-8.1deg) scale(-0.962, 0.842); opacity: 1; }
+  23.63% { transform: translate(-1360px, 26px) rotate(0.0deg) scale(-0.990, 0.792); opacity: 1; }
+  27.22% { transform: translate(-1360px, 26px) rotate(0.0deg) scale(-0.900, 0.900); opacity: 1; }
+  30.31% { transform: translate(-1360px, 26px) rotate(0.0deg) scale(0.972, 0.810); opacity: 1; }
+  33.96% { transform: translate(-1225px, -12px) rotate(-8.1deg) scale(0.845, 0.958); opacity: 1; }
+  37.61% { transform: translate(-1089px, -31px) rotate(-3.1deg) scale(0.878, 0.922); opacity: 1; }
+  41.26% { transform: translate(-954px, -31px) rotate(3.1deg) scale(0.923, 0.878); opacity: 1; }
+  44.91% { transform: translate(-818px, -12px) rotate(8.1deg) scale(0.962, 0.842); opacity: 1; }
+  48.56% { transform: translate(-682px, 26px) rotate(0.0deg) scale(0.990, 0.792); opacity: 1; }
+  52.16% { transform: translate(-682px, 26px) rotate(0.0deg) scale(0.900, 0.900); opacity: 1; }
+  55.24% { transform: translate(-682px, 26px) rotate(0.0deg) scale(0.972, 0.810); opacity: 1; }
+  58.22% { transform: translate(-614px, -12px) rotate(-8.1deg) scale(0.845, 0.958); opacity: 1; }
+  61.20% { transform: translate(-546px, -31px) rotate(-3.1deg) scale(0.878, 0.922); opacity: 1; }
+  64.19% { transform: translate(-478px, -31px) rotate(3.1deg) scale(0.923, 0.878); opacity: 1; }
+  67.17% { transform: translate(-410px, -12px) rotate(8.1deg) scale(0.962, 0.842); opacity: 1; }
+  70.15% { transform: translate(-342px, 26px) rotate(0.0deg) scale(0.990, 0.792); opacity: 1; }
+  73.75% { transform: translate(-342px, 26px) rotate(0.0deg) scale(0.900, 0.900); opacity: 1; }
+  76.83% { transform: translate(-342px, 26px) rotate(0.0deg) scale(0.972, 0.810); opacity: 1; }
+  79.82% { transform: translate(-274px, -8px) rotate(-8.1deg) scale(0.845, 0.958); opacity: 1; }
+  82.81% { transform: translate(-206px, -28px) rotate(-3.1deg) scale(0.878, 0.922); opacity: 1; }
+  85.80% { transform: translate(-137px, -34px) rotate(3.1deg) scale(0.923, 0.878); opacity: 1; }
+  88.79% { transform: translate(-68px, -24px) rotate(8.1deg) scale(0.962, 0.842); opacity: 1; }
+  91.78% { transform: translate(0px, 0px) rotate(0.0deg) scale(0.990, 0.792); opacity: 1; }
+  95.38% { transform: translate(0px, 0px) rotate(0.0deg) scale(0.900, 0.900); opacity: 1; }
+  100.00% { transform: translate(0px, 0px) rotate(0.0deg) scale(0.900, 0.900); opacity: 0; }
+}
+.llega-problema { animation: llega-problema 3.89s linear 450ms both; }
+@keyframes llega-problema {
+  0.00% { transform: translate(0px, 0px) rotate(0.0deg) scale(1.000, 1.000); opacity: 0; }
+  95.38% { transform: translate(0px, 0px) rotate(0.0deg) scale(1.000, 1.000); opacity: 0; }
+  100.00% { transform: translate(0px, 0px) rotate(0.0deg) scale(1.000, 1.000); opacity: 1; }
+}
+.ruta-solucion { animation: ruta-solucion 0.99s linear 450ms both; }
+@keyframes ruta-solucion {
+  0.00% { transform: translate(162px, -501px) rotate(0.0deg) scale(-0.420, 0.420); opacity: 1; }
+  12.16% { transform: translate(162px, -501px) rotate(0.0deg) scale(-0.454, 0.378); opacity: 1; }
+  23.24% { transform: translate(130px, -558px) rotate(8.1deg) scale(-0.394, 0.447); opacity: 1; }
+  34.33% { transform: translate(97px, -568px) rotate(3.1deg) scale(-0.410, 0.430); opacity: 1; }
+  45.41% { transform: translate(65px, -529px) rotate(-3.1deg) scale(-0.431, 0.410); opacity: 1; }
+  56.49% { transform: translate(32px, -442px) rotate(-8.1deg) scale(-0.449, 0.393); opacity: 1; }
+  67.58% { transform: translate(0px, -308px) rotate(0.0deg) scale(-0.462, 0.370); opacity: 1; }
+  81.76% { transform: translate(0px, -308px) rotate(0.0deg) scale(-0.420, 0.420); opacity: 1; }
+  100.00% { transform: translate(0px, -308px) rotate(0.0deg) scale(-0.420, 0.420); opacity: 0; }
+}
+.llega-solucion { animation: llega-solucion 6.36s linear 450ms both; }
+@keyframes llega-solucion {
+  0.00% { transform: translate(0px, -308px) rotate(0.0deg) scale(0.420, 0.420); opacity: 0; }
+  12.69% { transform: translate(0px, -308px) rotate(0.0deg) scale(0.420, 0.420); opacity: 0; }
+  15.53% { transform: translate(0px, -308px) rotate(0.0deg) scale(0.420, 0.420); opacity: 1; }
+  20.56% { transform: translate(0px, -300px) rotate(2.5deg) scale(0.437, 0.455); opacity: 1; }
+  25.59% { transform: translate(0px, -278px) rotate(-2.5deg) scale(0.485, 0.466); opacity: 1; }
+  30.63% { transform: translate(0px, -267px) rotate(-2.5deg) scale(0.499, 0.520); opacity: 1; }
+  35.66% { transform: translate(0px, -241px) rotate(2.5deg) scale(0.557, 0.535); opacity: 1; }
+  40.70% { transform: translate(0px, -228px) rotate(2.5deg) scale(0.573, 0.597); opacity: 1; }
+  45.73% { transform: translate(0px, -198px) rotate(-2.5deg) scale(0.638, 0.613); opacity: 1; }
+  50.76% { transform: translate(0px, -186px) rotate(-2.5deg) scale(0.654, 0.681); opacity: 1; }
+  55.80% { transform: translate(0px, -154px) rotate(2.5deg) scale(0.724, 0.696); opacity: 1; }
+  60.83% { transform: translate(0px, -142px) rotate(2.5deg) scale(0.737, 0.768); opacity: 1; }
+  65.86% { transform: translate(0px, -109px) rotate(-2.5deg) scale(0.810, 0.779); opacity: 1; }
+  70.90% { transform: translate(0px, -99px) rotate(-2.5deg) scale(0.818, 0.852); opacity: 1; }
+  75.93% { transform: translate(0px, -67px) rotate(2.5deg) scale(0.892, 0.857); opacity: 1; }
+  80.97% { transform: translate(0px, -60px) rotate(2.5deg) scale(0.892, 0.929); opacity: 1; }
+  86.00% { transform: translate(0px, -30px) rotate(-2.5deg) scale(0.963, 0.925); opacity: 1; }
+  91.03% { transform: translate(0px, -27px) rotate(-2.5deg) scale(0.955, 0.994); opacity: 1; }
+  96.07% { transform: translate(0px, 0px) rotate(0.0deg) scale(1.020, 0.980); opacity: 1; }
+  100.00% { transform: translate(0px, 0px) rotate(0.0deg) scale(1.000, 1.000); opacity: 1; }
+}
+.ruta-datos { animation: ruta-datos 3.96s linear 450ms both; }
+@keyframes ruta-datos {
+  0.00% { transform: translate(-155px, 531px) rotate(0.0deg) scale(-0.900, 0.900); opacity: 1; }
+  3.03% { transform: translate(-155px, 531px) rotate(0.0deg) scale(-0.972, 0.810); opacity: 1; }
+  7.06% { transform: translate(-409px, 250px) rotate(8.1deg) scale(-0.845, 0.958); opacity: 1; }
+  11.10% { transform: translate(-664px, 87px) rotate(3.1deg) scale(-0.878, 0.922); opacity: 1; }
+  15.13% { transform: translate(-918px, 44px) rotate(-3.1deg) scale(-0.923, 0.878); opacity: 1; }
+  19.17% { transform: translate(-1172px, 120px) rotate(-8.1deg) scale(-0.962, 0.842); opacity: 1; }
+  23.21% { transform: translate(-1426px, 316px) rotate(0.0deg) scale(-0.990, 0.792); opacity: 1; }
+  26.74% { transform: translate(-1426px, 316px) rotate(0.0deg) scale(-0.900, 0.900); opacity: 1; }
+  29.76% { transform: translate(-1426px, 316px) rotate(0.0deg) scale(0.972, 0.810); opacity: 1; }
+  33.38% { transform: translate(-1288px, 192px) rotate(-8.1deg) scale(0.845, 0.958); opacity: 1; }
+  37.00% { transform: translate(-1149px, 130px) rotate(-3.1deg) scale(0.878, 0.922); opacity: 1; }
+  40.61% { transform: translate(-1010px, 130px) rotate(3.1deg) scale(0.923, 0.878); opacity: 1; }
+  44.23% { transform: translate(-872px, 192px) rotate(8.1deg) scale(0.962, 0.842); opacity: 1; }
+  47.84% { transform: translate(-733px, 316px) rotate(0.0deg) scale(0.990, 0.792); opacity: 1; }
+  51.37% { transform: translate(-733px, 316px) rotate(0.0deg) scale(0.900, 0.900); opacity: 1; }
+  54.40% { transform: translate(-733px, 316px) rotate(0.0deg) scale(0.972, 0.810); opacity: 1; }
+  57.40% { transform: translate(-658px, 216px) rotate(-8.1deg) scale(0.845, 0.958); opacity: 1; }
+  60.40% { transform: translate(-583px, 167px) rotate(-3.1deg) scale(0.878, 0.922); opacity: 1; }
+  63.39% { transform: translate(-508px, 167px) rotate(3.1deg) scale(0.923, 0.878); opacity: 1; }
+  66.39% { transform: translate(-433px, 216px) rotate(8.1deg) scale(0.962, 0.842); opacity: 1; }
+  69.39% { transform: translate(-358px, 316px) rotate(0.0deg) scale(0.990, 0.792); opacity: 1; }
+  72.92% { transform: translate(-358px, 316px) rotate(0.0deg) scale(0.900, 0.900); opacity: 1; }
+  75.95% { transform: translate(-358px, 316px) rotate(0.0deg) scale(0.972, 0.810); opacity: 1; }
+  79.14% { transform: translate(-286px, 130px) rotate(-8.1deg) scale(0.845, 0.958); opacity: 1; }
+  82.34% { transform: translate(-215px, 6px) rotate(-3.1deg) scale(0.878, 0.922); opacity: 1; }
+  85.54% { transform: translate(-143px, -57px) rotate(3.1deg) scale(0.923, 0.878); opacity: 1; }
+  88.73% { transform: translate(-72px, -59px) rotate(8.1deg) scale(0.962, 0.842); opacity: 1; }
+  91.93% { transform: translate(0px, 0px) rotate(0.0deg) scale(0.990, 0.792); opacity: 1; }
+  95.46% { transform: translate(0px, 0px) rotate(0.0deg) scale(0.900, 0.900); opacity: 1; }
+  100.00% { transform: translate(0px, 0px) rotate(0.0deg) scale(0.900, 0.900); opacity: 0; }
+}
+.llega-datos { animation: llega-datos 3.96s linear 450ms both; }
+@keyframes llega-datos {
+  0.00% { transform: translate(0px, 0px) rotate(0.0deg) scale(1.000, 1.000); opacity: 0; }
+  95.46% { transform: translate(0px, 0px) rotate(0.0deg) scale(1.000, 1.000); opacity: 0; }
+  100.00% { transform: translate(0px, 0px) rotate(0.0deg) scale(1.000, 1.000); opacity: 1; }
+}
+.ruta-demo { animation: ruta-demo 2.30s linear 450ms both; }
+@keyframes ruta-demo {
+  0.00% { transform: translate(-41px, 61px) rotate(0.0deg) scale(-0.900, 0.900); opacity: 1; }
+  5.22% { transform: translate(-41px, 61px) rotate(0.0deg) scale(-0.972, 0.810); opacity: 1; }
+  12.17% { transform: translate(-228px, 16px) rotate(8.1deg) scale(-0.845, 0.958); opacity: 1; }
+  19.13% { transform: translate(-416px, -9px) rotate(3.1deg) scale(-0.878, 0.922); opacity: 1; }
+  26.09% { transform: translate(-603px, -12px) rotate(-3.1deg) scale(-0.923, 0.878); opacity: 1; }
+  33.04% { transform: translate(-791px, 5px) rotate(-8.1deg) scale(-0.962, 0.842); opacity: 1; }
+  40.00% { transform: translate(-978px, 42px) rotate(0.0deg) scale(-0.990, 0.792); opacity: 1; }
+  46.09% { transform: translate(-978px, 42px) rotate(0.0deg) scale(-0.900, 0.900); opacity: 1; }
+  51.30% { transform: translate(-978px, 42px) rotate(0.0deg) scale(0.972, 0.810); opacity: 1; }
+  58.26% { transform: translate(-782px, 12px) rotate(-8.1deg) scale(0.845, 0.958); opacity: 1; }
+  65.22% { transform: translate(-587px, -7px) rotate(-3.1deg) scale(0.878, 0.922); opacity: 1; }
+  72.17% { transform: translate(-391px, -16px) rotate(3.1deg) scale(0.923, 0.878); opacity: 1; }
+  79.13% { transform: translate(-196px, -13px) rotate(8.1deg) scale(0.962, 0.842); opacity: 1; }
+  86.09% { transform: translate(0px, 0px) rotate(0.0deg) scale(0.990, 0.792); opacity: 1; }
+  92.17% { transform: translate(0px, 0px) rotate(0.0deg) scale(0.900, 0.900); opacity: 1; }
+  100.00% { transform: translate(0px, 0px) rotate(0.0deg) scale(0.900, 0.900); opacity: 0; }
+}
+.llega-demo { animation: llega-demo 2.30s linear 450ms both; }
+@keyframes llega-demo {
+  0.00% { transform: translate(0px, 0px) rotate(0.0deg) scale(1.000, 1.000); opacity: 0; }
+  92.17% { transform: translate(0px, 0px) rotate(0.0deg) scale(1.000, 1.000); opacity: 0; }
+  100.00% { transform: translate(0px, 0px) rotate(0.0deg) scale(1.000, 1.000); opacity: 1; }
+}
+.ruta-impacto { animation: ruta-impacto 4.04s linear 450ms both; }
+@keyframes ruta-impacto {
+  0.00% { transform: translate(16px, -621px) rotate(0.0deg) scale(-0.900, 0.900); opacity: 1; }
+  2.97% { transform: translate(16px, -621px) rotate(0.0deg) scale(-0.972, 0.810); opacity: 1; }
+  6.94% { transform: translate(-240px, -612px) rotate(8.1deg) scale(-0.845, 0.958); opacity: 1; }
+  10.90% { transform: translate(-497px, -604px) rotate(3.1deg) scale(-0.878, 0.922); opacity: 1; }
+  14.86% { transform: translate(-753px, -598px) rotate(-3.1deg) scale(-0.923, 0.878); opacity: 1; }
+  18.83% { transform: translate(-1009px, -592px) rotate(-8.1deg) scale(-0.962, 0.842); opacity: 1; }
+  22.79% { transform: translate(-1266px, -588px) rotate(0.0deg) scale(-0.990, 0.792); opacity: 1; }
+  26.26% { transform: translate(-1266px, -588px) rotate(0.0deg) scale(-0.900, 0.900); opacity: 1; }
+  29.23% { transform: translate(-1266px, -588px) rotate(0.0deg) scale(0.972, 0.810); opacity: 1; }
+  32.54% { transform: translate(-1152px, -596px) rotate(-8.1deg) scale(0.845, 0.958); opacity: 1; }
+  35.84% { transform: translate(-1040px, -600px) rotate(-3.1deg) scale(0.878, 0.922); opacity: 1; }
+  39.15% { transform: translate(-926px, -600px) rotate(3.1deg) scale(0.923, 0.878); opacity: 1; }
+  42.45% { transform: translate(-814px, -596px) rotate(8.1deg) scale(0.962, 0.842); opacity: 1; }
+  45.76% { transform: translate(-700px, -588px) rotate(0.0deg) scale(0.990, 0.792); opacity: 1; }
+  49.23% { transform: translate(-700px, -588px) rotate(0.0deg) scale(0.900, 0.900); opacity: 1; }
+  52.20% { transform: translate(-700px, -588px) rotate(0.0deg) scale(0.972, 0.810); opacity: 1; }
+  55.51% { transform: translate(-587px, -596px) rotate(-8.1deg) scale(0.845, 0.958); opacity: 1; }
+  58.82% { transform: translate(-474px, -600px) rotate(-3.1deg) scale(0.878, 0.922); opacity: 1; }
+  62.12% { transform: translate(-361px, -600px) rotate(3.1deg) scale(0.923, 0.878); opacity: 1; }
+  65.43% { transform: translate(-248px, -596px) rotate(8.1deg) scale(0.962, 0.842); opacity: 1; }
+  68.74% { transform: translate(-134px, -588px) rotate(0.0deg) scale(0.990, 0.792); opacity: 1; }
+  72.21% { transform: translate(-134px, -588px) rotate(0.0deg) scale(0.900, 0.900); opacity: 1; }
+  75.18% { transform: translate(-134px, -588px) rotate(0.0deg) scale(0.972, 0.810); opacity: 1; }
+  78.56% { transform: translate(-108px, -667px) rotate(-8.1deg) scale(0.845, 0.958); opacity: 1; }
+  81.94% { transform: translate(-81px, -647px) rotate(-3.1deg) scale(0.878, 0.922); opacity: 1; }
+  85.32% { transform: translate(-54px, -530px) rotate(3.1deg) scale(0.923, 0.878); opacity: 1; }
+  88.69% { transform: translate(-27px, -314px) rotate(8.1deg) scale(0.962, 0.842); opacity: 1; }
+  92.07% { transform: translate(0px, 0px) rotate(0.0deg) scale(0.990, 0.792); opacity: 1; }
+  95.54% { transform: translate(0px, 0px) rotate(0.0deg) scale(0.900, 0.900); opacity: 1; }
+  100.00% { transform: translate(0px, 0px) rotate(0.0deg) scale(0.900, 0.900); opacity: 0; }
+}
+.llega-impacto { animation: llega-impacto 4.04s linear 450ms both; }
+@keyframes llega-impacto {
+  0.00% { transform: translate(0px, 0px) rotate(0.0deg) scale(1.000, 1.000); opacity: 0; }
+  95.54% { transform: translate(0px, 0px) rotate(0.0deg) scale(1.000, 1.000); opacity: 0; }
+  100.00% { transform: translate(0px, 0px) rotate(0.0deg) scale(1.000, 1.000); opacity: 1; }
+}
+.ruta-equipo { animation: ruta-equipo 3.13s linear 450ms both; }
+@keyframes ruta-equipo {
+  0.00% { transform: translate(-1px, 292px) rotate(0.0deg) scale(-0.900, 0.900); opacity: 1; }
+  3.84% { transform: translate(-1px, 292px) rotate(0.0deg) scale(-0.972, 0.810); opacity: 1; }
+  8.96% { transform: translate(-225px, -20px) rotate(8.1deg) scale(-0.845, 0.958); opacity: 1; }
+  14.07% { transform: translate(-448px, -237px) rotate(3.1deg) scale(-0.878, 0.922); opacity: 1; }
+  19.19% { transform: translate(-672px, -360px) rotate(-3.1deg) scale(-0.923, 0.878); opacity: 1; }
+  24.31% { transform: translate(-895px, -387px) rotate(-8.1deg) scale(-0.962, 0.842); opacity: 1; }
+  29.43% { transform: translate(-1119px, -320px) rotate(0.0deg) scale(-0.990, 0.792); opacity: 1; }
+  33.90% { transform: translate(-1119px, -320px) rotate(0.0deg) scale(-0.900, 0.900); opacity: 1; }
+  37.74% { transform: translate(-1119px, -320px) rotate(0.0deg) scale(0.972, 0.810); opacity: 1; }
+  42.15% { transform: translate(-995px, -314px) rotate(-8.1deg) scale(0.845, 0.958); opacity: 1; }
+  46.55% { transform: translate(-871px, -311px) rotate(-3.1deg) scale(0.878, 0.922); opacity: 1; }
+  50.96% { transform: translate(-746px, -311px) rotate(3.1deg) scale(0.923, 0.878); opacity: 1; }
+  55.37% { transform: translate(-622px, -314px) rotate(8.1deg) scale(0.962, 0.842); opacity: 1; }
+  59.77% { transform: translate(-498px, -320px) rotate(0.0deg) scale(0.990, 0.792); opacity: 1; }
+  64.25% { transform: translate(-498px, -320px) rotate(0.0deg) scale(0.900, 0.900); opacity: 1; }
+  68.09% { transform: translate(-498px, -320px) rotate(0.0deg) scale(0.972, 0.810); opacity: 1; }
+  72.42% { transform: translate(-398px, -352px) rotate(-8.1deg) scale(0.845, 0.958); opacity: 1; }
+  76.76% { transform: translate(-299px, -336px) rotate(-3.1deg) scale(0.878, 0.922); opacity: 1; }
+  81.09% { transform: translate(-199px, -272px) rotate(3.1deg) scale(0.923, 0.878); opacity: 1; }
+  85.43% { transform: translate(-100px, -160px) rotate(8.1deg) scale(0.962, 0.842); opacity: 1; }
+  89.77% { transform: translate(0px, 0px) rotate(0.0deg) scale(0.990, 0.792); opacity: 1; }
+  94.24% { transform: translate(0px, 0px) rotate(0.0deg) scale(0.900, 0.900); opacity: 1; }
+  100.00% { transform: translate(0px, 0px) rotate(0.0deg) scale(0.900, 0.900); opacity: 0; }
+}
+.llega-equipo { animation: llega-equipo 3.13s linear 450ms both; }
+@keyframes llega-equipo {
+  0.00% { transform: translate(0px, 0px) rotate(0.0deg) scale(1.000, 1.000); opacity: 0; }
+  94.24% { transform: translate(0px, 0px) rotate(0.0deg) scale(1.000, 1.000); opacity: 0; }
+  100.00% { transform: translate(0px, 0px) rotate(0.0deg) scale(1.000, 1.000); opacity: 1; }
+}
+
+</style>
+</head>
+<body>
+<div id="escenario"></div>
+<div id="notas"></div>
+<div id="ayuda">← → avanzar · F pantalla completa · N notas</div>
+<template id="diapositivas">
+<section id="portada" data-transition="fade" style="justify-content:center;">
+<img class="logo-sa" src="media/spaceapps.png" alt="NASA Space Apps Challenge">
+<video class="escena-clip" style="left:1150px; top:130px; width:600px; height:750px;" src="media/portada-escena.webm" poster="media/portada-escena.png" muted loop playsinline preload="auto"></video>
+<p class="ceja entra" style="--i:0; width:960px;">NASA SPACE APPS CHALLENGE · SANGOLQUÍ 2026 · ESPE</p>
+<h1 class="entra" style="--i:1; width:960px;">Misión Laica</h1>
+<p class="texto entra" style="--i:2; width:940px; font-size:40px; color:var(--crema);">Una compañera que cuida la salud del astronauta cuando la Tierra está demasiado lejos para contestar.</p>
+<p class="texto entra" style="--i:3; width:940px;">Reto: <b>Create Health Monitoring Software for Astronauts on Space Missions</b></p>
+<p class="texto entra" style="--i:4; width:940px;">Equipo <b>Compumax Evolution</b> · Ecuador<br>Melany Irua · Diego Paz · Geovanny Basantes</p>
+<div class="pie"><span>github.com/COMPUMAX-EC/nasa-astronaut-health-monitoring</span><span>Demo: [enlace público de Vercel]</span></div>
+<aside>[0:00–0:30] Gancho: “En Marte, un mensaje a la Tierra tarda hasta 22 minutos en llegar, y otros 22 en volver. Si a las 3 de la mañana a un astronauta le sube la presión, ¿quién le dice si es grave?” Presentarse: somos el equipo Compumax Evolution de Ecuador (Melany Irua, Diego Paz y Geovanny Basantes), reto oficial Create Health Monitoring Software for Astronauts on Space Missions. Esta es Misión Laica, y ella es Laica. (En la animación, Laica salta del monitor de la estación al celular del astronauta: la misma compañera en el módulo médico y en el bolsillo.)</aside>
+</section>
+
+<section id="problema" class="claro" data-transition="fade">
+<img class="logo-sa" src="media/spaceapps.png" alt="NASA Space Apps Challenge">
+<video class="laica-vuelo ruta-problema" style="left:1492px; top:18px; width:300px; height:375px;" src="media/laica-salto.webm" poster="media/laica-salto.png" muted loop playsinline preload="auto"></video>
+<video class="laica-clip llega-problema" id="laica" style="left:1492px; top:18px; width:300px; height:375px;" src="media/problema.webm" poster="media/problema.png" muted loop playsinline preload="auto"></video>
+<p class="ceja">EL PROBLEMA</p>
+<h2 style="width:1300px;">Lejos de la Tierra, el astronauta es su propio médico de guardia</h2>
+<div class="fila">
+<div class="tarjeta entra" style="--i:0; padding:32px;"><svg class="icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg><h3 style="font-size:34px;">Radiación</h3><p class="texto" style="font-size:26px;">Tormentas solares y dosis acumulada</p></div>
+<div class="tarjeta entra" style="--i:1; padding:32px;"><svg class="icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6"/><path d="M16 4.6a3.5 3.5 0 0 1 0 6.8M18 14.3c2.2.7 3.5 2.8 3.5 5.7"/></svg><h3 style="font-size:34px;">Aislamiento</h3><p class="texto" style="font-size:26px;">Estrés, ánimo y sueño</p></div>
+<div class="tarjeta entra" style="--i:2; padding:32px;"><svg class="icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></svg><h3 style="font-size:34px;">Distancia</h3><p class="texto" style="font-size:26px;">Hasta 22 min de retraso con tierra</p></div>
+<div class="tarjeta entra" style="--i:3; padding:32px;"><svg class="icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12h4l3-8 4 16 3-8h4"/></svg><h3 style="font-size:34px;">Gravedad</h3><p class="texto" style="font-size:26px;">Hueso, músculo, corazón y ojos</p></div>
+<div class="tarjeta entra" style="--i:4; padding:32px;"><svg class="icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 2 20h20z"/><path d="M12 10v4M12 17h.01"/></svg><h3 style="font-size:34px;">Hábitat</h3><p class="texto" style="font-size:26px;">Entorno cerrado y hostil</p></div>
+</div>
+<p class="texto" style="width:1600px; font-size:28px;">Los 5 peligros del vuelo espacial humano (NASA Human Research Program). El reto pide software para que el tripulante <b>recopile sus indicadores, entienda su estado y actúe</b>. Usuarios: tripulaciones de Artemis y Marte, análogos como HERA y CHAPEA, y en la Tierra, personal aislado como el de la estación antártica ecuatoriana.</p>
+<div class="pie"><span>Fuente: NASA HRP, “5 Hazards of Human Spaceflight” · nasa.gov/hrp/hazards</span><span>2</span></div>
+<aside>[0:30–1:15] La NASA resume los riesgos del vuelo espacial en 5 peligros: radiación, aislamiento, distancia, gravedad y entorno hostil. Recorrer las tarjetas en una frase cada una. Punto clave: con 20 minutos de retraso, el tripulante no puede esperar a que tierra le conteste; tiene que darse cuenta solo de que algo cambia. Y el aislamiento no es un detalle: está en la lista oficial de riesgos del HRP. Usuarios: astronautas de misiones largas, tripulaciones de análogos (HERA, CHAPEA) y, aquí en la Tierra, gente aislada: la estación Pedro Vicente Maldonado en la Antártida, Galápagos, comunidades rurales.</aside>
+</section>
+
+<section id="solucion" data-transition="fade">
+<img class="logo-sa" src="media/spaceapps.png" alt="NASA Space Apps Challenge">
+<video class="laica-vuelo ruta-solucion" style="left:1180px; top:170px; width:600px; height:750px;" src="media/laica-salto.webm" poster="media/laica-salto.png" muted loop playsinline preload="auto"></video>
+<video class="laica-clip llega-solucion" id="laica" style="left:1180px; top:170px; width:600px; height:750px;" src="media/solucion_camina.webm" poster="media/solucion_camina.png" muted loop playsinline preload="auto"></video>
+<p class="ceja">LA SOLUCIÓN</p>
+<h2 style="width:1000px;">Un monitor de salud offline que te acompaña</h2>
+<div class="rejilla">
+<div class="tarjeta entra" style="--i:0;"><svg class="icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/></svg><h3>Check‑in</h3><p class="texto">Por voz, teclado o clics</p></div>
+<div class="tarjeta entra" style="--i:1;"><svg class="icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 2 20h20z"/><path d="M12 10v4M12 17h.01"/></svg><h3>Alertas</h3><p class="texto">4 niveles y qué hacer</p></div>
+<div class="tarjeta entra" style="--i:2;"><svg class="icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg><h3>Cuerpo</h3><p class="texto">7 zonas que se colorean</p></div>
+<div class="tarjeta entra" style="--i:3;"><svg class="icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3 2.8 5.8 6.2.9-4.5 4.4 1 6.2L12 17.4 6.5 20.3l1-6.2L3 9.7l6.2-.9z"/></svg><h3>Laica</h3><p class="texto">Te explica y te acompaña</p></div>
+</div>
+<div class="pie"><span>Comparación con CMO‑DA, Astroskin, AMOS y otras: docs/10 del repositorio</span><span>3</span></div>
+<aside>[1:15–2:00] Misión Laica es una app que funciona sin conexión. Cuatro piezas: el check‑in diario (por voz, teclado o clics), un motor de alertas con cuatro niveles (verde, amarillo, naranja, rojo) que dice qué hacer y cuándo escalar al médico de vuelo, un cuerpo humano clicable que se colorea según el peor indicador de cada zona, y Laica, la compañera. Las soluciones existentes miden; Misión Laica además acompaña. Sin internet ni nube: los datos nunca salen del equipo. ¿Por qué una mascota? Porque el aislamiento es uno de los 5 peligros. Laica cambia de tono: con todo en verde bromea; en una alerta roja deja el humor y da instrucciones claras. (Laica camina hacia el público mientras se habla.)</aside>
+</section>
+
+<section id="datos" class="claro" data-transition="fade" style="gap:32px;">
+<img class="logo-sa" src="media/spaceapps.png" alt="NASA Space Apps Challenge">
+<video class="laica-vuelo ruta-datos" style="left:1500px; top:22px; width:270px; height:338px;" src="media/laica-salto.webm" poster="media/laica-salto.png" muted loop playsinline preload="auto"></video>
+<video class="laica-clip llega-datos" id="laica" style="left:1500px; top:22px; width:270px; height:338px;" src="media/datos.webm" poster="media/datos.png" muted loop playsinline preload="auto"></video>
+<p class="ceja">DATOS DE LA NASA Y SUSTENTO CIENTÍFICO</p>
+<h2 style="width:1300px; font-size:64px;">Cada umbral y cada alerta tienen una fuente oficial</h2>
+<table class="tabla">
+<tr><th style="width:30%;">Fuente oficial</th><th style="width:35%;">Qué tomamos</th><th style="width:35%;">Dónde actúa en la app</th></tr>
+<tr><td>NASA‑STD‑3001 Vol. 1 y 2</td><td>Límites médicos y de hábitat (p. ej. 600 mSv de carrera)</td><td>Umbrales del motor de alertas</td></tr>
+<tr><td>Human Research Roadmap (HRP)</td><td>Riesgos y evidencia por sistema</td><td>Matriz de 47 indicadores</td></tr>
+<tr><td>DONKI API (eventos SEP y FLR)</td><td>Partículas solares y fulguraciones</td><td>Alerta de radiación: refugio (script hoy, en vivo en fase 6)</td></tr>
+<tr><td>OSDR, NTRS, Twins Study</td><td>Estudios de fisiología espacial</td><td>Explicaciones de cada zona</td></tr>
+</table>
+<div class="fila" style="align-items:center; gap:24px;">
+<p class="texto" style="background:var(--crema2); padding:20px 28px; border-radius:16px; font-size:28px;">Fuentes</p>
+<svg style="width:40px; height:40px; color:#D0281A;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 3 3 10l7 3 3 7z"/><path d="m10 13 4-4"/></svg>
+<p class="texto" style="background:var(--crema2); padding:20px 28px; border-radius:16px; font-size:28px;">Matriz de riesgo</p>
+<svg style="width:40px; height:40px; color:#D0281A;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 3 3 10l7 3 3 7z"/><path d="m10 13 4-4"/></svg>
+<p class="texto" style="background:var(--crema2); padding:20px 28px; border-radius:16px; font-size:28px;">Reglas con umbrales</p>
+<svg style="width:40px; height:40px; color:#D0281A;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 3 3 10l7 3 3 7z"/><path d="m10 13 4-4"/></svg>
+<p class="texto" style="background:var(--noche); color:var(--crema); padding:20px 28px; border-radius:16px; font-size:28px;">Nivel y acción</p>
+</div>
+<div class="pie"><span>Enlaces en docs/02 y docs/04 · Datos del tripulante: 30 días simulados con semilla fija</span><span>4</span></div>
+<aside>[2:00–2:50] Aquí está el rigor. No inventamos umbrales: los límites salen de NASA‑STD‑3001, el estándar médico de la NASA (por ejemplo, el límite de radiación de carrera de 600 mSv). Del Human Research Roadmap sacamos los riesgos por sistema y armamos una matriz de 47 indicadores con probabilidad por gravedad, frecuencia de medición y cómo se recolecta cada uno. La API DONKI de la NASA da los eventos de partículas solares; nuestro script los descarga, y la tormenta solar de la demo sigue ese tipo de evento y activa la alerta de radiación (conectarla en vivo es la fase 6). El flujo: fuentes, matriz, reglas con umbrales, nivel y acción. Honestidad: los datos del tripulante son simulados (30 días, semilla fija, reproducibles), porque no tenemos sensores reales; los umbrales y eventos sí son de fuentes oficiales. Mostrar aquí una captura de la tabla de la matriz o del script de DONKI.</aside>
+</section>
+
+<section id="demo" data-transition="fade">
+<img class="logo-sa" src="media/spaceapps.png" alt="NASA Space Apps Challenge">
+<video class="laica-vuelo ruta-demo" style="left:1560px; top:6px; width:232px; height:290px;" src="media/laica-salto.webm" poster="media/laica-salto.png" muted loop playsinline preload="auto"></video>
+<video class="laica-clip llega-demo" id="laica" style="left:1560px; top:6px; width:232px; height:290px;" src="media/camina_lado.webm" poster="media/camina_lado.png" muted loop playsinline preload="auto"></video>
+<p class="ceja">ARQUITECTURA Y DEMO (MVP)</p>
+<h2>Funciona hoy, sin conexión</h2>
+<div class="fila" style="gap:64px;">
+<div style="display:flex; flex-direction:column; gap:20px; width:760px;">
+<div class="tarjeta" style="padding:20px 28px; gap:8px;"><h3 style="font-size:32px;">Interfaz</h3><p class="texto" style="font-size:26px;">React 18 + Vite, PWA con service worker</p></div>
+<div class="tarjeta" style="padding:20px 28px; gap:8px;"><h3 style="font-size:32px;">Datos y motor</h3><p class="texto" style="font-size:26px;">IndexedDB local y motor de reglas</p></div>
+<div class="tarjeta" style="padding:20px 28px; gap:8px;"><h3 style="font-size:32px;">Voz</h3><p class="texto" style="font-size:26px;">Web Speech API en español, sin nube</p></div>
+<div class="tarjeta" style="padding:20px 28px; gap:8px;"><h3 style="font-size:32px;">Laica</h3><p class="texto" style="font-size:26px;">Componente web propio + Electron</p></div>
+</div>
+<div style="display:flex; flex-direction:column; gap:24px; flex:1;">
+<div class="paso entra" style="--i:0;"><p class="num">1</p><p class="texto">Laica saluda y pide el check‑in del día</p></div>
+<div class="paso entra" style="--i:1;"><p class="num">2</p><p class="texto">Digo “mi presión es 165 sobre 105”: alerta roja</p></div>
+<div class="paso entra" style="--i:2;"><p class="num">3</p><p class="texto">El corazón se pone rojo y Laica explica qué hacer</p></div>
+<div class="paso entra" style="--i:3;"><p class="num">4</p><p class="texto">Día 17: tormenta solar, Laica guía al refugio</p></div>
+<div class="paso entra" style="--i:4;"><p class="num">5</p><p class="texto">Todo en verde: Laica sale del navegador y camina por la pantalla</p></div>
+</div>
+</div>
+<div class="pie"><span>Código abierto (MIT) · 33 pruebas automáticas pasan</span><span>5</span></div>
+<aside>[2:50–4:00] DEMO EN VIVO (la parte más importante; ensayarla). Stack en una frase: React y Vite como PWA que funciona sin internet, datos en IndexedDB solo en el dispositivo, voz con la Web Speech API del navegador y Laica como componente web propio, más una app de escritorio en Electron. Pasos: 1) abrir la app, Laica saluda; 2) decir en voz alta “mi presión es 165 sobre 105”, Laica repite lo que entendió, confirmamos y salta la alerta roja; 3) clic en el corazón del cuerpo: rojo, con la explicación; 4) mover la barra al día 17: tormenta solar, Laica en modo radiación, guía al refugio; 5) volver a un día en verde y pulsar “Sacarla al escritorio”: Laica sale del navegador, cae con gravedad y camina por la barra de tareas. Plan B si falla el micrófono: escribir el valor en el check‑in. Plan B si falla la red: la app ya está guardada offline.</aside>
+</section>
+
+<section id="impacto" class="claro" data-transition="fade">
+<img class="logo-sa" src="media/spaceapps.png" alt="NASA Space Apps Challenge">
+<video class="laica-vuelo ruta-impacto" style="left:1528px; top:590px; width:264px; height:330px;" src="media/laica-salto.webm" poster="media/laica-salto.png" muted loop playsinline preload="auto"></video>
+<video class="laica-clip llega-impacto" id="laica" style="left:1528px; top:590px; width:264px; height:330px;" src="media/impacto.webm" poster="media/impacto.png" muted loop playsinline preload="auto"></video>
+<p class="ceja">IMPACTO, USABILIDAD Y ESCALABILIDAD</p>
+<h2 style="width:1664px; font-size:64px;">De la órbita a la Antártida ecuatoriana</h2>
+<div class="fila">
+<div class="tarjeta entra" style="--i:0;"><h3>En el espacio</h3><p class="texto">Autonomía médica para Artemis y Marte, y para análogos como HERA y CHAPEA.</p></div>
+<div class="tarjeta entra" style="--i:1;"><h3>En Ecuador</h3><p class="texto">Personal aislado: estación antártica, Galápagos, zonas rurales sin médico cerca.</p></div>
+<div class="tarjeta entra" style="--i:2;"><h3>Para todos</h3><p class="texto">Voz, teclado o ratón; lenguaje simple; respeta “reducir movimiento”.</p></div>
+</div>
+<table class="tabla" style="font-size:26px;">
+<tr><th style="width:22%;">Hoja de ruta</th><th style="width:78%;">Qué sigue</th></tr>
+<tr><td>Fase 4–5</td><td>Banco de 150 frases, memoria local, rachas e insignias</td></tr>
+<tr><td>Fase 6</td><td>DONKI en vivo, perfiles de misión, frecuencia cardiaca por cámara</td></tr>
+<tr><td>Después</td><td>Sensores reales y validación de umbrales con médicos</td></tr>
+</table>
+<div class="pie"><span>Aviso: herramienta educativa, no es un dispositivo médico</span><span>6</span></div>
+<aside>[4:00–4:40] Impacto en tres niveles. En el espacio: da autonomía médica a tripulaciones que no pueden esperar a tierra, y sirve para análogos como HERA y CHAPEA. En Ecuador: la misma app sirve a gente aislada, como el personal de la estación Pedro Vicente Maldonado en la Antártida, en Galápagos o en zonas rurales lejos de un médico; funciona sin internet y en español. Usabilidad: voz, teclado o ratón, explicaciones simples y respeto de la opción del sistema de reducir movimiento. Escalabilidad: el plan tiene fases claras; lo siguiente es el banco de frases y la memoria local, luego DONKI en vivo y la cámara, y después sensores reales y validación con médicos. Recordar: es apoyo educativo, no reemplaza al médico de vuelo.</aside>
+</section>
+
+<section id="equipo" data-transition="fade" style="gap:28px;">
+<img class="logo-sa" src="media/spaceapps.png" alt="NASA Space Apps Challenge">
+<video class="laica-vuelo ruta-equipo" style="left:1530px; top:300px; width:262px; height:328px;" src="media/laica-salto.webm" poster="media/laica-salto.png" muted loop playsinline preload="auto"></video>
+<video class="laica-clip llega-equipo" id="laica" style="left:1530px; top:300px; width:262px; height:328px;" src="media/equipo.webm" poster="media/equipo.png" muted loop playsinline preload="auto"></video>
+<p class="ceja">EVIDENCIA CIENTÍFICA Y TRANSPARENCIA</p>
+<h2 style="font-size:64px;">Los artículos que sostienen el proyecto</h2>
+<table class="tabla" style="font-size:24px; color:var(--suave); width:1380px;">
+<tr><th style="width:60%;">Artículo o documento</th><th style="width:40%;">Qué respalda</th></tr>
+<tr><td>Garrett‑Bakelman et al. (2019). <i>The NASA Twins Study</i>. Science</td><td>Un año en órbita cambia cuerpo y mente</td></tr>
+<tr><td>NASA (2024). <i>EIMO: Concept of Operations</i>. NTRS 20240001402</td><td>Autonomía médica de la tripulación</td></tr>
+<tr><td>NASA HRP (2026). <i>IA para el riesgo médico</i>. NTRS 20260001797</td><td>Asistentes que apoyan decisiones sin tierra</td></tr>
+<tr><td>NASA (2024). <i>AMOS en la ISS</i>. NTRS 20240012964</td><td>Guiar paso a paso ya funciona en órbita</td></tr>
+<tr><td>NASA OCHMO. <i>TB‑020 Radiación</i> y <i>TB‑016 Salud conductual</i></td><td>Límite de 600 mSv y riesgo del aislamiento</td></tr>
+<tr><td>NASA‑STD‑3001 Vol. 1 y 2; Human Research Roadmap</td><td>Umbrales y matriz de 47 indicadores</td></tr>
+</table>
+<p class="texto" style="font-size:24px; width:1380px;"><b style="color:var(--crema);">Transparencia:</b> usamos Claude (Anthropic) como asistente de código y redacción, y el equipo revisó todo. Logo de Space Apps solo para identificar el evento. Sonidos CC0. Código MIT.</p>
+<div class="pie"><span>Compumax Evolution · Melany Irua · Diego Paz · Geovanny Basantes · github.com/COMPUMAX-EC/nasa-astronaut-health-monitoring</span><span>7</span></div>
+<aside>[4:40–5:00] No partimos de cero: el Twins Study muestra que un año en el espacio cambia el cuerpo y la mente; los documentos de EIMO de la NASA piden que la tripulación sea médicamente autónoma; el HRP estudia asistentes con IA, y AMOS ya demostró en la ISS que guiar paso a paso funciona. Nuestros umbrales salen de NASA‑STD‑3001 y de los boletines OCHMO. Transparencia: usamos un asistente de IA para programar y redactar y lo revisamos todo, código abierto. Cierre: “En la Tierra tenemos a quién llamar. En Marte, Laica es la que contesta primero. Gracias.”</aside>
+</section>
+
+</template>
+<script>
+const plantilla = document.getElementById("diapositivas").content;
+const total = plantilla.querySelectorAll("section").length;
+const escenario = document.getElementById("escenario");
+const notas = document.getElementById("notas");
+let actual = -1;
+
+function ajustar() {
+  const k = Math.min(innerWidth / 1920, innerHeight / 1080);
+  escenario.style.transform = `scale(${k}) translate(-50%, -50%)`;
+}
+
+function mostrar(i) {
+  i = Math.max(0, Math.min(total - 1, i));
+  if (i === actual) return;
+  const previa = escenario.querySelector("section");
+  // Clonar la diapositiva desde la plantilla reinicia sus animaciones CSS y sus videos.
+  const nueva = plantilla.querySelectorAll("section")[i].cloneNode(true);
+  escenario.appendChild(nueva);
+  nueva.querySelectorAll("video").forEach(v => { v.currentTime = 0; v.play().catch(() => {}); });
+  if (previa) { previa.classList.add("saliendo"); setTimeout(() => previa.remove(), 460); }
+  actual = i;
+  const aside = nueva.querySelector("aside");
+  notas.textContent = aside ? aside.textContent : "";
+  history.replaceState(null, "", "#" + (i + 1));
+}
+
+addEventListener("keydown", e => {
+  if (["ArrowRight", "PageDown", " ", "Enter"].includes(e.key)) mostrar(actual + 1);
+  else if (["ArrowLeft", "PageUp", "Backspace"].includes(e.key)) mostrar(actual - 1);
+  else if (e.key === "Home") mostrar(0);
+  else if (e.key === "End") mostrar(total - 1);
+  else if (e.key.toLowerCase() === "f") document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen();
+  else if (e.key.toLowerCase() === "n") notas.classList.toggle("ver");
+  else return;
+  e.preventDefault();
+});
+addEventListener("click", e => { if (!notas.contains(e.target)) mostrar(actual + (e.clientX < innerWidth / 4 ? -1 : 1)); });
+addEventListener("resize", ajustar);
+setTimeout(() => document.getElementById("ayuda").style.opacity = 0, 4000);
+ajustar();
+mostrar((parseInt(location.hash.slice(1), 10) || 1) - 1);
+</script>
+</body>
+</html>

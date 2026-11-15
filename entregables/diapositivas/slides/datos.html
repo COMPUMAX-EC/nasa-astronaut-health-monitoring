@@ -1,0 +1,25 @@
+<section id="datos" class="claro" data-transition="fade" style="gap:32px;">
+<img class="logo-sa" src="media/spaceapps.png" alt="NASA Space Apps Challenge">
+<img class="laica-vuelo ruta-datos" src="media/laica-salto.png" data-video="media/laica-salto.webm" alt="" style="left:1500px; top:22px; width:270px; height:338px;">
+<img class="laica-clip llega-datos" id="laica" src="media/datos.png" data-video="media/datos.webm" alt="Laica olfatea los datos" style="left:1500px; top:22px; width:270px; height:338px;">
+<p class="ceja">DATOS DE LA NASA Y SUSTENTO CIENTÍFICO</p>
+<h2 style="width:1300px; font-size:64px;">Cada umbral y cada alerta tienen una fuente oficial</h2>
+<table class="tabla">
+<tr><th style="width:30%;">Fuente oficial</th><th style="width:35%;">Qué tomamos</th><th style="width:35%;">Dónde actúa en la app</th></tr>
+<tr><td>NASA‑STD‑3001 Vol. 1 y 2</td><td>Límites médicos y de hábitat (p. ej. 600 mSv de carrera)</td><td>Umbrales del motor de alertas</td></tr>
+<tr><td>Human Research Roadmap (HRP)</td><td>Riesgos y evidencia por sistema</td><td>Matriz de 47 indicadores</td></tr>
+<tr><td>DONKI API (eventos SEP y FLR)</td><td>Partículas solares y fulguraciones</td><td>Alerta de radiación: refugio (script hoy, en vivo en fase 6)</td></tr>
+<tr><td>OSDR, NTRS, Twins Study</td><td>Estudios de fisiología espacial</td><td>Explicaciones de cada zona</td></tr>
+</table>
+<div class="fila" style="align-items:center; gap:24px;">
+<p class="texto" style="background:var(--crema2); padding:20px 28px; border-radius:16px; font-size:28px;">Fuentes</p>
+<x-icon name="PaperPlane" style="width:40px; height:40px; color:#D0281A;"></x-icon>
+<p class="texto" style="background:var(--crema2); padding:20px 28px; border-radius:16px; font-size:28px;">Matriz de riesgo</p>
+<x-icon name="PaperPlane" style="width:40px; height:40px; color:#D0281A;"></x-icon>
+<p class="texto" style="background:var(--crema2); padding:20px 28px; border-radius:16px; font-size:28px;">Reglas con umbrales</p>
+<x-icon name="PaperPlane" style="width:40px; height:40px; color:#D0281A;"></x-icon>
+<p class="texto" style="background:var(--noche); color:var(--crema); padding:20px 28px; border-radius:16px; font-size:28px;">Nivel y acción</p>
+</div>
+<div class="pie"><span>Enlaces en docs/02 y docs/04 · Datos del tripulante: 30 días simulados con semilla fija</span><span>4</span></div>
+<aside>[2:00–2:50] Aquí está el rigor. No inventamos umbrales: los límites salen de NASA‑STD‑3001, el estándar médico de la NASA (por ejemplo, el límite de radiación de carrera de 600 mSv). Del Human Research Roadmap sacamos los riesgos por sistema y armamos una matriz de 47 indicadores con probabilidad por gravedad, frecuencia de medición y cómo se recolecta cada uno. La API DONKI de la NASA da los eventos de partículas solares; nuestro script los descarga, y la tormenta solar de la demo sigue ese tipo de evento y activa la alerta de radiación (conectarla en vivo es la fase 6). El flujo: fuentes, matriz, reglas con umbrales, nivel y acción. Honestidad: los datos del tripulante son simulados (30 días, semilla fija, reproducibles), porque no tenemos sensores reales; los umbrales y eventos sí son de fuentes oficiales. Mostrar aquí una captura de la tabla de la matriz o del script de DONKI.</aside>
+</section>

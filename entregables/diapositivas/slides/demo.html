@@ -1,0 +1,24 @@
+<section id="demo" data-transition="fade">
+<img class="logo-sa" src="media/spaceapps.png" alt="NASA Space Apps Challenge">
+<img class="laica-vuelo ruta-demo" src="media/laica-salto.png" data-video="media/laica-salto.webm" alt="" style="left:1560px; top:6px; width:232px; height:290px;">
+<img class="laica-clip llega-demo" id="laica" src="media/camina_lado.png" data-video="media/camina_lado.webm" alt="Laica camina pata por pata" style="left:1560px; top:6px; width:232px; height:290px;">
+<p class="ceja">ARQUITECTURA Y DEMO (MVP)</p>
+<h2>Funciona hoy, sin conexión</h2>
+<div class="fila" style="gap:64px;">
+<div style="display:flex; flex-direction:column; gap:20px; width:760px;">
+<div class="tarjeta" style="padding:20px 28px; gap:8px;"><h3 style="font-size:32px;">Interfaz</h3><p class="texto" style="font-size:26px;">React 18 + Vite, PWA con service worker</p></div>
+<div class="tarjeta" style="padding:20px 28px; gap:8px;"><h3 style="font-size:32px;">Datos y motor</h3><p class="texto" style="font-size:26px;">IndexedDB local y motor de reglas</p></div>
+<div class="tarjeta" style="padding:20px 28px; gap:8px;"><h3 style="font-size:32px;">Voz</h3><p class="texto" style="font-size:26px;">Web Speech API en español, sin nube</p></div>
+<div class="tarjeta" style="padding:20px 28px; gap:8px;"><h3 style="font-size:32px;">Laica</h3><p class="texto" style="font-size:26px;">Componente web propio + Electron</p></div>
+</div>
+<div style="display:flex; flex-direction:column; gap:24px; flex:1;">
+<div class="paso entra" style="--i:0;"><p class="num">1</p><p class="texto">Laica saluda y pide el check‑in del día</p></div>
+<div class="paso entra" style="--i:1;"><p class="num">2</p><p class="texto">Digo “mi presión es 165 sobre 105”: alerta roja</p></div>
+<div class="paso entra" style="--i:2;"><p class="num">3</p><p class="texto">El corazón se pone rojo y Laica explica qué hacer</p></div>
+<div class="paso entra" style="--i:3;"><p class="num">4</p><p class="texto">Día 17: tormenta solar, Laica guía al refugio</p></div>
+<div class="paso entra" style="--i:4;"><p class="num">5</p><p class="texto">Todo en verde: Laica sale del navegador y camina por la pantalla</p></div>
+</div>
+</div>
+<div class="pie"><span>Código abierto (MIT) · 33 pruebas automáticas pasan</span><span>5</span></div>
+<aside>[2:50–4:00] DEMO EN VIVO (la parte más importante; ensayarla). Stack en una frase: React y Vite como PWA que funciona sin internet, datos en IndexedDB solo en el dispositivo, voz con la Web Speech API del navegador y Laica como componente web propio, más una app de escritorio en Electron. Pasos: 1) abrir la app, Laica saluda; 2) decir en voz alta “mi presión es 165 sobre 105”, Laica repite lo que entendió, confirmamos y salta la alerta roja; 3) clic en el corazón del cuerpo: rojo, con la explicación; 4) mover la barra al día 17: tormenta solar, Laica en modo radiación, guía al refugio; 5) volver a un día en verde y pulsar “Sacarla al escritorio”: Laica sale del navegador, cae con gravedad y camina por la barra de tareas. Plan B si falla el micrófono: escribir el valor en el check‑in. Plan B si falla la red: la app ya está guardada offline.</aside>
+</section>
