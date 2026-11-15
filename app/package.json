@@ -8,9 +8,11 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview --port 4173",
-    "test": "node --test \"test/*.test.js\""
+    "test": "node --test \"test/*.test.js\"",
+    "modelo-cara": "node scripts/bajar-modelo-cara.mjs"
   },
   "dependencies": {
+    "@mediapipe/tasks-vision": "0.10.14",
     "react": "18.3.1",
     "react-dom": "18.3.1"
   },

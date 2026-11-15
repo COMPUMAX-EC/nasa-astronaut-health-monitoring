@@ -188,7 +188,8 @@ export default function App() {
       </section>
 
       <Escena estadoLaica={estadoLaica} mensaje={mensaje} nivel={estado.nivel} voz={voz} esHoy={esHoy}
-        checkIn={checkIn} onCheckIn={() => setCheckIn(true)} onAcariciar={acariciar} />
+        checkIn={checkIn} onCheckIn={() => setCheckIn(true)} onAcariciar={acariciar}
+        onGuardarDato={guardarCheckIn} />
 
       {checkIn && <CheckIn onGuardar={guardarCheckIn} onCerrar={() => setCheckIn(false)} />}
 

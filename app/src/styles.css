@@ -370,3 +370,14 @@ footer { flex-wrap: wrap; }
 }
 @keyframes chispa { from { transform: scale(.3); opacity: 1; } to { transform: scale(1.9); opacity: 0; } }
 @media (prefers-reduced-motion: reduce) { .libre-golpe, .chispa { animation: none !important; } }
+
+/* Cámara de Laica: vista previa pequeña en espejo y luz que avisa que está encendida. */
+laica-mascota { transition: rotate .25s ease-out; }
+.camara-propia { position: absolute; right: 14px; top: 14px; z-index: 3; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.camara-propia.oculta { display: none; }
+.camara-propia video { width: 96px; height: 72px; object-fit: cover; border-radius: 12px; transform: scaleX(-1); border: 2px solid rgba(255, 255, 255, .5); background: #000; }
+.luz-camara { font-size: .72rem; color: #ffd2cc; background: rgba(12, 18, 40, .8); padding: 2px 8px; border-radius: 999px; }
+.luz-camara::first-letter { color: #ff5a4f; }
+@media (max-width: 520px) { .camara-propia video { width: 72px; height: 54px; } }
+.pregunta-rapida button { min-width: 44px; }
+.pregunta-rapida .sutil { background: transparent; border-style: dashed; opacity: .8; }

@@ -13,14 +13,14 @@ Reemplaza lo que está entre `[corchetes]` antes de enviar. **Plazo: domingo 09:
 Misión Laica: an offline health companion for astronauts
 ```
 
-**Summary** (aprox. 190 palabras · menos de 1500 caracteres)
+**Summary** (1274 caracteres, límite 1500)
 
 ```
-Misión Laica is an offline health-monitoring app for astronauts on long missions, where a message to Earth can take up to 22 minutes each way. The crew member logs a daily check-in (voice, keyboard or clicks: "my blood pressure is 120 over 80"). A rule engine compares each value with thresholds taken from NASA-STD-3001 and the Human Research Program evidence, and returns one of four alert levels (green, yellow, orange, red), the action to take and when to escalate to the flight surgeon. A clickable body map colors 7 zones by their worst indicator and explains the risk in plain language. Space-weather events (solar particle events from NASA DONKI) trigger a radiation-shelter alert.
+Misión Laica is an offline health companion for astronauts on long missions, where a message to Earth can take up to 22 minutes each way. The crew member logs a daily check-in by voice, keyboard or clicks. A rule engine compares each value with thresholds from NASA-STD-3001 and the Human Research Program evidence and returns one of four alert levels (green, yellow, orange, red), the action to take and when to escalate to the flight surgeon. A clickable body map colors 7 zones by their worst indicator. Space-weather events modeled on NASA DONKI trigger a radiation-shelter alert.
 
-Laica, an animated astronaut dog, is the guide. She explains alerts, changes her tone when things are serious, and keeps the crew company, because isolation is one of NASA's 5 hazards of human spaceflight. She can even leave the app and walk across the desktop.
+Laica, an animated astronaut dog, is the interface. She mixes casual conversation with quick mental and physical health questions (mood, loneliness, stress, hydration, exercise, vision changes linked to SANS). With the crew member's permission she turns on the camera and, fully on-device, mirrors their head gestures, laughs when they laugh and offers a breathing exercise when she notices sadness, because isolation is one of NASA's 5 hazards of human spaceflight.
 
-Everything runs locally as a PWA and an Electron desktop app: no internet, no cloud, and the data never leaves the device. The same tool also serves isolated people on Earth, such as Ecuador's Antarctic station, Galápagos and rural areas.
+Everything runs locally as a PWA and an Electron desktop app: no internet, no cloud, and the data never leaves the device. The same tool serves isolated people on Earth, such as Ecuador's Antarctic station and Galápagos.
 ```
 
 ---
@@ -55,16 +55,19 @@ Misión Laica helps an astronaut collect their own health indicators, understand
 3. Clickable human body with 7 zones (mind and sleep, eyes, lungs and air, heart, metabolism, muscles and bones, whole body: radiation and infections) colored by the worst indicator, with a plain-language explanation.
 4. 30-day timeline with a reproducible simulated crew member (fixed seed). On day 17 a solar storm, modeled on NASA DONKI solar particle events, triggers the radiation-shelter protocol.
 5. Laica, the companion: a web component with a real 2D mesh skeleton (WebGL) that moves her tail, ears, paws, mouth and head. She talks, barks, sniffs, celebrates, and can leave the browser in the desktop app to walk on the taskbar.
+6. Conversation: Laica mixes casual talk (space facts, jokes) with one-tap health questions that alternate mind (mood 1-5, loneliness, stress, contact with family) and body (hydration, exercise, headache or blurred vision linked to SANS, back pain, nausea). Worrying answers lead to a concrete action or a suggestion to tell the flight surgeon; the mood answer is saved as indicator PS-01 and feeds the alert rules.
+7. Camera with consent: Laica asks for permission before turning on the camera and explains that the image never leaves the device. MediaPipe Face Landmarker runs in the browser (WebAssembly, no internet) and Laica mirrors head turns and tilts, opens her mouth, laughs when the person laughs and, if she notices sadness for a few seconds, offers a guided breathing exercise and reminds about psychological support. Nothing is recorded or stored; the camera turns off when the tab is hidden.
 
 HOW IT WORKS / TOOLS
-React 18 + Vite, installable PWA with a service worker (works offline). IndexedDB for local storage only. Electron for the desktop companion. A custom WebGL rig for the mascot. Python scripts to download DONKI events. 33 automated tests. MIT license.
+React 18 + Vite, installable PWA with a service worker (works offline). IndexedDB for local storage only. Electron for the desktop companion. A custom WebGL rig for the mascot. MediaPipe Face Landmarker (on-device, WebAssembly) for the camera gestures. Python scripts to download DONKI events. 40 automated tests. MIT license.
 
 NASA DATA AND SCIENCE
 Thresholds from NASA-STD-3001 Vol. 1 and 2 (e.g. 600 mSv career radiation limit). Risks from the Human Research Roadmap, turned into a matrix of 47 indicators (probability x severity, measurement frequency, collection method). Space weather from DONKI. Supporting literature: NASA Twins Study (Garrett-Bakelman et al., Science 2019), EIMO Concept of Operations, AMOS on the ISS, OCHMO technical briefs TB-020 (radiation) and TB-016 (behavioral health).
 
 BENEFITS AND IMPACT
 - Medical autonomy for Artemis and Mars crews, and for analogs such as HERA and CHAPEA.
-- Fights isolation with a companion that adapts its tone: jokes when all is green, clear instructions in a red alert.
+- Fights isolation with a companion that adapts its tone: jokes when all is green, clear instructions in a red alert; she laughs with the crew member and notices sadness.
+- Turns psychological and physical self-monitoring into a light daily conversation instead of a form.
 - Privacy by design: no account, no cloud, no internet.
 - Accessible: voice, keyboard or mouse, simple language, respects "reduce motion".
 - Useful on Earth: personnel at Ecuador's Pedro Vicente Maldonado Antarctic station, Galápagos and rural communities far from a doctor.
@@ -73,10 +76,10 @@ CREATIVITY
 Existing tools measure; Misión Laica also accompanies. The mascot is not decoration: she is the interface that explains the data and the alert.
 
 FACTORS WE CONSIDERED
-Communication delay, offline operation, data privacy, alert fatigue (4 levels with clear escalation), accessibility, and honesty: crew data is simulated because we have no real sensors, while thresholds and events come from official NASA sources. It is an educational tool, not a medical device.
+Communication delay, offline operation, data privacy and explicit consent for the camera (on-device processing, nothing stored), alert fatigue (4 levels with clear escalation), accessibility, and honesty: crew data is simulated because we have no real sensors, while thresholds and events come from official NASA sources. It is an educational tool, not a medical device.
 
 ROADMAP
-Phrase bank and local memory, live DONKI feed, mission profiles, camera-based heart rate, then real sensors and threshold validation with physicians.
+Voice answers to the health questions, live DONKI feed, mission profiles, camera-based heart rate, then real sensors and threshold validation with physicians.
 ```
 
 **Use of Super Intelligence (SI)** (marcar las opciones que aplican)
@@ -89,7 +92,7 @@ Phrase bank and local memory, live DONKI feed, mission profiles, camera-based he
 Texto para el campo, si hay uno:
 
 ```
-We used Claude (Anthropic) as a coding and writing assistant: application code, the mascot's animation rig, documentation and the pitch script. Every output was reviewed and tested by the team (33 automated tests). [If applicable: Laica's images were created in Canva with AI image tools and carry a visible "SI-generated" watermark.] No SI was used for audio (CC0 sound effects) or for the data: thresholds and events come from official NASA sources, and no user data is sent to any AI service. The official NASA Space Apps Challenge logo appears on the slides only to identify the event; no NASA insignia (meatball or worm), flags or mission identifiers were used or generated. Full declaration: entregables/declaracion-ia.md in the repository.
+We used Claude (Anthropic) as a coding and writing assistant: application code, the mascot's animation rig, the camera gesture logic, documentation and the pitch script. Every output was reviewed and tested by the team (33 automated tests). [If applicable: Laica's images were created in Canva with AI image tools and carry a visible "SI-generated" watermark.] No SI was used for audio (CC0 sound effects) or for the data: thresholds and events come from official NASA sources, and no user data is sent to any AI service. The official NASA Space Apps Challenge logo appears on the slides only to identify the event; no NASA insignia (meatball or worm), flags or mission identifiers were used or generated. Full declaration: entregables/declaracion-ia.md in the repository.
 ```
 
 ---
@@ -129,6 +132,8 @@ We used Claude (Anthropic) as a coding and writing assistant: application code, 
 | Electron (MIT) | https://www.electronjs.org/ |
 | Web Speech API (browser, on-device) | https://developer.mozilla.org/en-US/docs/Web/API/Web_Speech_API |
 | Canva (Laica mascot images) | https://www.canva.com/ |
+| MediaPipe Face Landmarker by Google (Apache 2.0, on-device face gestures) | https://ai.google.dev/edge/mediapipe/solutions/vision/face_landmarker |
+| NASA Space Apps Challenge logo (event identification on the slides) | https://www.spaceappschallenge.org/ |
 | Claude by Anthropic (coding and writing assistant) | https://www.anthropic.com/claude |
 | Project repository (MIT code, CC BY 4.0 texts) | https://github.com/COMPUMAX-EC/nasa-astronaut-health-monitoring |
 

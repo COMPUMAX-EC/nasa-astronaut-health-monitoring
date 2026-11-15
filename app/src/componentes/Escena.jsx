@@ -2,6 +2,8 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import SelectorVoz from "./SelectorVoz.jsx";
 import LaicaLibre from "./LaicaLibre.jsx";
 import { useVentanaLaica } from "./useVentanaLaica.js";
+import { useCamaraLaica } from "../camara/useCamaraLaica.js";
+import { useCharla } from "../voz/useCharla.js";
 
 // Escena principal: Laica es la protagonista. Flota y pasea por el espacio cuando todo va
 // bien, y se planta al frente cuando hay una alerta. Al bajar por la página, una Laica
@@ -45,7 +47,7 @@ function Controles({ voz, esHoy, checkIn, onCheckIn, mensaje, compacto = false }
   );
 }
 
-export default function Escena({ estadoLaica, mensaje, nivel, voz, esHoy, checkIn, onCheckIn, onAcariciar }) {
+export default function Escena({ estadoLaica, mensaje, nivel, voz, esHoy, checkIn, onCheckIn, onAcariciar, onGuardarDato }) {
   const cielo = useMemo(() => estrellas(70), []);
   const ref = useRef(null);
   const laicaRef = useRef(null);
@@ -105,6 +107,17 @@ export default function Escena({ estadoLaica, mensaje, nivel, voz, esHoy, checkI
   const ausente = libre || fuera.abierta || enEscritorio; // Laica no está en su sitio
   // Dónde vuelve: a la escena si se ve, o a la esquina de compañía si se bajó por la página.
   const casa = () => (visibleRef.current ? laicaRef.current : miniRef.current)?.getBoundingClientRect();
+  const cam = useCamaraLaica({
+    laicaRef, nivel, voz,
+    puedePreguntar: esHoy && tranquila && !libre && !ausente && !voz.escuchando && !voz.pendiente,
+  });
+  const tranquilaOAmarilla = nivel === "verde" || nivel === "amarillo";
+  const estadoVisible = cam.reaccion && tranquilaOAmarilla ? cam.reaccion : estadoLaica;
+  const charla = useCharla({
+    activa: esHoy && tranquila && !checkIn && cam.fase !== "preguntando" && cam.fase !== "triste" && cam.fase !== "encendiendo",
+    voz, onGuardar: onGuardarDato,
+  });
+  const textoBurbuja = charla.pregunta ? charla.pregunta.texto : mensaje;
 
   // Cada tanto, si todo está en verde y nadie le está hablando, se escapa a explorar la pantalla.
   useEffect(() => {
@@ -152,15 +165,40 @@ export default function Escena({ estadoLaica, mensaje, nivel, voz, esHoy, checkI
         <div className={`escenario ${tranquila ? "pasea" : "al-frente"}`}>
           <button type="button" className={`laica-boton${salto ? " salta" : ""}${ausente ? " oculta" : ""}`} onClick={acariciar}
             aria-label="Acariciar a Laica">
-            <laica-mascota ref={laicaRef} estado={estadoLaica} tamano="230" seguir="" curiosa="" patas={patas}></laica-mascota>
+            <laica-mascota ref={laicaRef} estado={estadoVisible} tamano="230" seguir="" curiosa="" patas={patas}></laica-mascota>
           </button>
           <span className="sombra-laica" aria-hidden="true" />
         </div>
 
+        <div className={`camara-propia${cam.encendida || cam.fase === "encendiendo" ? "" : " oculta"}`}>
+          <video ref={cam.videoRef} muted playsInline aria-label="Tu cámara, en espejo" />
+          <span className="luz-camara" role="status">● Cámara encendida{cam.encendida && !cam.hayCara ? " · no te veo" : ""}</span>
+        </div>
+
         <div className="dialogo">
-          <p className={`burbuja nivel-${nivel}`}>{mensaje}</p>
+          <p className={`burbuja nivel-${nivel}`}>{textoBurbuja}</p>
           {voz.escuchando && (
             <p className="oyendo" role="status"><span className="onda" aria-hidden="true"></span>{voz.parcial || "Te escucho…"}</p>
+          )}
+          {charla.pregunta && (
+            <div className="confirmar pregunta-rapida" role="group" aria-label={charla.pregunta.texto}>
+              {charla.pregunta.opciones.map((o) => (
+                <button type="button" key={o.etiqueta} onClick={() => charla.responder(o)}>{o.etiqueta}</button>
+              ))}
+              <button type="button" className="sutil" onClick={charla.omitir}>Ahora no</button>
+            </div>
+          )}
+          {cam.fase === "preguntando" && (
+            <div className="confirmar" role="group" aria-label="Permiso para la cámara">
+              <button type="button" className="primario" onClick={cam.aceptar}><span aria-hidden="true">📷</span> Sí, prender cámara</button>
+              <button type="button" onClick={cam.rechazar}>Ahora no</button>
+            </div>
+          )}
+          {cam.fase === "triste" && (
+            <div className="confirmar" role="group" aria-label="Laica te acompaña">
+              <button type="button" className="primario" onClick={cam.respirar}>Respirar juntos</button>
+              <button type="button" onClick={cam.estoyBien}>Estoy bien</button>
+            </div>
           )}
           {voz.pendiente && (
             <div className="confirmar" role="group" aria-label="Confirmar datos dictados">
@@ -170,8 +208,14 @@ export default function Escena({ estadoLaica, mensaje, nivel, voz, esHoy, checkI
           )}
           <Controles voz={voz} esHoy={esHoy} checkIn={checkIn} onCheckIn={onCheckIn} mensaje={mensaje} />
           {voz.vozActiva && voz.soporte.hablar && <SelectorVoz />}
-          {(puedeSalir || fuera.abierta || conRaton) && (
+          {(puedeSalir || fuera.abierta || conRaton || cam.disponible) && (
             <div className="botones-laica escapadas">
+              {cam.disponible && (
+                <button type="button" onClick={cam.encendida ? cam.apagar : cam.pedir} aria-pressed={cam.encendida}
+                  disabled={cam.fase === "encendiendo" || cam.fase === "preguntando"}>
+                  <span aria-hidden="true">📷</span> {cam.encendida ? "Apagar cámara" : "Que Laica te vea"}
+                </button>
+              )}
               {puedeSalir && !libre && (
                 <button type="button" onClick={() => setLibre(true)}><span aria-hidden="true">🚀</span> Déjala explorar</button>
               )}
@@ -210,7 +254,7 @@ export default function Escena({ estadoLaica, mensaje, nivel, voz, esHoy, checkI
             <laica-mascota ref={miniRef} estado={estadoLaica} tamano="92" seguir="" curiosa="" patas={patas}></laica-mascota>
           </button>
           <div className="compania-texto">
-            <p>{voz.escuchando ? voz.parcial || "Te escucho…" : mensaje}</p>
+            <p>{voz.escuchando ? voz.parcial || "Te escucho…" : textoBurbuja}</p>
             {voz.pendiente ? (
               <div className="confirmar">
                 <button type="button" className="primario" onClick={() => voz.responderPendiente(true)}>Sí</button>
