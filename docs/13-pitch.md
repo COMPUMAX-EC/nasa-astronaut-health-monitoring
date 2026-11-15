@@ -46,8 +46,6 @@ La historia sigue **Problema → Solución con datos → Impacto**, que es lo qu
 ### 4 · Datos de la NASA (50 s)
 
 > No inventamos umbrales. Los límites salen de **NASA‑STD‑3001**, el estándar médico de la NASA: por ejemplo, el límite de radiación de carrera de 600 mSv. Del **Human Research Roadmap** sacamos los riesgos por sistema y armamos una **matriz de 47 indicadores** con probabilidad por gravedad, frecuencia de medición y cómo se recolecta cada uno. La API **DONKI** de la NASA da los eventos de partículas solares: nuestro script los descarga, y la tormenta solar de la demo sigue ese tipo de evento y activa la alerta de radiación (conectarlo en vivo es la fase 6).
->
-> El flujo es: fuentes oficiales → matriz de riesgo → reglas con umbrales → nivel y acción. Y somos honestos: los datos del tripulante son **simulados** (30 días, semilla fija, reproducibles), porque no tenemos sensores; los umbrales y los eventos sí vienen de fuentes oficiales.
 
 *(Mostrar evidencia visual: la tabla de la matriz en [docs/09](09-matriz-riesgo-indicadores.md) o la salida de `python scripts/donki_radiacion.py`. Para el 3 en la pregunta 1.1 la rúbrica pide "capturas o gráficos".)*
 
@@ -71,10 +69,6 @@ Demo (ensayarla al menos tres veces):
 >
 > Lo que sigue: banco de frases y memoria local; DONKI en vivo y frecuencia cardiaca por cámara; y después sensores reales y validación de los umbrales con médicos. Es una herramienta educativa: no reemplaza al médico de vuelo.
 
-### 7 · Transparencia y equipo (20 s)
-
-> Usamos un asistente de IA, Claude, para programar y redactar, y revisamos todo. Las fuentes están citadas en el repositorio, los sonidos son de dominio público y no usamos logos de la NASA. El código es abierto, con licencia MIT.
->
 > **En la Tierra tenemos a quién llamar. En Marte, Laica es la que contesta primero.** Gracias.
 
 ## 3. Ronda de preguntas (Q&A)
