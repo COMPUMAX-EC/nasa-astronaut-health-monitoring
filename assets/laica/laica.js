@@ -26,7 +26,7 @@
   const BASE = (() => {
     try { return document.currentScript ? new URL(".", document.currentScript.src).href : ""; } catch { return ""; }
   })();
-  const VISTAS = ["frente", "izquierda", "derecha", "espalda", "saludando"];
+  const VISTAS = ["frente", "izquierda", "derecha", "espalda", "saludando", "andando", "saltando"];
   const CANTIDAD = { ladrido: 10, grunido: 4, quejido: 3 };
   function recursos() {
     const r = window.LAICA_RECURSOS || {};
@@ -671,11 +671,34 @@ svg.laica.p-cuatro.andando .cola { animation-duration: .3s; }
       ["cola", 220, 1000, 150, 160, 390, 1040], ["mochila", 350, 700, 90, 150, 410, 700],
       ["torso", 640, 620, 420, 560, 640, 1060], ["cuerpo", 640, 640, 700, 700, 640, 1150],
     ] },
+    // Poses de perfil con su propia foto (coordenadas en píxeles de esa foto): caminando y saltando.
+    // Las versiones "-i" usan la misma foto en espejo para ir hacia la izquierda.
+    andando: { dir: 1, foto: [864, 703], zonas: [
+      ["mandibula", 770, 290, 70, 35, 720, 270], ["oreja1", 610, 150, 60, 65, 630, 110],
+      ["cabeza", 660, 200, 220, 190, 560, 360],
+      ["muneca1", 730, 640, 75, 45, 690, 600], ["pata1", 640, 540, 110, 150, 560, 430],
+      ["pata2", 520, 580, 60, 90, 510, 480],
+      ["pataT1", 180, 560, 110, 120, 250, 450], ["pataT2", 370, 580, 70, 90, 350, 480],
+      ["cola", 130, 290, 130, 120, 270, 320], ["mochila", 370, 265, 100, 55, 420, 290],
+      ["torso", 430, 400, 330, 260, 430, 600], ["cuerpo", 430, 360, 600, 600, 430, 690],
+    ] },
+    saltando: { dir: 1, foto: [884, 634], zonas: [
+      ["mandibula", 790, 300, 60, 30, 750, 280], ["oreja1", 650, 130, 60, 60, 680, 95],
+      ["cabeza", 700, 210, 220, 200, 600, 370],
+      ["pata1", 700, 530, 150, 80, 590, 450], ["pata2", 820, 520, 70, 50, 760, 470],
+      ["pataT1", 140, 480, 130, 90, 260, 430], ["pataT2", 250, 540, 90, 80, 300, 460],
+      ["cola", 150, 230, 150, 110, 290, 290], ["mochila", 420, 255, 100, 55, 470, 280],
+      ["torso", 450, 380, 350, 230, 450, 560], ["cuerpo", 450, 330, 620, 600, 450, 630],
+    ] },
   };
+  RIG["andando-i"] = { ...RIG.andando, espejo: true, img: "andando" };
+  RIG["saltando-i"] = { ...RIG.saltando, espejo: true, img: "saltando" };
   // Orden: primero las partes pequeñas, después las que las cargan (cabeza, torso, cuerpo).
   const ORDEN = ["mandibula", "nariz", "oreja1", "oreja2", "cabeza", "mano", "brazo", "muneca1", "muneca2",
     "pata1", "pata2", "pataT1", "pataT2", "cola", "mochila", "torso", "cuerpo"];
   const RECORTE = { x: 19, y: 2, w: 1201, h: 1233 }, MARGEN = 0.18, MALLA = 40;
+  // Rectángulo de la foto de cada vista, en sus propios píxeles.
+  const rectDe = (def) => (def.foto ? { x: 0, y: 0, w: def.foto[0], h: def.foto[1] } : RECORTE);
   const suave = (x) => (x <= 0 ? 0 : x >= 1 ? 1 : x * x * (3 - 2 * x));
   const hacia = (v, meta, dt, vel) => v + (meta - v) * Math.min(1, dt * vel);
 
@@ -698,11 +721,15 @@ svg.laica.p-cuatro.andando .cola { animation-duration: .3s; }
       const n = MALLA + 1;
       this.n = n;
       const tc = new Float32Array(n * n * 2);
-      this.reposo = new Float32Array(n * n * 2);
       for (let j = 0; j < n; j++) for (let i = 0; i < n; i++) {
-        const k = (j * n + i) * 2, u = i / MALLA, v = j / MALLA;
-        tc[k] = u; tc[k + 1] = v;
-        this.reposo[k] = RECORTE.x + u * RECORTE.w; this.reposo[k + 1] = RECORTE.y + v * RECORTE.h;
+        const k = (j * n + i) * 2; tc[k] = i / MALLA; tc[k + 1] = j / MALLA;
+      }
+      // Malla en reposo de cada vista, sobre el rectángulo de su foto.
+      this.reposos = {};
+      for (const [vista, def] of Object.entries(RIG)) {
+        const R = rectDe(def), a = new Float32Array(n * n * 2);
+        for (let k = 0; k < n * n; k++) { a[k * 2] = R.x + tc[k * 2] * R.w; a[k * 2 + 1] = R.y + tc[k * 2 + 1] * R.h; }
+        this.reposos[vista] = a;
       }
       const idx = new Uint16Array(MALLA * MALLA * 6);
       let q = 0;
@@ -723,8 +750,9 @@ svg.laica.p-cuatro.andando .cola { animation-duration: .3s; }
       for (const [vista, def] of Object.entries(RIG)) {
         this.pesos[vista] = def.zonas.map(([, cx, cy, rx, ry]) => {
           const w = new Float32Array(n * n);
+          const rp = this.reposos[vista];
           for (let k = 0; k < n * n; k++) {
-            const dx = (this.reposo[k * 2] - cx) / rx, dy = (this.reposo[k * 2 + 1] - cy) / ry;
+            const dx = (rp[k * 2] - cx) / rx, dy = (rp[k * 2 + 1] - cy) / ry;
             const e = Math.sqrt(dx * dx + dy * dy);
             w[k] = e <= 1 ? 1 : suave(1 - (e - 1) / 0.45);
           }
@@ -739,6 +767,7 @@ svg.laica.p-cuatro.andando .cola { animation-duration: .3s; }
 
     // Sube la foto de una vista a la GPU (falla si la imagen es de otro origen).
     _textura(vista) {
+      vista = RIG[vista]?.img || vista;
       if (this.tex[vista]) return this.tex[vista];
       const img = this.imgs[vista];
       if (!img || !img.complete || !img.naturalWidth) return null;
@@ -764,9 +793,10 @@ svg.laica.p-cuatro.andando .cola { animation-duration: .3s; }
       const t = (this.t += dt), TAU = Math.PI * 2, gesto = h.getAttribute("gesto");
       const andando = h.hasAttribute("andar"), cuatro = h.getAttribute("patas") === "cuatro";
       // Paso: cuánto camina (sube y baja suave al arrancar y frenar).
-      const metaPaso = andando ? 1 : e === "ejercicio" ? 0.7 : 0;
+      const salto = vista.startsWith("saltando");
+      const metaPaso = andando ? 1 : salto ? 0.55 : e === "ejercicio" ? 0.7 : 0;
       this.paso = hacia(this.paso, metaPaso, dt, 5);
-      const frec = andando ? (cuatro ? 3.2 : 2.6) : 2;
+      const frec = salto ? 1.4 : andando ? (cuatro ? 3.2 : 2.6) : 2;
       this.fase += dt * TAU * frec * Math.max(0.3, this.paso);
       const w = this.paso, f = this.fase;
       this.parada = hacia(this.parada, gesto === "parada" ? 1 : 0, dt, 3.2);
@@ -777,7 +807,7 @@ svg.laica.p-cuatro.andando .cola { animation-duration: .3s; }
       const p = this.parada, r = this.rastreo, q4 = this.cuatro;
 
       // Patas, pata por pata: se balancean, se levantan al ir hacia adelante y doblan la muñeca.
-      const lado = vista === "derecha" || vista === "izquierda";
+      const lado = dir !== 0;
       const pata = (n, m, off, amp, alza) => {
         const s = Math.sin(f + off), c = Math.cos(f + off), sube = Math.max(0, c);
         if (lado) { z(n).a += -dir * w * amp * s; z(n).y += -w * alza * sube; if (m) z(m).a += dir * w * 0.45 * sube; }
@@ -894,11 +924,11 @@ svg.laica.p-cuatro.andando .cola { animation-duration: .3s; }
       const tex = this._textura(vista);
       if (!tex) return false;
       const def = RIG[vista], P = this._pose(dt, vista), pesos = this.pesos[vista];
-      const n2 = this.n * this.n, pos = this.pos, rep = this.reposo;
+      const n2 = this.n * this.n, pos = this.pos, rep = this.reposos[vista], R = rectDe(def);
       // Rectángulo de la foto dentro del lienzo (la foto llena el ancho y se apoya abajo).
       const W = c.width / (1 + 2 * MARGEN), H = c.height / (1 + 2 * MARGEN);
-      const altoFoto = W * 739 / 720, x0 = MARGEN * W, y0 = MARGEN * H + H - altoFoto;
-      const ex = W / RECORTE.w, ey = altoFoto / RECORTE.h;
+      const altoFoto = W * (def.foto ? R.h / R.w : 739 / 720), x0 = MARGEN * W, y0 = MARGEN * H + H - altoFoto;
+      const ex = W / R.w, ey = altoFoto / R.h;
       for (let k = 0; k < n2; k++) { pos[k * 2] = rep[k * 2]; pos[k * 2 + 1] = rep[k * 2 + 1]; }
       const zonas = def.zonas.map((zz, i) => [zz, pesos[i]]).sort((a, b) => ORDEN.indexOf(a[0][0]) - ORDEN.indexOf(b[0][0]));
       for (const [[nom, , , , , px, py], w] of zonas) {
@@ -915,7 +945,8 @@ svg.laica.p-cuatro.andando .cola { animation-duration: .3s; }
         }
       }
       for (let k = 0; k < n2; k++) {
-        const cx = x0 + (pos[k * 2] - RECORTE.x) * ex, cy = y0 + (pos[k * 2 + 1] - RECORTE.y) * ey;
+        let cx = x0 + (pos[k * 2] - R.x) * ex; const cy = y0 + (pos[k * 2 + 1] - R.y) * ey;
+        if (def.espejo) cx = 2 * x0 + W - cx;
         pos[k * 2] = cx / c.width * 2 - 1; pos[k * 2 + 1] = 1 - cy / c.height * 2;
       }
       gl.viewport(0, 0, c.width, c.height);
@@ -992,7 +1023,7 @@ svg.laica.p-cuatro.andando .cola { animation-duration: .3s; }
         const dt = this._tUlt ? Math.min(0.05, (ts - this._tUlt) / 1000) : 0.016;
         this._tUlt = ts;
         let ok = false;
-        try { ok = this._lienzo.width > 0 && this._rig.dibujar(dt, this.vista); }
+        try { ok = this._lienzo.width > 0 && this._rig.dibujar(dt, this._vistaRig()); }
         catch { this._rig = null; this._foto.classList.remove("rig-on"); this._lienzo.remove(); return; } // p. ej. imagen de otro origen
         this._foto.classList.toggle("rig-on", ok);
         if (!this._sinMovimiento || !ok) this._raf = requestAnimationFrame(cuadro);
@@ -1085,6 +1116,15 @@ svg.laica.p-cuatro.andando .cola { animation-duration: .3s; }
       clearTimeout(this._tgesto);
       if (g) this.setAttribute("gesto", g); else this.removeAttribute("gesto");
       if (g && ms > 0) this._tgesto = setTimeout(() => this.removeAttribute("gesto"), ms);
+    }
+    /** Salta un rato (pose de salto con las patas estiradas); con ms vuelve sola. */
+    saltar(ms = 700) { this._gesto("saltar", ms); }
+    // Pose que dibuja el esqueleto: de perfil usa las fotos caminando o saltando cuando corresponde.
+    _vistaRig() {
+      const v = this.vista, izq = v === "izquierda", g = this.getAttribute("gesto");
+      if (g === "saltar") return izq ? "saltando-i" : "saltando";
+      if (this.hasAttribute("andar") && (izq || v === "derecha") && g !== "parada") return izq ? "andando-i" : "andando";
+      return v;
     }
     /** Vista actual en modo foto: frente, izquierda, derecha, espalda o saludando. */
     get vista() { return this._vista || "frente"; }

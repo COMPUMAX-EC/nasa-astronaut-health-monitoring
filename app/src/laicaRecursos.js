@@ -6,6 +6,8 @@ import izquierda from "../../assets/laica/canva/izquierda.webp";
 import derecha from "../../assets/laica/canva/derecha.webp";
 import espalda from "../../assets/laica/canva/espalda.webp";
 import saludando from "../../assets/laica/canva/saludando.webp";
+import andando from "../../assets/laica/canva/andando.webp";
+import saltando from "../../assets/laica/canva/saltando.webp";
 
 const sonidos = import.meta.glob("../../assets/laica/sonidos/*.wav", { eager: true, query: "?url", import: "default" });
 const deTipo = (tipo) => Object.entries(sonidos)
@@ -13,6 +15,6 @@ const deTipo = (tipo) => Object.entries(sonidos)
   .map(([, url]) => url);
 
 window.LAICA_RECURSOS = {
-  fotos: { frente, izquierda, derecha, espalda, saludando },
+  fotos: { frente, izquierda, derecha, espalda, saludando, andando, saltando },
   sonidos: { ladrido: deTipo("ladrido"), grunido: deTipo("grunido"), quejido: deTipo("quejido") },
 };

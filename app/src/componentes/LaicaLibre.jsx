@@ -99,6 +99,7 @@ export default function LaicaLibre({ estado, activa, casa, onVolver, onAcariciar
     const cambiar = (f, t, ms = 0) => {
       fase = f; tFase = t; duracion = ms; andar(f === "caminando" || f === "saliendo");
       laica.current?.rastrear?.(f === "caminando" && Math.random() < 0.35); // a veces camina rastreando
+      if (f === "cayendo" || f === "volando" || f === "escapando") laica.current?.saltar?.(0); // en el aire: pose de salto
     };
 
     const paso = (t) => {

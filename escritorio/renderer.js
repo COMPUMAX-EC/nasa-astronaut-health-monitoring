@@ -120,6 +120,8 @@ window.addEventListener("error", (e) => console.log("ERROR", e.message, e.filena
     andar(f === "caminando");
     // A veces camina rastreando, con el hocico pegado al suelo.
     laica.rastrear?.(f === "caminando" && Math.random() < 0.35);
+    // En el aire (cayendo o volando por el espacio) usa la pose de salto, con las patas estiradas.
+    if (f === "cayendo" || f === "volando") laica.saltar?.(0);
   }
 
   // Sin gravedad: vuela en línea recta y rebota.
