@@ -261,3 +261,6 @@ section.claro .num, section.claro .grande { color: #D0281A; }
   94.24% { transform: translate(0px, 0px) rotate(0.0deg) scale(1.000, 1.000); opacity: 0; }
   100.00% { transform: translate(0px, 0px) rotate(0.0deg) scale(1.000, 1.000); opacity: 1; }
 }
+
+/* Marca de agua visible: las imágenes de Laica se generaron con IA (regla de Space Apps). */
+section::after { content: "Imágenes de Laica generadas con IA · SI-generated images"; position: absolute; right: 40px; top: 40px; font: 600 20px 'Inter', Arial, sans-serif; color: #fff; background: rgba(7, 23, 63, .62); padding: 6px 16px; border-radius: 20px; z-index: 5; pointer-events: none; }

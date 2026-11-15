@@ -572,6 +572,11 @@ svg.laica.p-cuatro.andando .cola { animation-duration: .3s; }
 .foto img.activa { opacity: 1; }
 .foto canvas.rig { position: absolute; left: -18%; top: -18%; width: 136%; height: 136%; pointer-events: none; }
 .foto.rig-on img { visibility: hidden; }
+.foto-modo { position: relative; }
+/* Marca de agua visible: las imágenes de Laica se generaron con IA (regla de Space Apps). */
+.marca-ia { position: absolute; left: 50%; bottom: 0; transform: translateX(-50%); white-space: nowrap; pointer-events: none;
+  font: 600 max(9px, calc(var(--tam, 200px) * .045)) system-ui, sans-serif; color: #fff; background: rgba(7, 23, 63, .62);
+  padding: .15em .6em; border-radius: 1em; letter-spacing: .02em; }
 .foto.rig-on.andando, .foto.rig-on.ladra { animation: none; }
 .fx { position: absolute; opacity: 0; pointer-events: none; font-weight: 800; line-height: 1; transition: opacity .3s; }
 .fx.zzz { top: 4%; right: 6%; color: #fff; font-size: calc(var(--tam) * .1); text-shadow: 0 2px 0 #1F2A5A; }
@@ -980,7 +985,7 @@ svg.laica.p-cuatro.andando .cola { animation-duration: .3s; }
             <span class="fx zzz">Z<i>z</i><i>z</i></span>
             <span class="fx destellos"><b style="left:6%;top:12%">✦</b><b style="right:8%;top:6%">✦</b><b style="right:2%;top:42%">✦</b><b style="left:2%;top:46%">✦</b></span>
             <span class="fx rad">☢</span><span class="fx sudor">💧</span>
-          </div></div></div>`;
+          </div></div><span class="marca-ia">Imagen generada con IA</span></div>`;
         this._fotos = [...root.querySelectorAll(".foto img")];
         this._foto = root.querySelector(".foto");
         this._giro = root.querySelector(".giro");

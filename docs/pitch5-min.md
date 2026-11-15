@@ -9,7 +9,7 @@ Porque las personas necesitamos hablar con otras personas y cuando estámos aisl
 Guion del pitch en vivo (en español) para la sede Sangolquí, armado sobre la [rúbrica oficial](rubrica/README.md). Son **7 diapositivas** (el máximo; con 8 se pierde 1 punto) y unos **5 minutos** de exposición. La guía no fija la duración: hay ≈ 15 minutos por equipo para pitch, Q&A y calificación, así que **confirmen el tiempo con el Staff** y recorten la demo si les dan menos.
 
 - **Diapositivas:** las del artefacto "Misión Laica — Pitch" (se exportan a PDF o PPTX). Las notas del orador de cada diapositiva tienen el texto de abajo.
-- **Placeholders a llenar:** `[enlace público de Vercel]` y la nota sobre IA en las imágenes de Canva.
+- **Enlaces:** demo https://mision-laica.vercel.app · diapositivas https://mision-laica.vercel.app/presentacion/. Las imágenes de Laica son de IA y llevan marca de agua visible.
 
 ## 1. Estructura y tiempos
 
@@ -55,7 +55,7 @@ La historia sigue **Problema → Solución con datos → Impacto**, que es lo qu
 
 ### 5 · Arquitectura y demo en vivo (70 s)
 
-> Por dentro: React y Vite como PWA que se guarda offline, datos en IndexedDB **solo en el dispositivo**, voz con la Web Speech API del navegador, sin nube, y Laica como componente web propio, con una app de escritorio en Electron. Todo es código abierto y tiene 33 pruebas automáticas.
+> Por dentro: React y Vite como PWA que se guarda offline, datos en IndexedDB **solo en el dispositivo**, voz con la Web Speech API del navegador, sin nube, y Laica como componente web propio, con una app de escritorio en Electron. Todo es código abierto y tiene 40 pruebas automáticas.
 
 Demo (ensayarla al menos tres veces):
 
@@ -103,10 +103,10 @@ Es el área más débil de una app de este tipo y pesa 50 % en Best Use of Data 
 
 ## 5. Lista de entrega (antes de las 09:00 del domingo)
 
-- [ ] Llenar los placeholders del pitch y exportarlo a PDF (7 páginas).
-- [ ] Demo pública en Vercel abriendo en **modo incógnito**.
-- [ ] Repositorio público con `LICENSE` en la raíz ✅.
+- [x] Placeholders llenos; diapositivas públicas en https://mision-laica.vercel.app/presentacion/.
+- [x] Demo pública en Vercel: https://mision-laica.vercel.app (abre sin iniciar sesión).
+- [x] Repositorio público con `LICENSE` en la raíz.
 - [ ] Ficha del proyecto en la plataforma global, en **español e inglés**.
-- [ ] Marcar la declaración de uso de IA; confirmar si las imágenes de Canva son de IA y, si lo son, ponerles marca de agua.
-- [ ] Sin logos de la NASA (el logo oficial de Space Apps sí se puede usar según su guía de marca).
+- [x] Declaración de IA: las imágenes de Laica son de IA y llevan marca de agua; marcar Código, Texto e Imágenes en la plataforma.
+- [x] Sin logos de la NASA (el logo oficial de Space Apps sí se puede usar según su guía de marca).
 - [ ] Ensayar la demo con el plan B.

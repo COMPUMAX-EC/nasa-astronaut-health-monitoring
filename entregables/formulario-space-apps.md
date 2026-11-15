@@ -30,7 +30,7 @@ Everything runs locally as a PWA and an Electron desktop app: no internet, no cl
 **Project Demonstration** (slides, máximo 7, enlace público)
 
 ```
-[enlace público a las diapositivas: exportar el deck a PDF o PPTX, subirlo a Google Drive o GitHub con "cualquiera con el enlace"]
+https://mision-laica.vercel.app/presentacion/
 ```
 
 **Project** (enlace público)
@@ -39,7 +39,7 @@ Everything runs locally as a PWA and an Electron desktop app: no internet, no cl
 https://github.com/COMPUMAX-EC/nasa-astronaut-health-monitoring
 ```
 
-(Si la demo en Vercel ya está pública, puedes poner esa URL aquí y el repositorio en "Project Details".)
+Demo en vivo, sin iniciar sesión: https://mision-laica.vercel.app (si el formulario admite un solo enlace aquí, deja el repositorio; la demo ya aparece en "Project Details").
 
 ---
 
@@ -48,6 +48,8 @@ https://github.com/COMPUMAX-EC/nasa-astronaut-health-monitoring
 **Project Details**
 
 ```
+Live demo (no sign-in): https://mision-laica.vercel.app · Slides: https://mision-laica.vercel.app/presentacion/
+
 WHAT IT DOES
 Misión Laica helps an astronaut collect their own health indicators, understand their state and act, without waiting for Earth.
 1. Daily check-in by voice (Spanish Web Speech API, on-device), keyboard or clicks. Laica repeats what she understood before saving.
@@ -86,13 +88,13 @@ Voice answers to the health questions, live DONKI feed, mission profiles, camera
 
 - ✅ Código (code): Claude (Anthropic) se usó como asistente de programación.
 - ✅ Texto (text/writing): Claude ayudó a redactar documentación y el guion del pitch; el equipo revisó todo.
-- ❓ Imágenes (images): **solo si** las imágenes de Laica en Canva se generaron con IA. En ese caso deben llevar marca de agua visible "SI-generated" (ver `declaracion-ia.md`).
+- ✅ Imágenes (images): las imágenes de Laica se generaron con IA y llevan marca de agua visible "Imagen generada con IA · SI-generated" (en la app, en cada diapositiva y en los originales).
 - ❌ Audio: los sonidos son CC0 de OpenGameArt, no son generados por IA.
 
 Texto para el campo, si hay uno:
 
 ```
-We used Claude (Anthropic) as a coding and writing assistant: application code, the mascot's animation rig, the camera gesture logic, documentation and the pitch script. Every output was reviewed and tested by the team (33 automated tests). [If applicable: Laica's images were created in Canva with AI image tools and carry a visible "SI-generated" watermark.] No SI was used for audio (CC0 sound effects) or for the data: thresholds and events come from official NASA sources, and no user data is sent to any AI service. The official NASA Space Apps Challenge logo appears on the slides only to identify the event; no NASA insignia (meatball or worm), flags or mission identifiers were used or generated. Full declaration: entregables/declaracion-ia.md in the repository.
+We used Claude (Anthropic) as a coding and writing assistant: application code, the mascot's animation rig, the camera gesture logic, documentation and the pitch script. Every output was reviewed and tested by the team (40 automated tests). Laica's images were created with AI image tools and carry a visible "SI-generated" watermark in the app, on every slide and in the original files. No SI was used for audio (CC0 sound effects) or for the data: thresholds and events come from official NASA sources, and no user data is sent to any AI service. The official NASA Space Apps Challenge logo appears on the slides only to identify the event; no NASA insignia (meatball or worm), flags or mission identifiers were used or generated. Full declaration: entregables/declaracion-ia.md in the repository.
 ```
 
 ---
@@ -143,7 +145,7 @@ We used Claude (Anthropic) as a coding and writing assistant: application code, 
 
 Marcar las dos casillas (términos y obra original) **solo después** de comprobar que:
 
-- [ ] Todos los enlaces abren sin iniciar sesión, en una ventana privada.
-- [ ] Las diapositivas son 7 como máximo y el enlace es público.
-- [ ] La pregunta de las imágenes de Canva está resuelta (marca de agua si se hicieron con IA).
-- [ ] Solo aparece el logo oficial de Space Apps (identifica el evento); ninguna insignia, bandera ni identificador de misión de la NASA.
+- [x] Todos los enlaces abren sin iniciar sesión (demo, presentación y repositorio).
+- [x] Las diapositivas son 7 y el enlace es público.
+- [x] Las imágenes de Laica son de IA y llevan marca de agua visible.
+- [x] Solo aparece el logo oficial de Space Apps (identifica el evento); ninguna insignia, bandera ni identificador de misión de la NASA.

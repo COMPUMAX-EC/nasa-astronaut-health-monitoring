@@ -10,7 +10,7 @@ El equipo declara que usó herramientas de Inteligencia Artificial en el desarro
 | Herramienta | Para qué se usó | Qué hizo el equipo |
 |---|---|---|
 | **Claude (Anthropic)**, asistente de código | Escribir y depurar código (app React/Vite, componente de Laica, app de escritorio Electron, scripts de Python), redactar y ordenar la documentación y armar el guion y las diapositivas del pitch | Definió el problema, la idea y el alcance; revisó, probó y aprobó todo el código y los textos; tomó las decisiones de diseño |
-| **Canva** (diseño "MASCOTA NASA SPACE") | Imágenes de Laica en 5 vistas | [**Completar:** indicar si las imágenes se generaron con IA de Canva. Si es así, llevan marca de agua "Imagen generada con IA".] |
+| **Canva** (diseño "MASCOTA NASA SPACE") | Imágenes de Laica (5 vistas, saludando, andando y saltando), **generadas con IA** | Pidió y eligió las imágenes, las recortó y las animó con su propio esqueleto WebGL. Todas llevan una marca de agua visible "Imagen generada con IA": en la app, debajo de Laica; en cada diapositiva; y en los archivos originales del repo |
 
 **Lo que NO usa IA:**
 
@@ -32,7 +32,7 @@ The team declares that it used Artificial Intelligence tools in this project as 
 | Tool | Used for | What the team did |
 |---|---|---|
 | **Claude (Anthropic)**, coding assistant | Writing and debugging code (React/Vite app, Laica component, Electron desktop app, Python scripts), drafting and organizing documentation, and building the pitch script and slides | Defined the problem, idea and scope; reviewed, tested and approved all code and text; made the design decisions |
-| **Canva** ("MASCOTA NASA SPACE" design) | Images of Laica in 5 views | [**Fill in:** state whether the images were generated with Canva AI. If so, they carry an "AI‑generated image" watermark.] |
+| **Canva** ("MASCOTA NASA SPACE" design) | Images of Laica (5 views, waving, walking and jumping), **AI‑generated** | Requested and chose the images, cropped them and animated them with its own WebGL rig. All carry a visible "AI‑generated image" watermark: in the app, below Laica; on every slide; and in the original files in the repo |
 
 **What does NOT use AI:**
 
@@ -40,7 +40,7 @@ The team declares that it used Artificial Intelligence tools in this project as 
 - **Voice recognition.** It uses the browser's Web Speech API with our own rule‑based parser.
 - **Data.** No user data is sent to AI services or to the cloud.
 
-**Logos:** the project does **not** use NASA's insignia ("meatball") or logotype ("worm"), nor any AI‑generated NASA logo. Credit is given in text: "Project for the NASA Space Apps Challenge 2026". The project is not affiliated with or endorsed by NASA.
+**Logos:** the project does **not** use NASA's insignia ("meatball") or logotype ("worm"), nor any AI‑generated NASA logo. The slides show, small, the official NASA Space Apps Challenge logo (unmodified, not AI‑generated) only to identify the event, as the Space Apps brand guide allows. Credit is given in text: "Project for the NASA Space Apps Challenge 2026". The project is not affiliated with or endorsed by NASA.
 
 **Other third‑party resources:**
 

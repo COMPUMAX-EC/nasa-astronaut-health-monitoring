@@ -20,10 +20,10 @@ Nuestro reto (*Create Health Monitoring Software for Astronauts on Space Mission
 |---|---|---|
 | Citar y enlazar datos abiertos de NASA | −2 | ✅ [docs/04](../04-datos-y-apis.md), [docs/02](../02-estandares-nasa-std-3001.md), diapositiva 4 |
 | Repositorio público con **archivo de licencia en la raíz** | −2 | ✅ [LICENSE](../../LICENSE) (MIT para el código; textos CC BY 4.0) |
-| Todos los enlaces abren en incógnito (sin 404 ni permisos) | −1 | ⚠️ Probar el link de la demo (Vercel) y el de las diapositivas en incógnito |
+| Todos los enlaces abren en incógnito (sin 404 ni permisos) | −1 | ✅ Demo https://mision-laica.vercel.app y diapositivas https://mision-laica.vercel.app/presentacion/ abren sin iniciar sesión |
 | **Máximo 7 diapositivas** (o video ≤ 30 s, tolerancia 35 s) | −1 | ✅ El pitch tiene 7 |
-| Declaración de IA, marca de agua en imágenes hechas con IA, sin logos NASA | −1 | ✅ Diapositiva 7; ⚠️ confirmar si las imágenes de Canva son de IA |
-| Ficha y entregables en **español e inglés** | −1 | ✅ [docs/13](../13-pitch.md) y [docs/13 (EN)](../13-pitch.en.md); ⚠️ la ficha de la plataforma también |
+| Declaración de IA, marca de agua en imágenes hechas con IA, sin logos NASA | −1 | ✅ Diapositiva 7; imágenes de Laica de IA con marca de agua visible |
+| Ficha y entregables en **español e inglés** | −1 | ✅ [docs/13](../13-pitch.md) y [docs/13 (EN)](../13-pitch.en.md); ✅ [ficha bilingüe](../../entregables/ficha-proyecto.md) |
 
 ## Rúbrica en vivo: 4 áreas × 5 preguntas (escala 1 a 5)
 
