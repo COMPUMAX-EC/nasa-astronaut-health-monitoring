@@ -1,0 +1,392 @@
+<resources>
+    <string name="app_name">Laika Polizón</string>
+
+    <!-- Navegación -->
+    <string name="tab_laika">Laika</string>
+    <string name="tab_log">Registrar</string>
+    <string name="tab_history">Historial</string>
+    <string name="tab_simulator">Simulador</string>
+
+    <!-- Estados -->
+    <string name="state_passive">Periferia pasiva</string>
+    <string name="state_micro">Micro-interacción</string>
+    <string name="state_therapeutic">Intervención terapéutica</string>
+    <string name="state_critical">Alerta crítica</string>
+
+    <!-- Emociones: mensaje de Laika -->
+    <string name="laika_joyful">¡Nos sentimos genial hoy!</string>
+    <string name="laika_calm">Todo tranquilo por aquí. Estoy contigo.</string>
+    <string name="laika_curious">¿Tienes un momento? Hagamos nuestro chequeo rápido.</string>
+    <string name="laika_tired">Me siento un poco cansada… ¿nos cuidamos un poco?</string>
+    <string name="laika_concerned">Noté algo distinto en nuestros datos. ¿Hacemos una misión juntos?</string>
+    <string name="laika_protective">Necesito que hagamos esto ahora, juntos y con calma.</string>
+
+    <string name="emotion_joyful">Alegre</string>
+    <string name="emotion_calm">Tranquila</string>
+    <string name="emotion_curious">Curiosa</string>
+    <string name="emotion_tired">Cansada</string>
+    <string name="emotion_concerned">Preocupada</string>
+    <string name="emotion_protective">Protectora</string>
+
+    <!-- Pantalla Laika -->
+    <string name="vitality_label">Vitalidad: %1$d</string>
+    <string name="opportune_label">Estoy libre (momento oportuno)</string>
+    <string name="opportune_hint">Laika solo te interrumpe cuando estás libre. Las alertas críticas siempre se muestran.</string>
+    <string name="findings_title">Lo que noté</string>
+    <string name="actions_title">Misión propuesta</string>
+    <string name="action_minutes">%1$d min</string>
+    <string name="complete_action">Acción completada</string>
+    <string name="no_data_hint">Aún no hay datos. Registra una medición o carga un escenario en el Simulador.</string>
+
+    <!-- Hallazgos -->
+    <string name="finding_critical">Fuera de rango de seguridad (%1$s)</string>
+    <string name="finding_radiation" formatted="false">Flujo de neutrones sostenido más de 30 % sobre el fondo</string>
+    <string name="finding_sigma">Desviación de tu línea base: %1$s σ (%2$s)</string>
+    <string name="finding_trend">Empeora en varias mediciones seguidas (%1$s)</string>
+
+    <!-- Tipos de medición -->
+    <string name="type_heart_rate">Frecuencia cardíaca</string>
+    <string name="type_hrv">Variabilidad cardíaca (VFC)</string>
+    <string name="type_blood_pressure">Presión arterial</string>
+    <string name="type_glucose">Glucosa</string>
+    <string name="type_body_temperature">Temperatura</string>
+    <string name="type_sleep">Sueño</string>
+    <string name="type_activity">Actividad física</string>
+    <string name="type_cortisol">Cortisol</string>
+    <string name="type_vision">Nitidez visual</string>
+    <string name="type_neutron">Radiación (CANS)</string>
+    <string name="type_co2">CO₂ ambiental</string>
+
+    <!-- Fuentes -->
+    <string name="source_manual">Manual</string>
+    <string name="source_voice">Voz</string>
+    <string name="source_sensor">Sensor</string>
+    <string name="source_simulated">Simulado</string>
+
+    <!-- Registro -->
+    <string name="log_title">Nueva medición</string>
+    <string name="log_value">Valor (%1$s)</string>
+    <string name="log_systolic">Sistólica (mmHg)</string>
+    <string name="log_diastolic">Diastólica (mmHg)</string>
+    <string name="log_save">Guardar</string>
+    <string name="log_saved">Registrado. ¡Gracias por cuidarnos!</string>
+    <string name="log_not_a_number">Escribe un número válido.</string>
+    <string name="log_impossible">Ese valor no es fisiológicamente posible. Revísalo.</string>
+    <string name="log_missing_diastolic">Falta la presión diastólica.</string>
+    <string name="log_systolic_not_above">La sistólica debe ser mayor que la diastólica.</string>
+    <string name="log_confirm_title">¿Confirmas este valor?</string>
+    <string name="log_confirm_text">%1$s está fuera de lo habitual. ¿Lo registro igual?</string>
+    <string name="log_confirm_yes">Sí, registrar</string>
+    <string name="log_confirm_no">Corregir</string>
+
+    <!-- Historial -->
+    <string name="history_empty">Sin mediciones todavía.</string>
+    <string name="history_corrected">corrige un registro anterior</string>
+
+    <!-- Simulador -->
+    <string name="simulator_title">Escenarios de telemetría simulada</string>
+    <string name="simulator_hint">Cada escenario reemplaza los datos simulados (10 días de historial + lecturas recientes). Tus registros manuales se conservan.</string>
+    <string name="scenario_nominal">Nominal</string>
+    <string name="scenario_poor_sleep">Dormí mal</string>
+    <string name="scenario_radiation">Pico de radiación</string>
+    <string name="scenario_sans">Síntomas SANS</string>
+    <string name="scenario_low_mood">Caída anímica</string>
+    <string name="scenario_weekly">Historial de 8 semanas (patrón semanal)</string>
+    <string name="scenario_loaded">Escenario cargado: %1$s</string>
+    <string name="simulator_clear">Borrar datos simulados</string>
+    <string name="simulator_cleared">Datos simulados borrados</string>
+
+    <!-- Fase 2: módulos de presencia -->
+    <string name="tab_modules">Módulos</string>
+    <string name="notification_channel">Presencia de Laika</string>
+    <string name="notification_pet">Laika te acompaña sobre tus apps</string>
+    <string name="notification_voice">Laika escucha su nombre (todo en el dispositivo)</string>
+
+    <string name="modules_title">Módulos de presencia</string>
+    <string name="modules_pet_title">Laika flotante</string>
+    <string name="modules_pet_desc">Laika camina sobre tus otras apps y reacciona a cuál estás usando. Al salir de redes, videos o la cámara te pregunta cómo te fue. Solo ve el nombre de la app y cuánto tiempo la usaste; nunca lee su contenido.</string>
+    <string name="modules_pet_toggle">Activar Laika flotante</string>
+    <string name="modules_pet_category">App actual: %1$s</string>
+    <string name="modules_voice_title">Asistente de voz</string>
+    <string name="modules_voice_desc">Di «Laika» y tu orden. El reconocimiento funciona sin internet.</string>
+    <string name="modules_voice_toggle">Activar escucha</string>
+    <string name="modules_voice_no_tts">No hay una voz española sin conexión instalada: Laika responderá solo con texto en su globo.</string>
+    <string name="modules_voice_heard">Escuché: «%1$s»</string>
+    <string name="modules_voice_examples">Ejemplos: «Laika, glucosa ciento diez» · «Laika, presión ciento veinte sobre ochenta» · «Laika, ¿cómo estamos?» · «Laika, ¿cómo está la radiación?» · «Laika, ya terminé» · «Laika, ¿qué hice hoy?» · «Laika, platiquemos» · «Laika, silencio»</string>
+    <string name="modules_privacy">Privacidad: el audio se procesa en memoria dentro del dispositivo y nunca se guarda ni se envía.</string>
+
+    <string name="perm_overlay">Mostrarse sobre otras apps</string>
+    <string name="perm_usage">Saber qué app está abierta (opcional)</string>
+    <string name="perm_microphone">Micrófono</string>
+    <string name="perm_notifications">Notificaciones</string>
+    <string name="perm_grant">Conceder</string>
+
+    <string name="category_exercise">ejercicio</string>
+    <string name="category_journal">diario / notas</string>
+    <string name="category_focused">concentración (Laika se oculta)</string>
+    <string name="category_social">redes sociales</string>
+    <string name="category_video">videos</string>
+    <string name="category_camera">cámara</string>
+    <string name="category_leisure">ocio</string>
+    <string name="category_neutral">otra</string>
+
+    <string name="voice_status_off">Escucha apagada</string>
+    <string name="voice_status_loading">Preparando el modelo de voz…</string>
+    <string name="voice_status_listening">Escuchando su nombre</string>
+    <string name="voice_status_muted">Silenciada por voz. Actívala de nuevo aquí.</string>
+    <string name="voice_status_error_model">No se pudo cargar el modelo de voz.</string>
+    <string name="voice_status_error">Error del micrófono o del reconocimiento.</string>
+
+    <!-- Screen pet -->
+    <string name="pet_exercise">¡Corro contigo!</string>
+    <string name="pet_journal">¿Escribimos cómo te sientes hoy?</string>
+    <string name="pet_caress">Siento tu caricia. Respiremos juntos.</string>
+    <string name="pet_open">Abrir</string>
+    <string name="pet_open_protocol">Abrir protocolo</string>
+    <string name="pet_later">Después</string>
+    <string name="pet_content_description">Laika, perrita astronauta</string>
+
+    <!-- Respuestas de voz -->
+    <string name="voice_listening">¿Sí? Te escucho.</string>
+    <string name="voice_confirm">%1$s: %2$s. ¿Es correcto?</string>
+    <string name="voice_confirm_unusual">%1$s: %2$s. Es un valor poco habitual. ¿Lo confirmas?</string>
+    <string name="voice_saved">Listo, registré tu %1$s. ¡Gracias por cuidarnos!</string>
+    <string name="voice_cancelled">De acuerdo, no lo registro.</string>
+    <string name="voice_rejected">Ese valor de %1$s no parece posible. ¿Me lo repites?</string>
+    <string name="voice_rejected_missing">Para la presión necesito dos valores, por ejemplo: ciento veinte sobre ochenta.</string>
+    <string name="voice_rejected_order">La sistólica debe ser mayor que la diastólica. ¿Me lo repites?</string>
+    <string name="voice_missing_number">No entendí el valor de %1$s. ¿Me lo repites?</string>
+    <string name="voice_status">%1$s Nuestra vitalidad está en %2$d.</string>
+    <string name="voice_status_action">Te propongo: %1$s.</string>
+    <string name="voice_metric">Tu último registro de %1$s es %2$s, del %3$s.</string>
+    <string name="voice_metric_none">Aún no tengo registros de %1$s.</string>
+    <string name="voice_radiation_ok">La radiación está estable: %1$s microsieverts por hora.</string>
+    <string name="voice_radiation_alert">Hay un aumento de radiación: %1$s microsieverts por hora. Vamos al módulo blindado.</string>
+    <string name="voice_radiation_none">Aún no tengo lecturas del espectrómetro.</string>
+    <string name="voice_action_done">Bien hecho. Volvemos a la calma.</string>
+    <string name="voice_greeting">¡Hola! Aquí estoy contigo.</string>
+    <string name="voice_muted">Me quedo en silencio. Reactívame desde la app cuando me necesites.</string>
+    <string name="voice_not_understood">Perdona, no te entendí.</string>
+    <string name="voice_yes_or_no">¿Sí o no?</string>
+    <string name="voice_over">%1$s sobre %2$s</string>
+
+    <string name="unit_bpm">latidos por minuto</string>
+    <string name="unit_ms">milisegundos</string>
+    <string name="unit_mmhg">milímetros de mercurio</string>
+    <string name="unit_mgdl">miligramos por decilitro</string>
+    <string name="unit_celsius">grados</string>
+    <string name="unit_hours">horas</string>
+    <string name="unit_minutes">minutos</string>
+    <string name="unit_nmol">nanomoles por litro</string>
+    <string name="unit_over_ten">sobre diez</string>
+    <string name="unit_usvh">microsieverts por hora</string>
+    <string name="unit_percent">por ciento</string>
+
+    <!-- Fase 3: puntos de cuidado -->
+    <string name="care_points_total">Puntos de cuidado: %1$d</string>
+    <string name="care_points_earned">+%1$d PTS Cuidado</string>
+    <string name="care_checkin">Chequeo matutino</string>
+    <string name="care_mission">Misión de cuidado completada</string>
+    <string name="care_protocol">Protocolo de alerta seguido</string>
+    <string name="history_missions">Misiones completadas (para el Flight Surgeon)</string>
+    <string name="history_measurements">Mediciones</string>
+    <string name="complete_postpone">Ahora no, después</string>
+
+    <!-- Flujo 1: chequeo matutino -->
+    <string name="checkin_title">Chequeo matutino</string>
+    <string name="checkin_greeting_high">¡Nos sentimos genial! Registro rápido de glucosa.</string>
+    <string name="checkin_greeting_mid">Buenos días. Hagamos nuestro registro rápido.</string>
+    <string name="checkin_greeting_low">Me siento un poco deshidratada. ¿Tomamos agua y medimos juntos?</string>
+    <string name="checkin_confirm">Registrar</string>
+    <string name="checkin_saved">¡Registrado!</string>
+
+    <!-- Flujo 2: radiación -->
+    <string name="radiation_title">Marejada de partículas</string>
+    <string name="radiation_reading">Lectura CANS: %1$s µSv/h (fondo: %2$s µSv/h)</string>
+    <string name="radiation_go_shelter">Se acerca una marejada de partículas. Acompáñame al módulo blindado central mientras leemos los últimos reportes.</string>
+    <string name="radiation_in_shelter">Ya estoy en el módulo blindado</string>
+    <string name="radiation_waiting">Bien, estamos a resguardo. La lectura sigue alta: me quedo contigo hasta que pase.</string>
+    <string name="radiation_activity">Mientras tanto, respiremos juntos o escucha algo relajante.</string>
+    <string name="radiation_cleared">La lectura del espectrómetro bajó. ¡Estamos a salvo!</string>
+    <string name="radiation_confirm_safe">Confirmo que estoy a salvo</string>
+
+    <!-- Flujo 3: mapa corporal y misión -->
+    <string name="bodymap_title">Mapa corporal</string>
+    <string name="bodymap_hint">Toca una zona para ver su estado. En ámbar, lo que necesita atención.</string>
+    <string name="bodymap_risk">Riesgo NASA: %1$s</string>
+    <string name="bodymap_means">Media 24 h: %1$s · Media 7 días: %2$s</string>
+    <string name="bodymap_actions">Acciones disponibles en la nave</string>
+    <string name="region_head">Cabeza y ojos</string>
+    <string name="region_chest">Tórax</string>
+    <string name="region_abdomen">Abdomen</string>
+    <string name="region_legs">Piernas</string>
+    <string name="region_environment">Entorno de la nave</string>
+    <string name="region_environment_short">Nave</string>
+    <string name="risk_head">SANS (síndrome neuro-ocular), sueño inadecuado y estrés</string>
+    <string name="risk_chest">Desacondicionamiento cardiovascular en microgravedad</string>
+    <string name="risk_abdomen">Alteraciones metabólicas e inmunitarias</string>
+    <string name="risk_legs">Pérdida muscular y desplazamiento de fluidos hacia la cabeza</string>
+    <string name="risk_environment">Radiación espacial y CO₂ en ambiente cerrado</string>
+    <string name="mission_title">Misión de cuidado</string>
+    <string name="mission_start_timer">Iniciar</string>
+    <string name="mission_start_session">Empezar</string>
+    <string name="mission_complete">Misión completada</string>
+    <string name="timer_title">Misión en curso</string>
+    <string name="timer_relax">Mientras tanto, estiremos y respiremos juntos.</string>
+    <string name="timer_done">¡Misión cumplida! Tus piernas retuvieron fluidos y tus ojos lo agradecen.</string>
+    <string name="timer_register">Registrar misión</string>
+    <string name="timer_cancel">Terminar antes</string>
+    <string name="timer_demo_finish">Demo: terminar ahora</string>
+    <string name="breath_in">Inhala</string>
+    <string name="breath_out">Exhala</string>
+
+    <!-- Flujo 4: contacto afectivo -->
+    <string name="affective_title">Un momento juntos</string>
+    <string name="affective_instructions">Acaríciame o deja tu mano sobre mí. Siente mi latido.</string>
+    <string name="affective_done">Gracias. Siento que los dos estamos más tranquilos.</string>
+    <string name="affective_caress">Siento tu caricia.</string>
+    <string name="affective_pressure">Siento tu abrazo.</string>
+    <string name="affective_suggestion">¿Y si visitamos el módulo Veggie o escribimos en el diario de misión?</string>
+    <string name="affective_complete">Completar sesión</string>
+    <string name="affective_back">Volver</string>
+
+    <!-- Simulador -->
+    <string name="simulator_end_radiation">Fin del evento de radiación</string>
+
+    <!-- Fase 4: perfil de misión -->
+    <string name="mission_day">Día de misión %1$d</string>
+    <string name="simulator_mission_title">Tiempo de misión (revelación progresiva)</string>
+    <string name="mission_preset_day1">Día 1</string>
+    <string name="mission_preset_2w">2 semanas</string>
+    <string name="mission_preset_3m">3 meses</string>
+    <string name="mission_preset_1y">1 año</string>
+    <string name="mission_preset_2y">2 años</string>
+    <string name="mission_preset_900">Día 900</string>
+
+    <!-- Fase 4: exportación para el Flight Surgeon -->
+    <string name="export_button">Exportar para el Flight Surgeon</string>
+    <string name="export_hint">Genera un archivo JSON con todas las mediciones (incluidas las corregidas) y las misiones. Se guarda donde elijas; nada sale por la red.</string>
+    <string name="export_done">Reporte exportado.</string>
+    <string name="export_failed">No se pudo exportar el reporte.</string>
+
+    <!-- Fase 4: memoria episódica -->
+    <string name="memory_title">Laika recuerda</string>
+    <string name="memory_weekday">Sé que los %1$s tu %2$s suele ser menor: %3$s frente a %4$s %5$s de media.</string>
+    <string name="memory_weekday_suggestion">¿Hacemos «%1$s» hoy?</string>
+    <string name="memory_helpful">La última vez que hicimos «%1$s», tu %2$s pasó de %3$s a %4$s. ¡Funcionó!</string>
+    <string name="memories_title">Recuerdos de Laika</string>
+    <string name="memories_patterns">Lo que aprendí de tus semanas</string>
+
+    <!-- Fase 4: revelación progresiva -->
+    <string name="disclosure_new_story">Tengo algo que contarte</string>
+    <string name="disclosure_new_milestone">¡Hoy es un día especial!</string>
+    <string name="disclosure_listen">Escuchar</string>
+    <string name="disclosure_close">Gracias, Laika</string>
+    <string name="disclosure_day">día %1$d</string>
+    <string name="disclosure_next">Próximo recuerdo en %1$d días</string>
+
+    <string name="disc_intro_title">Quién soy</string>
+    <string name="disc_intro_body">Me llamo Laika, como la primera perrita que orbitó la Tierra. Ella no pudo volver; por eso mi trabajo es que esta vez el viaje sea de ida y vuelta, y que lo hagamos bien cuidados.</string>
+    <string name="disc_light_title">Ya conozco tus mañanas</string>
+    <string name="disc_light_body">Llevamos una semana juntos y ya sé a qué hora te despiertas. Desde hoy encenderé una luz suave un poco antes, para que el día empiece sin sobresaltos.</string>
+    <string name="disc_novelty_title">Más allá de la novedad</string>
+    <string name="disc_novelty_body">Dicen que a las dos semanas cualquier compañero nuevo deja de ser interesante. Yo guardé historias para mucho más tiempo. Te las iré contando poco a poco.</string>
+    <string name="disc_parabolic_title">Mi primer vuelo parabólico</string>
+    <string name="disc_parabolic_body">Antes de esta misión me probaron en un avión que sube y baja en arco. Durante veinte segundos todo flotaba: las tazas, los lápices y mis orejas. Desde entonces me encanta la ingravidez.</string>
+    <string name="disc_training_title">Recuerdos de entrenamiento en la Tierra</string>
+    <string name="disc_training_body">En la Tierra entrené en una piscina enorme con una maqueta de la nave en el fondo. Los buzos me ajustaban el traje y yo practicaba moverme despacio. Allí aprendí que en el espacio la calma es una herramienta.</string>
+    <string name="disc_heartbeat_title">Latimos al mismo ritmo</string>
+    <string name="disc_heartbeat_body">Medio año midiendo tu pulso. Ya reconozco cuándo estás tranquilo y cuándo no, a veces antes que tú. Cuando me acaricies, sentirás que mi latido se parece cada vez más al tuyo.</string>
+    <string name="disc_dot_title">Un punto azul</string>
+    <string name="disc_dot_body">Hoy intenté encontrar la Tierra por la ventana. Es solo un punto azul pálido, pero ahí está todo lo que conocemos. Me gusta pensar que alguien allá abajo también nos busca en el cielo.</string>
+    <string name="disc_halfway_title">¡Mitad del camino a Marte!</string>
+    <string name="disc_halfway_body">Un año de misión. Hemos recorrido la mitad del camino y tú cuidaste de los dos todos estos días. Hoy celebramos: ¡nos lo merecemos!</string>
+    <string name="disc_mars_title">Marte por la ventana</string>
+    <string name="disc_mars_body">Ese color óxido que ves no es una foto: es Marte, de verdad. Llegamos juntos. Recuerda hidratarte, que la emoción también cansa.</string>
+    <string name="disc_homeward_title">Rumbo a casa</string>
+    <string name="disc_homeward_body">Dos años de misión. Desde hoy cada día nos acerca a la Tierra. Vamos a cuidar tus huesos y músculos con más ganas que nunca: allá abajo te espera la gravedad.</string>
+    <string name="disc_window_title">La Tierra se agranda</string>
+    <string name="disc_window_body">El punto azul ya es una esfera. Pronto veremos nubes y océanos. Gracias por cuidarme tanto tiempo; yo también te cuidé a ti.</string>
+
+    <!-- Contexto social: conversación del screen pet (docs/10) -->
+    <string name="share_label">Mostrar a Laika</string>
+    <string name="share_saved">Se lo mostraste a Laika 🐾</string>
+    <string name="share_nothing">Laika no pudo leer lo que compartiste.</string>
+    <string name="chat_after_social">Estuviste %2$d min en %1$s. ¿Cómo te dejó?</string>
+    <string name="chat_after_video">¿Qué viste en %1$s? Cuéntame de qué iba.</string>
+    <string name="chat_after_camera">¡Vi que usaste la cámara! ¿Qué grabaste?</string>
+    <string name="chat_long_session">Llevamos %2$d min en %1$s. ¿Estiramos un minuto conmigo?</string>
+    <string name="chat_shared_topic">¡Gracias por mostrármelo! Es sobre %1$s. ¿Cómo te hizo sentir?</string>
+    <string name="chat_shared_video">¡Un video! No puedo verlo, pero quiero saber: ¿de qué trata?</string>
+    <string name="chat_shared_image">¡Una foto! Cuéntame qué hay en ella.</string>
+    <string name="chat_shared_text">Me lo guardo. ¿De qué trata?</string>
+    <string name="chat_recall_topic">%1$s me contaste de %2$s. ¿Cómo te sientes hoy?</string>
+    <string name="chat_recall_title">%1$s me mostraste «%2$s». ¿Cómo te sientes hoy?</string>
+    <string name="chat_open_question">¿Qué fue lo mejor que viste hoy?</string>
+    <string name="chat_when_today">Hoy</string>
+    <string name="chat_when_yesterday">Ayer</string>
+    <string name="chat_when_days">Hace %1$d días</string>
+    <string name="chat_felt_good">¡Qué bien! Lo guardo como un buen rato.</string>
+    <string name="chat_felt_ok">Entendido. Aquí sigo si quieres otra cosa.</string>
+    <string name="chat_felt_bad">Gracias por contármelo. A veces las redes pesan. ¿Miramos un ratito por la ventana?</string>
+    <string name="chat_learned">¡%1$s! Me lo apunto para recordarlo contigo.</string>
+    <string name="chat_stretch">¡Bien! Brazos arriba… y respira hondo.</string>
+    <string name="chat_not_now">Vale, sigo por aquí.</string>
+
+    <string name="topic_earth">la Tierra</string>
+    <string name="topic_crew">la tripulación</string>
+    <string name="topic_family">tu familia</string>
+    <string name="topic_fun">algo divertido</string>
+    <string name="topic_space">el espacio</string>
+    <string name="topic_science">ciencia</string>
+    <string name="topic_nature">la naturaleza</string>
+    <string name="topic_pets">mascotas</string>
+    <string name="topic_food">comida</string>
+    <string name="topic_music">música</string>
+    <string name="topic_sports">deporte</string>
+
+    <string name="reply_felt_good">😊 Bien</string>
+    <string name="reply_felt_ok">😐 Normal</string>
+    <string name="reply_felt_bad">😔 Mal</string>
+    <string name="reply_about_earth">🌍 La Tierra</string>
+    <string name="reply_about_crew">👩‍🚀 Tripulación</string>
+    <string name="reply_about_home">🏠 Casa</string>
+    <string name="reply_about_fun">😄 Algo divertido</string>
+    <string name="reply_about_science">🔬 Ciencia</string>
+    <string name="reply_about_space">✨ El espacio</string>
+    <string name="reply_about_music">🎵 Música</string>
+    <string name="reply_stretch">🙆 Vamos</string>
+    <string name="reply_not_now">Ahora no</string>
+    <string name="chat_close">Cerrar conversación</string>
+
+    <!-- Voz: contexto del día -->
+    <string name="voice_day_none">Hoy todavía no me has contado nada. ¿Me cuentas algo?</string>
+    <string name="voice_day_intro">Hoy</string>
+    <string name="day_social">%1$d min en redes</string>
+    <string name="day_video">%1$d min de videos</string>
+    <plurals name="day_camera">
+        <item quantity="one">usaste la cámara %1$d vez</item>
+        <item quantity="other">usaste la cámara %1$d veces</item>
+    </plurals>
+    <plurals name="day_shared">
+        <item quantity="one">me mostraste %1$d cosa</item>
+        <item quantity="other">me mostraste %1$d cosas</item>
+    </plurals>
+    <string name="day_topics">Hablamos de %1$s.</string>
+    <string name="list_and">y</string>
+
+    <!-- Tarjeta "Lo que Laika sabe" -->
+    <string name="knowledge_title">Lo que Laika sabe de tu día</string>
+    <string name="knowledge_privacy">Aprendo del tiempo que pasas en redes, videos y la cámara, de lo que me muestras con «Mostrar a Laika» y de tus respuestas. Nunca leo tus mensajes ni tu pantalla, y nada sale del dispositivo.</string>
+    <string name="knowledge_empty">Aún no sé nada de tu día. Comparte un post o un video y elige «Mostrar a Laika».</string>
+    <string name="knowledge_forget_all">Olvidar todo</string>
+    <string name="knowledge_forget">Olvidar</string>
+    <string name="knowledge_session">%1$s · %2$d min</string>
+    <string name="knowledge_session_short">%1$s · menos de 1 min</string>
+    <string name="knowledge_felt">Te sentiste %1$s</string>
+    <string name="knowledge_about">Me contaste de %1$s</string>
+    <string name="mood_good">bien</string>
+    <string name="mood_ok">normal</string>
+    <string name="mood_bad">mal</string>
+    <string name="knowledge_after">después de %1$s</string>
+</resources>
