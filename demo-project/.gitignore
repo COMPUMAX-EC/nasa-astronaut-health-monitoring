@@ -1,0 +1,51 @@
+# Gradle
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+
+# Kotlin
+.kotlin/
+*.class
+hs_err_pid*
+
+# Archivos locales (rutas del SDK; nunca se suben)
+local.properties
+
+# Android Studio / IntelliJ
+.idea/
+*.iml
+*.ipr
+*.iws
+out/
+
+# Salidas de compilación
+*.apk
+*.aab
+*.ap_
+*.dex
+bin/
+gen/
+captures/
+.externalNativeBuild/
+.cxx/
+
+# Claves y secretos
+*.jks
+*.keystore
+keystore.properties
+google-services.json
+*.pem
+
+# Logs, volcados y temporales
+*.log
+*.hprof
+*.tmp
+*.swp
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Modelo de voz Vosk (se descarga al compilar, ~40 MB)
+/app/src/main/assets/vosk-model-es/
