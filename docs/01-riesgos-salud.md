@@ -8,7 +8,7 @@ Fuentes: [NASA – 5 Hazards of Human Spaceflight](https://www.nasa.gov/hrp/haza
 |---|---|---|
 | **R**adiación | Daño al ADN, cáncer, efectos en el sistema nervioso central, enfermedad cardiovascular degenerativa, síndrome agudo ante eventos solares | Dosis acumulada (dosímetro personal), alertas de eventos de partículas solares (SEP), síntomas (náusea, fatiga), recuento sanguíneo |
 | **I**slamiento y confinamiento | Alteración del sueño, ánimo, conflictos, deterioro cognitivo | Cuestionarios de ánimo/estrés, test de vigilancia (PVT), actigrafía y sueño, diario |
-| **D**istancia a la Tierra | Retraso de comunicaciones (hasta ~20 min a Marte), sin evacuación rápida | Autonomía: guías de decisión a bordo, triaje, funcionamiento offline |
+| **D**istancia a la Tierra | Retraso de comunicaciones (de ~3 a ~22 min por sentido a Marte), sin evacuación rápida | Autonomía: guías de decisión a bordo, triaje, funcionamiento offline |
 | **G**ravedad alterada | Pérdida ósea y muscular, redistribución de fluidos, SANS (visión), desacondicionamiento cardiovascular, intolerancia ortostática, problemas sensoriomotores | Ejercicio realizado, fuerza, masa corporal, FC/PA, visión, marcadores óseos |
 | **E**ntorno hostil/cerrado | CO₂, toxinas, microbios, ruido, alteración del sistema inmune, reactivación viral latente | CO₂ y calidad del aire, ruido, temperatura corporal, síntomas infecciosos, biomarcadores inmunes |
 

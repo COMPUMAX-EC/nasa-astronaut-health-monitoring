@@ -37,9 +37,11 @@ La historia sigue **Problema → Solución con datos → Impacto**, que es lo qu
 
 ### 2 · El problema (45 s)
 
-> La NASA resume los riesgos del vuelo espacial en **5 peligros**: radiación, aislamiento, distancia, gravedad y un entorno hostil. Con 20 minutos de retraso, el tripulante no puede esperar a que tierra le conteste: tiene que darse cuenta solo de que algo cambió. Y el aislamiento no es un detalle: está en la lista oficial de riesgos del Human Research Program.
+> La NASA resume los riesgos del vuelo espacial en **5 peligros**: radiación, aislamiento, distancia, gravedad y un entorno hostil. Con hasta 22 minutos de retraso en cada sentido, el tripulante no puede esperar a que tierra le conteste: tiene que darse cuenta solo de que algo cambió. Y el aislamiento no es un detalle: está en la lista oficial de riesgos del Human Research Program.
 >
 > ¿Quién lo usa? Tripulaciones de Artemis y de Marte, análogos como HERA y CHAPEA y, aquí en la Tierra, gente aislada: la estación ecuatoriana Pedro Vicente Maldonado en la Antártida, Galápagos o comunidades rurales lejos de un médico.
+
+*Fuentes (por si preguntan): los 5 peligros y la lista de riesgos son del **Human Research Program (HRP)** de la NASA ([5 Hazards](https://www.nasa.gov/hrp/hazards/), [HRP Risks](https://www.nasa.gov/hrp/risks/), [Human Research Roadmap](https://humanresearchroadmap.nasa.gov/risks/)); el retraso y la autonomía médica, de los boletines [TB‑044](https://www.nasa.gov/wp-content/uploads/2025/08/ochmo-tb-044-medical-operations.pdf) y [TB‑007](https://www.nasa.gov/wp-content/uploads/2023/12/ochmo-tb-007-mission-duration.pdf), y el aislamiento, de [TB‑016](https://www.nasa.gov/wp-content/uploads/2023/12/ochmo-tb-016-behavioral-health.pdf), los tres de la **Office of the Chief Health and Medical Officer (OCHMO)** de la NASA; HERA y CHAPEA son análogos del HRP ([HERA](https://www.nasa.gov/mission/hera/), [CHAPEA](https://www.nasa.gov/humans-in-space/chapea/)). La estación Pedro Vicente Maldonado la opera el **Instituto Antártico Ecuatoriano (INAE)**: es un caso de uso que propone el equipo. El retraso a Marte va de unos 3 a unos 22 minutos por sentido, según la posición de los planetas.*
 
 ### 3 · La solución (45 s)
 

@@ -28,7 +28,7 @@ Comparación de Scott Kelly (340 días en la ISS) con su gemelo Mark en la Tierr
 
 ## 5.4 Autonomía médica (Earth‑independent medical operations)
 
-En Marte la comunicación tiene un retraso de hasta ~20 minutos en cada sentido y no hay evacuación. La tripulación debe detectar, diagnosticar y tratar por su cuenta. Fuentes:
+En Marte la comunicación tiene un retraso de ~3 a ~22 minutos en cada sentido y no hay evacuación. La tripulación debe detectar, diagnosticar y tratar por su cuenta. Fuentes:
 
 - Operaciones médicas (TB‑044): https://www.nasa.gov/wp-content/uploads/2025/08/ochmo-tb-044-medical-operations.pdf
 - Duración de misión e implicaciones médicas (TB‑007): https://www.nasa.gov/wp-content/uploads/2023/12/ochmo-tb-007-mission-duration.pdf

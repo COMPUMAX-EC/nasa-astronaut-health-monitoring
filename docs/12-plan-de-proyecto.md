@@ -6,7 +6,7 @@ Este plan junta todo lo del repo en un solo producto. Parte de los requisitos of
 
 **Una app offline donde Laica, una corgi astronauta, acompaña al tripulante cada día, le pide sus datos de salud, le explica qué significan y le avisa a tiempo, con cariño, humor y competencia.**
 
-Lo que nos diferencia de las soluciones similares ([10](10-soluciones-similares.md)): ellas miden bien pero no acompañan. En una misión a Marte, con 20 minutos de retraso en las comunicaciones, el aislamiento es un riesgo tan real como la radiación. Laica cubre ese hueco.
+Lo que nos diferencia de las soluciones similares ([10](10-soluciones-similares.md)): ellas miden bien pero no acompañan. En una misión a Marte, con hasta 22 minutos de retraso en las comunicaciones, el aislamiento es un riesgo tan real como la radiación. Laica cubre ese hueco.
 
 ## 12.2 La personalidad de Laica
 
