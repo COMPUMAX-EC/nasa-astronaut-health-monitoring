@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><title>Ficha del proyecto · Misión Laica</title>
+<style>
+@page { size: A4; margin: 16mm 15mm; }
+* { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+body { font-family: "Segoe UI", Arial, sans-serif; font-size: 10.3pt; color: #14213d; line-height: 1.38; margin: 0; }
+h1 { font-size: 21pt; margin: 0 0 2mm; color: #07173F; }
+h2 { font-size: 13.5pt; color: #fff; background: #07173F; padding: 2mm 3mm; margin: 6mm 0 3mm; border-radius: 2mm; }
+h3 { font-size: 11pt; color: #0b3d91; margin: 4mm 0 1.5mm; }
+.sub { color: #555; margin: 0 0 4mm; }
+table { width: 100%; border-collapse: collapse; margin: 1mm 0 3mm; font-size: 9.4pt; }
+th, td { border: 1px solid #c9d2e3; padding: 1.4mm 2mm; text-align: left; vertical-align: top; }
+th { background: #e8eef9; }
+td.k { width: 30%; font-weight: 600; background: #f5f7fc; }
+a { color: #0b3d91; text-decoration: none; word-break: break-all; }
+ul { margin: 1mm 0 2mm 5mm; padding: 0; } li { margin: 0.6mm 0; }
+.salto { break-before: page; }
+.nota { font-size: 9pt; color: #444; border-left: 3px solid #0b3d91; padding-left: 3mm; margin: 2mm 0; }
+</style></head><body>
+
+<h1>Misión Laica · Laica Mission</h1>
+<p class="sub">Ficha del proyecto / Project sheet · NASA Space Apps Challenge 2026 · Sangolquí (Universidad de las Fuerzas Armadas ESPE), Ecuador</p>
+
+<table>
+<tr><td class="k">Equipo / Team</td><td>Compumax Evolution: Melany Irua · Diego Paz · Geovanny Basantes</td></tr>
+<tr><td class="k">Reto / Challenge</td><td>Create Health Monitoring Software for Astronauts on Space Missions</td></tr>
+<tr><td class="k">Repositorio público / Public repository</td><td><a href="https://github.com/COMPUMAX-EC/nasa-astronaut-health-monitoring">https://github.com/COMPUMAX-EC/nasa-astronaut-health-monitoring</a></td></tr>
+<tr><td class="k">Licencia / License (LICENSE en la raíz / at root)</td><td>Código MIT; textos CC BY 4.0 · <a href="https://github.com/COMPUMAX-EC/nasa-astronaut-health-monitoring/blob/main/LICENSE">LICENSE</a></td></tr>
+<tr><td class="k">Demo pública / Live demo (deploy)</td><td><a href="https://mision-laica.vercel.app">https://mision-laica.vercel.app</a></td></tr>
+<tr><td class="k">Presentación / Slides</td><td><a href="https://mision-laica.vercel.app/presentacion/">https://mision-laica.vercel.app/presentacion/</a> (7 diapositivas / slides)</td></tr>
+<tr><td class="k">App de escritorio / Desktop app</td><td>Electron (Windows), código en <a href="https://github.com/COMPUMAX-EC/nasa-astronaut-health-monitoring/tree/main/escritorio">/escritorio</a></td></tr>
+<tr><td class="k">Video</td><td>No se presenta (opcional) / Not submitted (optional)</td></tr>
+</table>
+<p class="nota">Todos los enlaces son públicos y abren sin iniciar sesión (probados en ventana de incógnito). / All links are public and open without signing in (tested in an incognito window).</p>
+
+<h2>Español</h2>
+<p><b>Resumen:</b> monitor de salud offline para astronautas, con una compañera, Laica, que acompaña, explica y avisa a tiempo.</p>
+<p>En una misión a Marte, un mensaje a la Tierra tarda hasta 22 minutos en llegar. El astronauta tiene que darse cuenta solo de que su salud cambia, mientras enfrenta los 5 peligros que define la NASA. Misión Laica es una aplicación web progresiva (PWA) que funciona <b>sin internet</b> y guarda los datos <b>solo en el dispositivo</b>:</p>
+<ul>
+<li><b>Check‑in diario</b> por voz, teclado o clics.</li>
+<li><b>Motor de alertas</b> verde, amarillo, naranja y rojo con umbrales de <b>NASA‑STD‑3001</b>; dice qué hacer y cita la fuente.</li>
+<li><b>Cuerpo humano clicable</b> con 7 zonas y <b>matriz de 47 indicadores</b> (Human Research Program).</li>
+<li><b>Alerta de radiación</b> según eventos de partículas solares de <b>DONKI</b>.</li>
+<li><b>Laica</b>, perrita astronauta que combate el aislamiento; puede salir del navegador y caminar por el escritorio.</li>
+</ul>
+<p><b>Tecnología:</b> React 18 + Vite (PWA), IndexedDB, Web Speech API, MediaPipe (en el dispositivo), Electron y Python. 40 pruebas automáticas. <b>Aviso:</b> herramienta educativa, no es un dispositivo médico. No está afiliado ni respaldado por la NASA.</p>
+
+<h2>English</h2>
+<p><b>Summary:</b> an offline health monitor for astronauts, with a companion, Laica, who keeps them company, explains their data and warns them in time.</p>
+<p>On a mission to Mars, a message to Earth takes up to 22 minutes to arrive. Astronauts must notice changes in their own health by themselves while facing NASA's 5 hazards of human spaceflight. Laica Mission is a progressive web app (PWA) that works <b>offline</b> and keeps all data <b>on the device</b>:</p>
+<ul>
+<li><b>Daily check‑in</b> by voice, keyboard or clicks.</li>
+<li><b>Alert engine</b> (green, yellow, orange, red) with <b>NASA‑STD‑3001</b> thresholds; it says what to do and cites the source.</li>
+<li><b>Clickable human body</b> with 7 zones and a <b>47‑indicator risk matrix</b> (Human Research Program).</li>
+<li><b>Radiation alert</b> based on solar particle events from <b>DONKI</b>.</li>
+<li><b>Laica</b>, an astronaut dog who fights isolation; she can leave the browser and walk across the desktop.</li>
+</ul>
+<p><b>Technology:</b> React 18 + Vite (PWA), IndexedDB, Web Speech API, MediaPipe (on‑device), Electron and Python. 40 automated tests. <b>Disclaimer:</b> educational tool, not a medical device. Not affiliated with or endorsed by NASA.</p>
+
+<h2 class="salto">Datos de la NASA usados · NASA data used</h2>
+<table>
+<tr><th>Dataset / API (nombre · name)</th><th>Enlace / Link</th><th>Uso en el proyecto / Use in the project</th></tr>
+<tr><td>NASA‑STD‑3001 Vol. 1 (Crew Health)</td><td><a href="https://www.nasa.gov/reference/nasa-std-3001v1/">nasa.gov/reference/nasa-std-3001v1/</a></td><td>Umbrales médicos (p. ej. 600 mSv) / Medical alert thresholds (e.g. 600 mSv)</td></tr>
+<tr><td>NASA‑STD‑3001 Vol. 2 (Human Factors, Habitability)</td><td><a href="https://www.nasa.gov/reference/nasa-std-3001v2/">nasa.gov/reference/nasa-std-3001v2/</a></td><td>Umbrales de SpO₂, CO₂ y hábitat / SpO₂, CO₂ and habitat thresholds</td></tr>
+<tr><td>OCHMO Technical Briefs (TB‑020, TB‑016)</td><td><a href="https://www.nasa.gov/ochmo/hsa-standards/ochmo-technical-briefs/">nasa.gov/ochmo/hsa-standards/ochmo-technical-briefs/</a></td><td>Radiación y salud conductual / Radiation and behavioral health</td></tr>
+<tr><td>Human Research Program: 5 Hazards y Risks</td><td><a href="https://www.nasa.gov/hrp/hazards/">nasa.gov/hrp/hazards/</a> · <a href="https://www.nasa.gov/hrp/risks/">nasa.gov/hrp/risks/</a></td><td>Planteamiento del problema y zonas del cuerpo / Problem statement and body zones</td></tr>
+<tr><td>Human Research Roadmap (risks, evidence)</td><td><a href="https://humanresearchroadmap.nasa.gov/risks/">humanresearchroadmap.nasa.gov/risks/</a></td><td>Matriz de 47 indicadores / 47‑indicator risk matrix</td></tr>
+<tr><td>DONKI Space Weather Database (API: SEP, FLR)</td><td><a href="https://ccmc.gsfc.nasa.gov/tools/DONKI/">ccmc.gsfc.nasa.gov/tools/DONKI/</a> · <a href="https://api.nasa.gov/">api.nasa.gov</a></td><td>Alerta de radiación (scripts/donki_radiacion.py) / Radiation alert</td></tr>
+<tr><td>Open Science Data Repository (OSDR)</td><td><a href="https://osdr.nasa.gov/bio/repo/">osdr.nasa.gov/bio/repo/</a></td><td>Estudios de fisiología espacial (scripts/osdr_datasets.py) / Space physiology studies</td></tr>
+<tr><td>NASA Technical Reports Server (NTRS)</td><td><a href="https://ntrs.nasa.gov/">ntrs.nasa.gov</a></td><td>Papers técnicos (scripts/buscar_ntrs.py) / Technical papers</td></tr>
+<tr><td>NASA Twins Study · HERA · CHAPEA</td><td><a href="https://www.nasa.gov/humans-in-space/twins-study/">Twins</a> · <a href="https://www.nasa.gov/mission/hera/">HERA</a> · <a href="https://www.nasa.gov/humans-in-space/chapea/">CHAPEA</a></td><td>Salud mental, aislamiento y usuarios / Mental health, isolation and users</td></tr>
+<tr><td>NASA Life Sciences Portal (NLSP)</td><td><a href="https://nlsp.nasa.gov/">nlsp.nasa.gov</a></td><td>Referencia de datos / Data reference</td></tr>
+</table>
+<h3>Artículos de soporte · Supporting papers</h3>
+<ul>
+<li>Garrett‑Bakelman et al. (2019). <i>The NASA Twins Study</i>. Science 364. <a href="https://doi.org/10.1126/science.aau8650">doi:10.1126/science.aau8650</a></li>
+<li>NASA (2024). <i>Earth Independent Medical Operations: ConOps</i>. <a href="https://ntrs.nasa.gov/citations/20240001402">NTRS 20240001402</a></li>
+<li>NASA HRP (2026). <i>AI to mitigate exploration medical risk</i>. <a href="https://ntrs.nasa.gov/citations/20260001797">NTRS 20260001797</a></li>
+<li>NASA (2024). <i>AMOS ISS demonstration</i>. <a href="https://ntrs.nasa.gov/citations/20240012964">NTRS 20240012964</a></li>
+</ul>
+<p class="nota">Los datos del tripulante en la demo son simulados (30 días, semilla fija); los umbrales y eventos de radiación vienen de las fuentes oficiales. / Crew data in the demo are simulated (30 days, fixed seed); thresholds and radiation events come from the official sources.</p>
+
+<h2>Declaración de uso de IA · AI use declaration</h2>
+<table>
+<tr><th>Herramienta / Tool</th><th>Uso / Use</th><th>Qué hizo el equipo / What the team did</th></tr>
+<tr><td><b>Claude (Anthropic)</b>, asistente de código / coding assistant</td><td>Escribir y depurar código, redactar documentación, guion y diapositivas / Writing and debugging code, drafting docs, pitch script and slides</td><td>Definió problema, idea y alcance; revisó, probó y aprobó todo / Defined problem, idea and scope; reviewed, tested and approved everything</td></tr>
+<tr><td><b>Canva</b> (IA de imágenes / AI images)</td><td>Imágenes de Laica <b>generadas con IA</b> / <b>AI‑generated</b> images of Laica</td><td>Las eligió, recortó y animó; llevan marca de agua visible "Imagen generada con IA" en la app, en cada diapositiva y en los archivos / Chose, cropped and animated them; they carry a visible AI watermark in the app, on every slide and in the files</td></tr>
+</table>
+<p><b>No usa IA / No AI in:</b> las alertas de salud (motor de reglas auditable) · el reconocimiento de voz (Web Speech API + reglas) · los datos del usuario (no salen del dispositivo). / health alerts (auditable rule engine) · voice recognition · user data (never leaves the device).</p>
+<p><b>Logos:</b> no se usa la insignia ni el logotipo de la NASA, ni logos de la NASA hechos con IA; solo el logo oficial del NASA Space Apps Challenge, sin modificar, para identificar el evento. / NASA insignia and logotype are not used, nor any AI‑made NASA logo; only the unmodified official Space Apps logo to identify the event. Sonidos CC0 (OpenGameArt) / CC0 sounds.</p>
+</body></html>
