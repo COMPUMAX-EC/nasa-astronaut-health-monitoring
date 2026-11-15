@@ -4,6 +4,9 @@
 //   - Con gravedad: cae, rebota en el suelo, camina sobre la barra de tareas, salta, se sienta,
 //     y si la lanzas hace una parábola.
 // Camina en dos patas o en cuatro. Clic derecho: menú (gravedad, cuatro patas y más).
+// Ventanas de otras aplicaciones (Windows): se para y camina sobre el borde de arriba del
+// navegador y de cualquier programa, se cae por las orillas o se da la vuelta, rebota en sus
+// costados y en su borde de abajo, y si arrastras la ventana donde está parada, viaja con ella.
 
 window.addEventListener("error", (e) => console.log("ERROR", e.message, e.filename, e.lineno));
 (() => {
@@ -41,6 +44,11 @@ window.addEventListener("error", (e) => console.log("ERROR", e.message, e.filena
     cuatroNo: ["De vuelta a dos patas.", "Modo astronauta."],
     sentarse: ["Un descansito.", "Aquí me quedo un rato."],
     salto: ["¡Hop!", "¡Arriba!"],
+    ventana: ["¡Una ventana! Me subo.", "Bonita vista desde aquí arriba.", "Paseo por el borde de tu ventana.", "¿Me prestas tu navegador?"],
+    orilla: ["¡Uy, se acabó la ventana!", "¡Al vacío!", "¡Salto de fe!"],
+    paredVentana: ["¡Pum! Una ventana.", "¿Quién abrió esta ventana aquí?", "¡Esa ventana no estaba!"],
+    viaje: ["¡Wiii, me llevas de paseo!", "¡Más despacio, piloto!", "Ventana-taxi, gracias."],
+    volver: ["¡Ya volví!", "¿Me extrañaste?", "Siesta terminada."],
     salud: [
       "¿Ya tomaste agua?",
       "Mira lejos 20 segundos: tus ojos te lo agradecen.",
@@ -90,6 +98,7 @@ window.addEventListener("error", (e) => console.log("ERROR", e.message, e.filena
     libre: ["ladrar", 1], choque: ["quejarse", 0.35], escapar: ["ladrar", 1], asomar: ["ladrar", 0.6, "grunir"],
     cosquillas: ["grunir", 1], agarrar: ["quejarse", 1], lanzar: ["ladrar", 1], salto: ["ladrar", 0.4],
     aterrizar: ["grunir", 0.3], despegar: ["ladrar", 0.3], sentarse: ["grunir", 0.3], salud: ["ladrar", 1],
+    ventana: ["ladrar", 0.5], orilla: ["quejarse", 0.6], paredVentana: ["quejarse", 0.35], viaje: ["ladrar", 0.7],
   };
   function sonar(clave) {
     const s = SONIDO_DE[clave];
@@ -113,6 +122,59 @@ window.addEventListener("error", (e) => console.log("ERROR", e.message, e.filena
 
   const ahora = () => performance.now();
   const suelo = () => innerHeight - ALTO;
+
+  // ---------- Ventanas de otras aplicaciones ----------
+  let bordes = { pisos: [], paredes: [], techos: [] };
+  let rects = new Map(); // id → { x, y, w, h } de la última lectura
+  let sobre = null;      // piso (borde de ventana) donde está parada, o null si está en el suelo
+  let tViaje = 0;
+  const piso = () => (sobre ? sobre.y - ALTO : suelo());
+  // Caja del cuerpo dentro de la imagen (la foto tiene aire a los lados y arriba).
+  const IZQ = ANCHO * 0.25, DER = ANCHO * 0.75, CABEZA = ALTO * 0.15;
+  const tramoDe = (id, xc, holgura = 0) => bordes.pisos.find((p) => p.id === id && xc >= p.x1 - holgura && xc <= p.x2 + holgura);
+  // Borde de ventana que los pies cruzan al bajar (el más alto).
+  function pisoCruzado(xc, piesAntes, pies) {
+    let mejor = null;
+    for (const p of bordes.pisos) {
+      if (xc < p.x1 + 8 || xc > p.x2 - 8 || piesAntes > p.y + 1 || pies < p.y) continue;
+      if (!mejor || p.y < mejor.y) mejor = p;
+    }
+    return mejor;
+  }
+  // Borde horizontal que la cabeza cruza al subir (borde de abajo de una ventana, o el de arriba
+  // visto desde adentro).
+  function techoCruzado(xc, cabezaAntes, cabeza) {
+    for (const t of [...bordes.techos, ...bordes.pisos]) {
+      if (xc >= t.x1 && xc <= t.x2 && cabezaAntes >= t.y - 1 && cabeza < t.y) return t;
+    }
+    return null;
+  }
+  // Costado de ventana que el cuerpo cruza al moverse de lado.
+  function paredCruzada(xAntes, xAhora, yAhora, haciaDer) {
+    const y1 = yAhora + ALTO * 0.25, y2 = yAhora + ALTO * 0.95;
+    for (const w of bordes.paredes) {
+      if (y2 < w.y1 || y1 > w.y2) continue;
+      if (haciaDer && xAntes + DER <= w.x && xAhora + DER > w.x) return { x: w.x - DER, px: w.x };
+      if (!haciaDer && xAntes + IZQ >= w.x && xAhora + IZQ < w.x) return { x: w.x - IZQ, px: w.x };
+    }
+    return null;
+  }
+  function recibirVentanas(lista) {
+    const nuevos = new Map(lista.map((v) => [v.id, v]));
+    // Si arrastran la ventana donde está parada, viaja con ella.
+    if (sobre && (fase === "caminando" || fase === "sentada")) {
+      const a = rects.get(sobre.id), b = nuevos.get(sobre.id);
+      if (a && b && (a.x !== b.x || a.y !== b.y)) {
+        x += b.x - a.x;
+        if (Math.hypot(b.x - a.x, b.y - a.y) > 25 && ahora() - tViaje > 4000) {
+          tViaje = ahora();
+          (decir(al(FRASES.viaje)), sonar("viaje"));
+        }
+      }
+    }
+    rects = nuevos;
+    bordes = window.LaicaBordes ? window.LaicaBordes.calcularBordes(lista, innerWidth, innerHeight, { minPiso: ALTO * 0.8 }) : bordes;
+  }
   function cambiar(f, ms = 0) {
     fase = f;
     tFase = ahora();
@@ -126,6 +188,7 @@ window.addEventListener("error", (e) => console.log("ERROR", e.message, e.filena
 
   // Sin gravedad: vuela en línea recta y rebota.
   function volar(ang = entre(0, Math.PI * 2), velocidad = VEL) {
+    sobre = null;
     vx = Math.cos(ang) * velocidad;
     vy = Math.sin(ang) * velocidad;
     if (Math.abs(vx) < 60) vx = 60 * (Math.sign(vx) || 1);
@@ -135,6 +198,7 @@ window.addEventListener("error", (e) => console.log("ERROR", e.message, e.filena
   }
   // Con gravedad: sale disparada y cae.
   function soltar(nvx, nvy) {
+    sobre = null;
     vx = nvx;
     vy = nvy;
     cambiar("cayendo");
@@ -142,7 +206,7 @@ window.addEventListener("error", (e) => console.log("ERROR", e.message, e.filena
   function caminar(dir = Math.sign(vx) || (Math.random() < 0.5 ? -1 : 1)) {
     vx = dir * velAndar();
     vy = 0;
-    y = suelo();
+    y = piso();
     choques = 0;
     maxChoques = 2 + Math.floor(Math.random() * 3);
     cambiar("caminando", entre(6000, 14000));
@@ -188,7 +252,10 @@ window.addEventListener("error", (e) => console.log("ERROR", e.message, e.filena
     } else (decir(al(FRASES.libre)), sonar("libre"));
   }
 
+  let enPausa = false;
   function ordenar(o) {
+    if (o === "pausa") { enPausa = true; burbuja.hidden = true; return; }
+    if (o === "seguir") { enPausa = false; antes = ahora(); (decir(al(FRASES.volver)), sonar("libre")); return; }
     if (o === "sonido") {
       const si = !window.LaicaSonido?.activo?.();
       window.LaicaSonido?.poner?.(si);
@@ -223,7 +290,9 @@ window.addEventListener("error", (e) => console.log("ERROR", e.message, e.filena
       if (opciones.gravedad) { if (fase !== "caminando" && fase !== "cayendo") soltar(0, 0); }
       else { vx = Math.sign(vx || 1) * 120; vy = 260; cambiar("aterrizando"); }
     } else if (o === "asomarse") {
-      if (opciones.gravedad && y >= suelo() - 2) {
+      if (opciones.gravedad && sobre) {
+        soltar((x + ANCHO / 2 < innerWidth / 2 ? -1 : 1) * velAndar() * 1.6, -250);
+      } else if (opciones.gravedad && y >= suelo() - 2) {
         vx = (x + ANCHO / 2 < innerWidth / 2 ? -1 : 1) * velAndar() * 1.6;
         cambiar("saliendo");
       } else {
@@ -249,6 +318,7 @@ window.addEventListener("error", (e) => console.log("ERROR", e.message, e.filena
     const dx = raton.x - cx, dy = raton.y - cy;
     const cerca = raton.x >= 0 && dx * dx + dy * dy < 320 * 320;
     const mirarCursor = () => mirar(dx / 200, dy / 200);
+    const xAntes = x, yAntes = y;
 
     if (fase === "volando" || fase === "escapando") {
       x += vx * dt;
@@ -278,6 +348,20 @@ window.addEventListener("error", (e) => console.log("ERROR", e.message, e.filena
           if (Math.random() < 0.5) (decir(al(FRASES.choque)), sonar("choque"));
           if (Math.random() < 0.2) laica.girar?.("vuelta");
         }
+        if (!eje) {
+          // Bordes de ventanas: rebota en sus costados y en sus bordes de arriba y abajo.
+          const xc = x + ANCHO / 2;
+          const pared = paredCruzada(xAntes, x, y, vx > 0);
+          const pisoV = vy > 0 && pisoCruzado(xc, yAntes + ALTO, y + ALTO);
+          const techoV = vy < 0 && techoCruzado(xc, yAntes + CABEZA, y + CABEZA);
+          if (pared || pisoV || techoV) {
+            if (pared) { x = pared.x; vx = -vx; aplastar("x", vx < 0 ? "right center" : "left center"); chispa(pared.px, y + ALTO / 2); }
+            else if (pisoV) { y = pisoV.y - ALTO; vy = -vy; aplastar("y", "center bottom"); chispa(xc, pisoV.y); }
+            else { y = techoV.y - CABEZA; vy = -vy; aplastar("y", "center top"); chispa(xc, techoV.y); }
+            choques++;
+            if (Math.random() < 0.4) (decir(al(FRASES.paredVentana)), sonar("paredVentana"));
+          }
+        }
         if (enFase > duracion) { vx *= 0.5; vy = 240; cambiar("aterrizando"); }
       } else if (x < -ANCHO - 20 || x > W + 20 || y < -ALTO - 20 || y > H + 20) {
         cambiar("fuera", entre(1500, 3500));
@@ -294,7 +378,27 @@ window.addEventListener("error", (e) => console.log("ERROR", e.message, e.filena
       if (x < 0 && vx < 0) { x = 0; vx = -vx * 0.75; aplastar("x", "left center"); chispa(0, y + ALTO / 2); if (Math.random() < 0.4) (decir(al(FRASES.choque)), sonar("choque")); }
       if (x > W - ANCHO && vx > 0) { x = W - ANCHO; vx = -vx * 0.75; aplastar("x", "right center"); chispa(W, y + ALTO / 2); if (Math.random() < 0.4) (decir(al(FRASES.choque)), sonar("choque")); }
       if (y < 0 && vy < 0) { y = 0; vy = -vy * 0.5; aplastar("y", "center top"); chispa(x + ANCHO / 2, 0); }
-      if (y >= suelo() && vy > 0) {
+      // Ventanas: costados y bordes de abajo hacen rebotar; el borde de arriba es un piso.
+      const xcV = x + ANCHO / 2;
+      const paredV = paredCruzada(xAntes, x, y, vx > 0);
+      if (paredV) {
+        x = paredV.x; vx = -vx * 0.75;
+        aplastar("x", vx < 0 ? "right center" : "left center"); chispa(paredV.px, y + ALTO / 2);
+        if (Math.random() < 0.4) (decir(al(FRASES.paredVentana)), sonar("paredVentana"));
+      }
+      const techoV = vy < 0 && techoCruzado(xcV, yAntes + CABEZA, y + CABEZA);
+      if (techoV) { y = techoV.y - CABEZA; vy = -vy * 0.5; aplastar("y", "center top"); chispa(xcV, techoV.y); }
+      const pisoV = vy > 0 && pisoCruzado(xcV, yAntes + ALTO, y + ALTO);
+      if (pisoV) {
+        y = pisoV.y - ALTO;
+        aplastar("y", "center bottom");
+        if (vy > 420) { chispa(xcV, pisoV.y); vy = -vy * 0.42; vx *= 0.8; }
+        else {
+          sobre = { ...pisoV };
+          if (Math.random() < 0.6) (decir(al(FRASES.ventana)), sonar("ventana"));
+          caminar(Math.sign(vx) || undefined);
+        }
+      } else if (y >= suelo() && vy > 0) {
         y = suelo();
         aplastar("y", "center bottom");
         if (vy > 420) { // rebota
@@ -302,6 +406,7 @@ window.addEventListener("error", (e) => console.log("ERROR", e.message, e.filena
           vy = -vy * 0.42;
           vx *= 0.8;
         } else { // se queda en el suelo y camina
+          sobre = null;
           if (Math.random() < 0.4) (decir(al(FRASES.aterrizar)), sonar("aterrizar"));
           caminar(Math.sign(vx) || undefined);
         }
@@ -311,7 +416,16 @@ window.addEventListener("error", (e) => console.log("ERROR", e.message, e.filena
       y += vy * dt;
       x = Math.max(0, Math.min(W - ANCHO, x));
       rotObj = 0;
-      if (y >= suelo()) {
+      const pisoA = pisoCruzado(x + ANCHO / 2, yAntes + ALTO, y + ALTO);
+      if (pisoA) {
+        y = pisoA.y - ALTO;
+        sobre = { ...pisoA };
+        aplastar("y", "center bottom");
+        chispa(x + ANCHO / 2, pisoA.y);
+        (decir(al(FRASES.ventana)), sonar("ventana"));
+        caminar(Math.sign(vx) || 1);
+      } else if (y >= suelo()) {
+        sobre = null;
         aplastar("y", "center bottom");
         chispa(x + ANCHO / 2, H);
         (decir(al(FRASES.aterrizar)), sonar("aterrizar"));
@@ -319,7 +433,33 @@ window.addEventListener("error", (e) => console.log("ERROR", e.message, e.filena
       }
     } else if (fase === "caminando" || fase === "saliendo") {
       x += vx * dt;
-      y = suelo();
+      if (fase === "saliendo") sobre = null;
+      if (sobre) {
+        const xc = x + ANCHO / 2;
+        const tramo = tramoDe(sobre.id, xc, ANCHO);
+        if (!tramo || Math.abs(tramo.y - sobre.y) > 200) {
+          // La ventana se cerró, se minimizó o quedó tapada: se cae.
+          soltar(vx * 0.6, -120);
+          (decir(al(FRASES.orilla)), sonar("orilla"));
+        } else {
+          sobre = { ...tramo };
+          if (xc < tramo.x1 || xc > tramo.x2) {
+            if (Math.random() < 0.5 && !opciones.cuatro) { // se asoma a la orilla y da la vuelta
+              x = Math.max(tramo.x1, Math.min(tramo.x2, xc)) - ANCHO / 2;
+              vx = -vx;
+            } else { // se tira
+              soltar(vx * 1.2, -260);
+              (decir(al(FRASES.orilla)), sonar("orilla"));
+            }
+          }
+        }
+      }
+      // Costados de otras ventanas: se da la vuelta.
+      if (fase === "caminando") {
+        const paredC = paredCruzada(xAntes, x, y, vx > 0);
+        if (paredC) { x = paredC.x; vx = -vx; aplastar("x", vx < 0 ? "right center" : "left center"); }
+      }
+      if (fase === "caminando" || fase === "saliendo") y = piso();
       rotObj = 0;
       esc += (1 - esc) * k;
       if (cerca && fase === "caminando") mirar(Math.sign(vx) * 0.9, Math.max(-0.4, Math.min(0.4, dy / 300)));
@@ -327,7 +467,7 @@ window.addEventListener("error", (e) => console.log("ERROR", e.message, e.filena
       lado("arriba");
       if (fase === "saliendo") {
         if (x < -ANCHO - 20 || x > W + 20) cambiar("fuera", entre(1500, 3500));
-      } else {
+      } else if (fase === "caminando") { // (si se cayó de la ventana, ya está en "cayendo")
         const borde = (x < 0 && vx < 0) || (x > W - ANCHO && vx > 0);
         if (borde && opciones.gravedad && choques >= maxChoques) {
           cambiar("saliendo"); // se va caminando por el costado
@@ -349,9 +489,15 @@ window.addEventListener("error", (e) => console.log("ERROR", e.message, e.filena
         }
       }
     } else if (fase === "sentada") {
-      y = suelo();
-      if (cerca) mirarCursor(); else mirar(0, 0);
-      if (enFase > duracion) caminar(Math.random() < 0.5 ? -1 : 1);
+      if (sobre) {
+        const tramo = tramoDe(sobre.id, x + ANCHO / 2, ANCHO);
+        if (tramo) sobre = { ...tramo }; else { soltar(0, -80); (decir(al(FRASES.orilla)), sonar("orilla")); }
+      }
+      if (fase === "sentada") {
+        y = piso();
+        if (cerca) mirarCursor(); else mirar(0, 0);
+        if (enFase > duracion) caminar(Math.random() < 0.5 ? -1 : 1);
+      }
     } else if (fase === "fuera") {
       if (enFase > duracion) {
         const bordes = opciones.gravedad ? ["izq", "der"] : ["izq", "der", "arriba", "abajo", "abajo"];
@@ -454,12 +600,15 @@ window.addEventListener("error", (e) => console.log("ERROR", e.message, e.filena
 
   // Recordatorios de salud cada 4 a 7 minutos (la misión sigue, aunque esté de paseo).
   (function recordar() {
-    setTimeout(() => { if (fase !== "fuera") decir(al(FRASES.salud), 5000); recordar(); }, entre(240000, 420000));
+    setTimeout(() => { if (fase !== "fuera" && !enPausa) decir(al(FRASES.salud), 5000); recordar(); }, entre(240000, 420000));
   })();
 
   // Para las pruebas automáticas (modo captura).
-  window.laicaDepurar = () => ({ fase, x: Math.round(x), y: Math.round(y), ...opciones, andar: laica.hasAttribute("andar"), patas: laica.getAttribute("patas") });
+  window.laicaDepurar = () => ({ fase, x: Math.round(x), y: Math.round(y), ...opciones, andar: laica.hasAttribute("andar"), patas: laica.getAttribute("patas"),
+    sobre: sobre?.id ?? null, ventanas: rects.size, pisos: bordes.pisos.length, paredes: bordes.paredes.length });
+  window.laicaVentanas = recibirVentanas; // para las pruebas
 
   puente.alSalir(salir);
   puente.alOrden(ordenar);
+  puente.alVentanas?.(recibirVentanas);
 })();

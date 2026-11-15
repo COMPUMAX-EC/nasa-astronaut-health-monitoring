@@ -6,4 +6,5 @@ contextBridge.exposeInMainWorld("escritorio", {
   menu: (opciones) => ipcRenderer.send("menu", opciones),
   alSalir: (cb) => ipcRenderer.on("salir", (_e, datos) => cb(datos)),
   alOrden: (cb) => ipcRenderer.on("orden", (_e, orden) => cb(orden)),
+  alVentanas: (cb) => ipcRenderer.on("ventanas", (_e, lista) => cb(lista)),
 });

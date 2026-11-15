@@ -15,13 +15,36 @@ Una página web no puede dibujar fuera de la ventana del navegador. Esta pequeñ
 
 Es una ventana transparente, sin marco y siempre encima que cubre la pantalla. Los clics la atraviesan, así que puedes seguir usando tu computadora normalmente; solo Laica responde al ratón.
 
-## Cómo usarla
+## Cómo iniciarla
+
+**Con el .exe (sin instalar nada):** doble clic en `Laica-1.0.0-portable.exe`. Laica aparece donde está el cursor. Windows puede mostrar "Windows protegió su PC" porque el .exe no está firmado: *Más información → Ejecutar de todas formas*. Para generarlo: `npm run exe` (queda en `escritorio/dist/`).
+
+**Desde el código:**
 
 ```bash
 cd escritorio
 npm install
 npm start
 ```
+
+**Desde la app web:** después de abrirla una vez (con el .exe o con `npm start`), el botón **🖥️ Sacarla al escritorio** la abre sola desde el punto del navegador donde estaba.
+
+## Pausar, reactivar y cerrar
+
+| Qué | Cómo |
+|---|---|
+| Pausar (se esconde, sin ladridos ni recordatorios) | **Ctrl+Alt+L**, clic en su ícono junto al reloj, o clic derecho sobre ella → *Pausar* |
+| Reactivar | **Ctrl+Alt+L** otra vez, clic en el ícono junto al reloj, o el botón *Sacarla al escritorio* de la app web |
+| Cerrar | Clic derecho sobre ella o sobre el ícono → *Volver al navegador* / *Salir* |
+
+## Ventanas de otras aplicaciones (Windows)
+
+Laica ve dónde están el navegador y los demás programas (solo la posición y el tamaño de cada ventana, nunca su contenido; ver [ventanas.js](ventanas.js)):
+
+- Con gravedad, **cae y se para sobre el borde de arriba** de cualquier ventana y camina por él. En la orilla se asoma y da la vuelta, o se tira.
+- **Rebota** en los costados y en el borde de abajo de las ventanas (también volando sin gravedad).
+- Si **arrastras la ventana** donde está parada, viaja con ella. Si la cierras o la minimizas, se cae.
+- Solo cuentan los bordes que se ven: una ventana tapa los de las que están detrás. Las ventanas maximizadas no tienen borde de arriba donde pararse.
 
 `npm start` muestra a Laica y registra el enlace `laica://` en tu usuario. Desde ese momento, el botón **🖥️ Sacarla al escritorio** de la app web la abre, y **Traer a Laica de vuelta** la cierra. El navegador te preguntará la primera vez si permites abrir la app.
 
@@ -44,4 +67,4 @@ Para revisar que se dibuja sin mirar la pantalla: `LAICA_CAPTURA=captura.png npm
 
 - Si el sistema tiene activado "reducir movimiento", Laica se queda quieta en la esquina inferior derecha.
 - Usa el área de trabajo de la pantalla donde estaba el navegador; con varios monitores, sale en ese monitor.
-- Es una versión de desarrollo: para repartirla como instalador habría que empaquetarla (por ejemplo con electron-builder) y copiar `assets/laica/laica.js` dentro del paquete.
+- `npm start` y `npm run exe` copian primero a Laica desde `assets/laica` a `escritorio/laica` (carpeta ignorada por git).

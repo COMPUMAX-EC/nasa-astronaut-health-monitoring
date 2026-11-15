@@ -1,17 +1,56 @@
 {
   "name": "laica-escritorio",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "description": "Laica fuera del navegador: vuela, camina y rebota por todo el escritorio",
   "main": "main.js",
   "scripts": {
+    "prestart": "node copiar-laica.js",
     "start": "electron .",
-    "test": "node --test \"test/*.test.js\""
+    "test": "node --test \"test/*.test.js\"",
+    "exe": "node copiar-laica.js && electron-builder --win portable --x64"
   },
   "devDependencies": {
-    "electron": "33.2.1"
+    "electron": "33.2.1",
+    "electron-builder": "^25.1.8"
   },
   "allowScripts": {
     "electron@33.2.1": true
+  },
+  "author": "Compumax Evolution",
+  "build": {
+    "appId": "ec.compumax.laica",
+    "productName": "Laica",
+    "copyright": "Compumax Evolution · NASA Space Apps Challenge 2026",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "renderer.js",
+      "enlace.js",
+      "ventanas.js",
+      "bordes.js",
+      "index.html",
+      "escritorio.css",
+      "icono-bandeja.png",
+      "laica/**/*"
+    ],
+    "protocols": [
+      {
+        "name": "Laica",
+        "schemes": [
+          "laica"
+        ]
+      }
+    ],
+    "win": {
+      "target": "portable",
+      "icon": "icono.ico"
+    },
+    "portable": {
+      "artifactName": "Laica-${version}-portable.exe"
+    }
   }
 }
