@@ -37,7 +37,7 @@ La historia sigue **Problema → Solución con datos → Impacto**, que es lo qu
 
 ### 2 · El problema (45 s)
 
-> La NASA resume los riesgos del vuelo espacial en **5 peligros**: radiación, aislamiento, distancia, gravedad y un entorno hostil. Con hasta 22 minutos de retraso en cada sentido, el tripulante no puede esperar a que tierra le conteste: tiene que darse cuenta solo de que algo cambió. Y el aislamiento no es un detalle: está en la lista oficial de riesgos del Human Research Program.
+> La NASA resume los riesgos del vuelo espacial en **5 peligros**: radiación, aislamiento, distancia, gravedad y un entorno hostil. Con hasta 22 minutos de retraso en cada sentido, el tripulante no puede esperar a que tierra le conteste: tiene que darse cuenta solo de que algo cambió. Todos recordamos lo que vivimos en pandemia: encierro, estrés, aislamiento, la sensación de estar lejos de la gente que queremos. Eso mismo viven los astronautas en misiones largas. La diferencia es que nosotros estábamos en casa, y ellos están a millones de kilómetros de la Tierra
 >
 > ¿Quién lo usa? Tripulaciones de Artemis y de Marte, análogos como HERA y CHAPEA y, aquí en la Tierra, gente aislada: la estación ecuatoriana Pedro Vicente Maldonado en la Antártida, Galápagos o comunidades rurales lejos de un médico.
 
