@@ -4,7 +4,7 @@
 
 Debo mantenerme sereno para no Caer en la Locura | Es tarde
 
-Porque las personas necesitamos hablar con otras personas y cuando estámos aislados tras de una pantalla en redes sociales y de la misma forma un astronauta que no tiene contacto con sus padres, hijos y amigos.
+Porque las personas necesitamos hablar con otras personas y cuando estámos aislados tras de una pantalla en redes sociales y de la misma forma un astronauta que no tiene contacto con sus padres, hijos y amigos
 
 Guion del pitch en vivo (en español) para la sede Sangolquí, armado sobre la [rúbrica oficial](rubrica/README.md). Son **7 diapositivas** (el máximo; con 8 se pierde 1 punto) y unos **5 minutos** de exposición. La guía no fija la duración: hay ≈ 15 minutos por equipo para pitch, Q&A y calificación, así que **confirmen el tiempo con el Staff** y recorten la demo si les dan menos.
 
