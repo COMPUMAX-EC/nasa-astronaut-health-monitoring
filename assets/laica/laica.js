@@ -772,8 +772,9 @@ svg.laica.p-cuatro.andando .cola { animation-duration: .3s; }
       this.parada = hacia(this.parada, gesto === "parada" ? 1 : 0, dt, 3.2);
       this.rastreo = hacia(this.rastreo, gesto === "rastrear" ? 1 : 0, dt, 3);
       this.olfato = hacia(this.olfato, gesto === "oler" || gesto === "rastrear" ? 1 : 0, dt, 6);
-      this.golpe *= Math.exp(-dt * 7);
-      const p = this.parada, r = this.rastreo;
+      this.golpe *= Math.exp(-dt * 5);
+      this.cuatro = hacia(this.cuatro || 0, cuatro && gesto !== "parada" ? 1 : 0, dt, 3);
+      const p = this.parada, r = this.rastreo, q4 = this.cuatro;
 
       // Patas, pata por pata: se balancean, se levantan al ir hacia adelante y doblan la muñeca.
       const lado = vista === "derecha" || vista === "izquierda";
@@ -806,7 +807,8 @@ svg.laica.p-cuatro.andando .cola { animation-duration: .3s; }
       const oler = gesto === "oler" ? 1 : 0;
       if (lado) cab.a += dir * (0.12 * oler + 0.3 * r) + r * 0.06 * Math.sin(TAU * t * 0.8);
       else { cab.y += 18 * oler + 36 * r; cab.a += r * 0.12 * Math.sin(TAU * t * 0.7); }
-      cab.a += (lado ? -dir : 0) * 0.1 * this.golpe; cab.y -= 8 * this.golpe;
+      cab.a += (lado ? -dir : 0) * 0.2 * this.golpe; cab.y -= (lado ? 10 : 18) * this.golpe;
+      z("cuerpo").sy -= 0.035 * this.golpe; // el ladrido sacude todo el cuerpo
 
       // Boca: abre y cierra (jadea, habla, ladra); dormida la cierra.
       let metaBoca = 0.35 + 0.15 * Math.sin(TAU * t * 1.2);
@@ -819,7 +821,7 @@ svg.laica.p-cuatro.andando .cola { animation-duration: .3s; }
       if (forzada != null) metaBoca = forzada;
       this.boca = hacia(this.boca, Math.max(metaBoca, this.golpe), dt, 14);
       const ab = this.boca - 0.4;
-      if (lado) z("mandibula").a = dir * ab * 0.7; else { z("mandibula").y = ab * 40; z("mandibula").sy = 1 + ab * 0.3; }
+      if (lado) z("mandibula").a = dir * ab * 0.75; else { z("mandibula").y = ab * 55; z("mandibula").sy = 1 + ab * 0.35; }
 
       // Nariz: olfatea en ráfagas rápidas.
       const raf = this.olfato * Math.max(0, Math.sin(TAU * t * 7)) * (Math.sin(TAU * t * 0.9) > -0.3 ? 1 : 0);
@@ -843,10 +845,10 @@ svg.laica.p-cuatro.andando .cola { animation-duration: .3s; }
       });
 
       // Cola: mueve más o menos según el ánimo; con miedo, metida.
-      const COLA = { reposo: [0.18, 1.6], saludar: [0.3, 3], hablar: [0.2, 2], celebrar: [0.45, 4.5], ejercicio: [0.25, 3],
+      const COLA = { reposo: [0.3, 1.8], saludar: [0.45, 3], hablar: [0.3, 2.2], celebrar: [0.7, 5], ejercicio: [0.4, 3],
         respirar: [0.04, 0.6], dormir: [0, 1], alerta: [0.05, 1], urgente: [0.03, 6], radiacion: [0.03, 6] };
       const [amp, fc] = COLA[e] || COLA.reposo;
-      const ampC = Math.max(amp, w * 0.3, r * 0.25);
+      const ampC = Math.max(amp, w * 0.4, r * 0.35);
       const metida = ["urgente", "radiacion"].includes(e) ? 1 : 0;
       const cola = z("cola");
       cola.a = ampC * Math.sin(TAU * t * Math.max(fc, w * 3)) + (def.espalda ? 0 : (dir || 1) * -0.3 * metida);
@@ -867,6 +869,18 @@ svg.laica.p-cuatro.andando .cola { animation-duration: .3s; }
       }
       // Rastrear: se inclina hacia adelante con el hocico al suelo.
       if (r > 0.001 && lado) z("torso").a += dir * 0.08 * r;
+      // En cuatro patas: el torso baja y se inclina hacia adelante, las patas delanteras se adelantan
+      // y la cabeza compensa para seguir mirando al frente.
+      if (q4 > 0.001) {
+        const to = z("torso");
+        if (lado) {
+          to.a += dir * 0.22 * q4; to.y += 34 * q4;
+          cab.a += -dir * 0.16 * q4;
+          z("pata1").a += -dir * 0.18 * q4; z("pata2").a += -dir * 0.12 * q4;
+        } else {
+          to.y += 48 * q4; to.sy *= 1 - 0.06 * q4; cab.y += 6 * q4;
+        }
+      }
       return P;
     }
 

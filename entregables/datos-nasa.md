@@ -19,6 +19,17 @@
 | [NASA Twins Study](https://www.nasa.gov/humans-in-space/twins-study/), [HERA](https://www.nasa.gov/mission/hera/), [CHAPEA](https://www.nasa.gov/humans-in-space/chapea/) | Efectos de misiones largas, aislamiento y análogos | Salud mental, usuarios y casos de uso ([docs/05](../docs/05-salud-mental-y-autonomia.md)) |
 | [NASA Life Sciences Portal (NLSP)](https://nlsp.nasa.gov/) | Catálogo de datos de ciencias de la vida | Referencia ([docs/04](../docs/04-datos-y-apis.md)) |
 
+### Artículos que dan soporte al proyecto (diapositiva 7)
+
+| Artículo o documento | Qué respalda |
+|---|---|
+| Garrett‑Bakelman, F. E. et al. (2019). *The NASA Twins Study: A multidimensional analysis of a year‑long human spaceflight*. Science 364(6436). [doi:10.1126/science.aau8650](https://doi.org/10.1126/science.aau8650) | Un año en órbita cambia el cuerpo y la cognición; hay que monitorear |
+| NASA (2024). *Earth Independent Medical Operations (EIMO): Concept of Operations*. [NTRS 20240001402](https://ntrs.nasa.gov/citations/20240001402) | La tripulación debe ser médicamente autónoma |
+| NASA HRP (2026). *Uso de IA para mitigar el riesgo médico de exploración*. [NTRS 20260001797](https://ntrs.nasa.gov/citations/20260001797) | Asistentes que apoyan decisiones sin tierra |
+| NASA (2024). *AMOS: guía autónoma de procedimientos médicos, demostración en la ISS*. [NTRS 20240012964](https://ntrs.nasa.gov/citations/20240012964) | Guiar al tripulante paso a paso funciona en órbita |
+| NASA OCHMO. [*TB‑020 Radiation Protection*](https://www.nasa.gov/wp-content/uploads/2023/12/ochmo-tb-020-radiation-protection.pdf) y [*TB‑016 Behavioral Health*](https://www.nasa.gov/wp-content/uploads/2023/12/ochmo-tb-016-behavioral-health.pdf) | Límite de 600 mSv y riesgo del aislamiento |
+| [NASA‑STD‑3001 Vol. 1](https://www.nasa.gov/reference/nasa-std-3001v1/) y [Vol. 2](https://www.nasa.gov/reference/nasa-std-3001v2/); [Human Research Roadmap](https://humanresearchroadmap.nasa.gov/risks/) | Umbrales de alerta y matriz de 47 indicadores |
+
 ### Cómo se procesan
 
 1. **Fuentes:** leímos los estándares y riesgos oficiales.
@@ -42,6 +53,10 @@
 | [DONKI](https://ccmc.gsfc.nasa.gov/tools/DONKI/) via the [NASA API](https://api.nasa.gov/) | Solar energetic particle events and flares | `scripts/donki_radiacion.py`; the radiation alert follows that event type |
 | [OSDR](https://osdr.nasa.gov/bio/repo/), [NTRS](https://ntrs.nasa.gov/), [NLSP](https://nlsp.nasa.gov/) | Space biology studies and technical papers | Scripts and explanations |
 | [Twins Study](https://www.nasa.gov/humans-in-space/twins-study/), [HERA](https://www.nasa.gov/mission/hera/), [CHAPEA](https://www.nasa.gov/humans-in-space/chapea/) | Long‑duration, isolation and analog missions | Mental health, users and use cases |
+
+### Supporting articles (slide 7)
+
+Garrett‑Bakelman et al. (2019), *The NASA Twins Study*, Science ([doi:10.1126/science.aau8650](https://doi.org/10.1126/science.aau8650)); NASA EIMO Concept of Operations ([NTRS 20240001402](https://ntrs.nasa.gov/citations/20240001402)); NASA HRP, AI to mitigate exploration medical risk ([NTRS 20260001797](https://ntrs.nasa.gov/citations/20260001797)); AMOS ISS demonstration ([NTRS 20240012964](https://ntrs.nasa.gov/citations/20240012964)); OCHMO technical briefs TB‑020 (radiation) and TB‑016 (behavioral health); NASA‑STD‑3001 Vol. 1 and 2; Human Research Roadmap.
 
 ### Processing
 
