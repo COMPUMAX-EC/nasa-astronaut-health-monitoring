@@ -373,8 +373,11 @@ footer { flex-wrap: wrap; }
 
 /* Cámara de Laica: vista previa pequeña en espejo y luz que avisa que está encendida. */
 laica-mascota { transition: rotate .25s ease-out; }
-.camara-propia { position: absolute; right: 14px; top: 14px; z-index: 3; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.camara-propia { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 8px; }
 .camara-propia.oculta { display: none; }
+/* En ventana flotante: el video sigue en la página (lo necesita el navegador) pero no ocupa lugar. */
+.camara-propia.fuera video { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+.camara-propia button { font-size: .75rem; padding: 4px 10px; }
 .camara-propia video { width: 96px; height: 72px; object-fit: cover; border-radius: 12px; transform: scaleX(-1); border: 2px solid rgba(255, 255, 255, .5); background: #000; }
 .luz-camara { font-size: .72rem; color: #ffd2cc; background: rgba(12, 18, 40, .8); padding: 2px 8px; border-radius: 999px; }
 .luz-camara::first-letter { color: #ff5a4f; }

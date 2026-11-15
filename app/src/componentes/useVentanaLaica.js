@@ -18,6 +18,7 @@ p {
   padding: 6px 10px; text-align: center; max-width: 96%;
   display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
 }
+video.camara { width: 72px; height: 54px; flex: none; object-fit: cover; transform: scaleX(-1); border-radius: 10px; border: 2px solid rgba(255,255,255,.5); background: #000; }
 button { border: none; background: none; padding: 0; cursor: pointer; line-height: 0; animation: flotar 3.5s ease-in-out infinite; }
 @keyframes flotar { 50% { transform: translateY(-6px); } }
 @media (prefers-reduced-motion: reduce) { button { animation: none; } }
@@ -31,6 +32,7 @@ export function useVentanaLaica({ estado, mensaje, onAcariciar }) {
   const ventana = useRef(null);
   const laica = useRef(null);
   const texto = useRef(null);
+  const camaraEn = useRef(null); // vista de la cámara dentro de la ventana flotante
   const acariciar = useRef(onAcariciar);
   acariciar.current = onAcariciar;
 
@@ -63,16 +65,39 @@ export function useVentanaLaica({ estado, mensaje, onAcariciar }) {
     });
     w.document.body.append(p, boton);
     laica.current = l;
+    camaraEn.current = null;
     texto.current = p;
 
     w.addEventListener("pagehide", () => {
-      ventana.current = laica.current = texto.current = null;
+      ventana.current = laica.current = texto.current = camaraEn.current = null;
       setAbierta(false);
     });
     setAbierta(true);
   }, []);
 
   const cerrar = useCallback(() => ventana.current?.close(), []);
+
+  // Con la cámara encendida, su vista va arriba, en su propia fila (no tapa a Laica ni el texto),
+  // y Laica se achica un poco para que todo quepa en la ventanita.
+  const ponerCamara = useCallback((flujo) => {
+    const w = ventana.current;
+    if (!w) return;
+    if (flujo && !camaraEn.current) {
+      const v = w.document.createElement("video");
+      v.className = "camara"; v.muted = true; v.playsInline = true; v.autoplay = true;
+      v.setAttribute("aria-label", "Tu cámara, en espejo");
+      v.srcObject = flujo;
+      w.document.body.prepend(v);
+      v.play().catch(() => {});
+      camaraEn.current = v;
+      laica.current?.setAttribute("tamano", "130");
+    } else if (!flujo && camaraEn.current) {
+      camaraEn.current.srcObject = null;
+      camaraEn.current.remove();
+      camaraEn.current = null;
+      laica.current?.setAttribute("tamano", "170");
+    }
+  }, []);
 
   useEffect(() => {
     laica.current?.setAttribute("estado", estado);
@@ -81,5 +106,5 @@ export function useVentanaLaica({ estado, mensaje, onAcariciar }) {
 
   useEffect(() => () => ventana.current?.close(), []);
 
-  return { soportada: ventanaSoportada(), abierta, abrir, cerrar };
+  return { soportada: ventanaSoportada(), abierta, abrir, cerrar, ponerCamara, laicaRef: laica };
 }

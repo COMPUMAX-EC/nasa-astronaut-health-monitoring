@@ -21,7 +21,9 @@ export function useCamaraLaica({ laicaRef, nivel, voz, puedePreguntar }) {
   const [fase, setFase] = useState("apagada"); // apagada | preguntando | encendiendo | encendida | triste
   const [reaccion, setReaccion] = useState(null); // estado temporal de Laica mientras reacciona
   const [hayCara, setHayCara] = useState(false);
+  const [flotando, setFlotando] = useState(false); // la vista de la cámara está en su propia ventana flotante
   const videoRef = useRef(null);
+  const fuera = useRef(false); // Laica o la cámara están fuera del navegador (ventana flotante)
   const flujo = useRef(null);
   const detector = useRef(null);
   const bucle = useRef(0);
@@ -39,7 +41,9 @@ export function useCamaraLaica({ laicaRef, nivel, voz, puedePreguntar }) {
 
   const detener = useCallback(() => {
     cancelAnimationFrame(bucle.current);
+    clearTimeout(bucle.current);
     bucle.current = 0;
+    if (videoRef.current && document.pictureInPictureElement === videoRef.current) document.exitPictureInPicture().catch(() => {});
     flujo.current?.getTracks().forEach((t) => t.stop());
     flujo.current = null;
     detector.current?.cerrar();
@@ -73,7 +77,9 @@ export function useCamaraLaica({ laicaRef, nivel, voz, puedePreguntar }) {
     const animo = crearAnimo();
     let tPrevio = 0, sinCara = 0, tCejas = 0;
     const paso = (t) => {
-      bucle.current = requestAnimationFrame(paso);
+      // Con la pestaña oculta el navegador pausa requestAnimationFrame; si Laica o la cámara
+      // están fuera del navegador, se sigue con temporizador para que no deje de verte.
+      bucle.current = document.hidden ? setTimeout(() => paso(performance.now()), 66) : requestAnimationFrame(paso);
       const video = videoRef.current, det = detector.current, laica = laicaRef.current;
       if (!video || !det || video.readyState < 2 || t - tPrevio < 66) return;
       tPrevio = t;
@@ -91,8 +97,8 @@ export function useCamaraLaica({ laicaRef, nivel, voz, puedePreguntar }) {
 
       // Espejo: con alertas serias Laica se queda de frente y seria, sin imitar.
       if (laica && tranquila) {
-        laica.mirar?.(cara.giro, cara.cabeceo * 0.5);
-        laica.style.rotate = `${(cara.inclinacion * 14).toFixed(1)}deg`;
+        if (laica.copiarCabeza) laica.copiarCabeza(cara.giro, cara.cabeceo, cara.inclinacion);
+        else { laica.mirar?.(cara.giro, cara.cabeceo * 0.5); laica.style.rotate = `${(cara.inclinacion * 14).toFixed(1)}deg`; }
         laica.boca?.(cara.bocaAbierta > 0.3 ? true : null);
         if (cara.cejasArriba > 0.5 && t - tCejas > 1500) { tCejas = t; laica.sacudir?.(0.7); }
       }
@@ -177,17 +183,44 @@ export function useCamaraLaica({ laicaRef, nivel, voz, puedePreguntar }) {
     return () => clearTimeout(t);
   }, [puedePreguntar, fase, pedir]);
 
-  // Al ocultar la pestaña o salir, se apaga la cámara (no queda encendida a escondidas).
+  // Saca la vista de la cámara del navegador a una ventanita flotante (Picture-in-Picture),
+  // así no tapa nada de la página y se puede poner en cualquier parte de la pantalla.
+  const sacar = useCallback(async () => {
+    const v = videoRef.current;
+    if (!v || !document.pictureInPictureEnabled) return;
+    try {
+      if (document.pictureInPictureElement === v) await document.exitPictureInPicture();
+      else await v.requestPictureInPicture();
+    } catch { /* el navegador lo rechazó */ }
+  }, []);
   useEffect(() => {
-    const alOcultar = () => { if (document.hidden && flujo.current) { detener(); setFase("apagada"); } };
+    const v = videoRef.current;
+    if (!v) return;
+    const entra = () => setFlotando(true), sale = () => setFlotando(false);
+    v.addEventListener("enterpictureinpicture", entra);
+    v.addEventListener("leavepictureinpicture", sale);
+    return () => { v.removeEventListener("enterpictureinpicture", entra); v.removeEventListener("leavepictureinpicture", sale); };
+  }, []);
+
+  // Al ocultar la pestaña o salir, se apaga la cámara (no queda encendida a escondidas). Si la
+  // cámara o Laica están en una ventana flotante, la cámara sigue a la vista y no se apaga.
+  useEffect(() => {
+    const alOcultar = () => {
+      if (!document.hidden || !flujo.current) return;
+      if (fuera.current || document.pictureInPictureElement) return;
+      detener(); setFase("apagada");
+    };
     document.addEventListener("visibilitychange", alOcultar);
     return () => { document.removeEventListener("visibilitychange", alOcultar); detener(); clearTimeout(tReaccion.current); };
   }, [detener]);
 
   return {
     disponible: camaraDisponible(),
-    fase, hayCara, reaccion, videoRef,
+    fase, hayCara, reaccion, videoRef, flotando,
+    puedeSacar: typeof document !== "undefined" && Boolean(document.pictureInPictureEnabled),
     encendida: fase === "encendida" || fase === "triste",
-    pedir, aceptar, rechazar, apagar, respirar, estoyBien,
+    flujo: () => flujo.current,
+    marcarFuera: (si) => { fuera.current = si; },
+    pedir, aceptar, rechazar, apagar, respirar, estoyBien, sacar,
   };
 }

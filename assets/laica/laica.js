@@ -845,6 +845,15 @@ svg.laica.p-cuatro.andando .cola { animation-duration: .3s; }
       cab.a += (lado ? -dir : 0) * 0.2 * this.golpe; cab.y -= (lado ? 10 : 18) * this.golpe;
       z("cuerpo").sy -= 0.035 * this.golpe; // el ladrido sacude todo el cuerpo
 
+      // Espejo de la cámara: la cabeza copia la inclinación, el cabeceo y el giro de la persona.
+      const pose = h._cabeza;
+      const meta = pose && Date.now() - pose.t < 600 ? pose : { giro: 0, cabeceo: 0, inclinacion: 0 };
+      const cp = this.poseCabeza || (this.poseCabeza = { giro: 0, cabeceo: 0, inclinacion: 0 });
+      for (const k of ["giro", "cabeceo", "inclinacion"]) cp[k] = hacia(cp[k], meta[k], dt, 10);
+      cab.a += cp.inclinacion * 0.32 + (lado ? 0 : cp.giro * 0.05);
+      cab.x += cp.giro * 16;
+      cab.y += cp.cabeceo * 16;
+
       // Boca: abre y cierra (jadea, habla, ladra); dormida la cierra.
       let metaBoca = 0.35 + 0.15 * Math.sin(TAU * t * 1.2);
       if (e === "hablar") metaBoca = 0.5 + 0.5 * Math.sin(TAU * t * 4);
@@ -1115,6 +1124,22 @@ svg.laica.p-cuatro.andando .cola { animation-duration: .3s; }
     pararse(si = true, ms = 0) { this._gesto(si ? "parada" : null, ms); }
     /** Abre (true) o cierra (false) la boca; null la deja libre (jadea, habla y ladra sola). */
     boca(abierta = null) { this._boca = abierta == null ? null : abierta ? 1 : 0; }
+    /**
+     * Copia la pose de la cabeza de una persona (cámara), en espejo. Valores de -1 a 1:
+     * giro (izquierda/derecha), cabeceo (arriba/abajo) e inclinacion (ladear). Mientras llegan
+     * datos, el puntero y la curiosidad no le mueven la mirada. Sin datos por 0.6 s, vuelve sola.
+     */
+    copiarCabeza(giro = 0, cabeceo = 0, inclinacion = 0) {
+      const l = (v) => Math.max(-1, Math.min(1, v));
+      this._cabeza = { giro: l(giro), cabeceo: l(cabeceo), inclinacion: l(inclinacion), t: Date.now() };
+      this.mirar(giro, cabeceo * 0.6);
+      if (!this._rig) { // modo SVG o sin WebGL: ladea todo el cuerpo
+        this.style.rotate = `${(l(inclinacion) * 14).toFixed(1)}deg`;
+        clearTimeout(this._tcabeza);
+        this._tcabeza = setTimeout(() => { this.style.rotate = ""; }, 700);
+      }
+    }
+    get _copiando() { return Boolean(this._cabeza && Date.now() - this._cabeza.t < 1000); }
     /** Sacude orejas (al aterrizar, chocar o asustarse). */
     sacudir(fuerza = 1) { this._rig?.sacudir(fuerza); }
     _gesto(g, ms) {
@@ -1163,7 +1188,7 @@ svg.laica.p-cuatro.andando .cola { animation-duration: .3s; }
     get _deFrente() { return ["dormir", "respirar", "urgente", "radiacion"].includes(this.estado); }
 
     _seguirPuntero(e) {
-      if (!this.hasAttribute("seguir") || this._deFrente) return;
+      if (!this.hasAttribute("seguir") || this._deFrente || this._copiando) return;
       const r = this.getBoundingClientRect();
       if (!r.width) return;
       const cx = r.left + r.width / 2, cy = r.top + r.height * 0.4;
@@ -1176,7 +1201,7 @@ svg.laica.p-cuatro.andando .cola { animation-duration: .3s; }
       clearTimeout(this._tc);
       this._tc = setTimeout(() => {
         const quieto = Date.now() - (this._ultimoPuntero || 0) > 3500;
-        if (this.hasAttribute("curiosa") && quieto && !this._sinMovimiento) {
+        if (this.hasAttribute("curiosa") && quieto && !this._sinMovimiento && !this._copiando) {
           if (this._deFrente) this.mirar(0, 0);
           else if (this.estado === "alerta") this.mirar(0, 0.1);
           else {

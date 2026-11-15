@@ -107,10 +107,17 @@ export default function Escena({ estadoLaica, mensaje, nivel, voz, esHoy, checkI
   const ausente = libre || fuera.abierta || enEscritorio; // Laica no está en su sitio
   // Dónde vuelve: a la escena si se ve, o a la esquina de compañía si se bajó por la página.
   const casa = () => (visibleRef.current ? laicaRef.current : miniRef.current)?.getBoundingClientRect();
+  // Con Laica en la ventana flotante, los gestos espejo los hace la Laica de esa ventana.
+  const objetivoRef = useMemo(() => ({ get current() { return fuera.laicaRef.current || laicaRef.current; } }), [fuera.laicaRef]);
   const cam = useCamaraLaica({
-    laicaRef, nivel, voz,
+    laicaRef: objetivoRef, nivel, voz,
     puedePreguntar: esHoy && tranquila && !libre && !ausente && !voz.escuchando && !voz.pendiente,
   });
+  const camaraFuera = cam.flotando || (fuera.abierta && cam.encendida);
+  useEffect(() => {
+    fuera.ponerCamara(fuera.abierta && cam.encendida ? cam.flujo() : null);
+    cam.marcarFuera(fuera.abierta);
+  }, [fuera.abierta, cam.encendida]); // eslint-disable-line react-hooks/exhaustive-deps
   const tranquilaOAmarilla = nivel === "verde" || nivel === "amarillo";
   const estadoVisible = cam.reaccion && tranquilaOAmarilla ? cam.reaccion : estadoLaica;
   const charla = useCharla({
@@ -170,12 +177,20 @@ export default function Escena({ estadoLaica, mensaje, nivel, voz, esHoy, checkI
           <span className="sombra-laica" aria-hidden="true" />
         </div>
 
-        <div className={`camara-propia${cam.encendida || cam.fase === "encendiendo" ? "" : " oculta"}`}>
-          <video ref={cam.videoRef} muted playsInline aria-label="Tu cámara, en espejo" />
-          <span className="luz-camara" role="status">● Cámara encendida{cam.encendida && !cam.hayCara ? " · no te veo" : ""}</span>
-        </div>
-
         <div className="dialogo">
+          {/* La vista de la cámara va en su propia fila, encima de la burbuja: no tapa nada.
+              Si está en una ventana flotante (suya o la de Laica), aquí solo queda el aviso. */}
+          <div className={`camara-propia${cam.encendida || cam.fase === "encendiendo" ? "" : " oculta"}${camaraFuera ? " fuera" : ""}`}>
+            <video ref={cam.videoRef} muted playsInline aria-label="Tu cámara, en espejo" />
+            <span className="luz-camara" role="status">
+              ● Cámara encendida{camaraFuera ? " · en ventana flotante" : cam.encendida && !cam.hayCara ? " · no te veo" : ""}
+            </span>
+            {cam.encendida && cam.puedeSacar && !fuera.abierta && (
+              <button type="button" className="sutil" onClick={cam.sacar} aria-pressed={cam.flotando}>
+                {cam.flotando ? "Traer la cámara aquí" : "Sacar la cámara del navegador"}
+              </button>
+            )}
+          </div>
           <p className={`burbuja nivel-${nivel}`}>{textoBurbuja}</p>
           {voz.escuchando && (
             <p className="oyendo" role="status"><span className="onda" aria-hidden="true"></span>{voz.parcial || "Te escucho…"}</p>
